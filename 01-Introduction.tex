@@ -1,0 +1,59 @@
+
+
+\input{preamble.tex}
+\begin{document}
+
+
+%=====   F I R S T    L E C T U R E   =====
+\addtitlepage
+\preliminaryInfo
+
+
+%==================================================================================
+%=====
+%=====    I N T R O D U C T I O N
+%=====
+%==================================================================================
+%\startnewpart[\subimport{slides/Introduction/general/}{SimpleVideoCodingPic}]{Introduction}
+
+\section{Motivation}
+\input{Introduction/Motivation/WhyDataCompression}
+\input{Introduction/Motivation/DataCompressionExamples}
+
+\section{Source Data for Data Compression}
+\subimport{Introduction/SourceData/}                {SourceData}
+\subimport{Introduction/SourceData/}                {ADConversion}
+\subimport{Introduction/SourceData/}                {ImpactOfSampling}
+\subimport{Introduction/SourceData/}                {ImpactOfQuantization}
+\subimport{Introduction/SourceData/}                {RawImages}
+\subimport{Introduction/SourceData/}                {ColorSamplingFormats}
+\subimport{Introduction/SourceData/}                {RawDataRate}
+
+\section{Source Coding Problem}
+\subimport{Introduction/SourceCodingProblem/}    {TypicalCommunicationScenario}
+\subimport{Introduction/SourceCodingProblem/}       {BasicSourceCodingProblem}
+\input       {Introduction/PracticalSourceCoding.tex}
+
+\section{Applications of Data Compression}
+  %\subsection{Texts and General Files}
+   % \subimport{Introduction/TextCompression/}         {TextCompressionExample}
+  %\subsection{Audio}
+   % \subimport{Introduction/AudioCompression/}        {AudioCompressionExample}
+
+  \subsection{Images}
+    \subimport{Introduction/ImageCompression/}        {ImageCompressionExample}
+    \subimport{Introduction/ImageCompression/}        {JPEGCompressionExample}
+    \subimport{Introduction/ImageCompression/}        {MeasuringEfficiency}
+    %\subimport{Introduction/ImageCompression/}        {ComparingEfficiency}
+    %\subimport{Introduction/ImageCompression/}        {JPEG-vs-VTM6}
+  \subsection{Video}
+    \subimport{Introduction/VideoCompression/}        {VideoCompression}
+    \subimport{Introduction/VideoCompression/}        {VideoCompressionExample}
+
+
+\section{Data Compression and Machine Learning}
+\subimport{Introduction/ML_Teaser/}{ML_Teaser}
+
+
+\end{document}
+
