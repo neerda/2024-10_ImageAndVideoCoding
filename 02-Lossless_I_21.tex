@@ -1,0 +1,912 @@
+%\documentclass{beamer}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{tikz}
+%\usetikzlibrary{trees}
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\begin{document}
+\startnewpart[
+    ~\hspace{3em}
+    \begin{tabular}{|c|l|}
+    \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{00}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{01}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{10}\\
+    \color{blue}{N}        & ~~~\color{blue}{11}\\
+    \hline
+    \end{tabular}
+    \hspace{3em}
+    \begin{tabular}{|c|l|}
+    \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{011}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{01}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{0}\\
+    \color{blue}{N}        & ~~~\color{blue}{111}\\
+    \hline
+    \end{tabular}
+    \hspace{3em}
+    \begin{tabular}{|c|l|}
+    \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{0}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{110}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{111}\\
+    \color{blue}{N}        & ~~~\color{blue}{10}\\
+    \hline
+    \end{tabular}
+    \hspace{3em}~
+]{Lossless Coding I}
+\section{Introduction}
+
+\input{Lossless_I/MorseCodeNew.tex}
+
+
+
+\begin{frame}{Lossless Coding Scenario}
+\begin{center}
+\tikzstyle{encdec} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, align=center, text width=2cm, draw=black]
+\tikzstyle{iomsg} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, text width=2.5cm, draw=black, fill=red!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\begin{tikzpicture}[node distance=2cm]
+\node (inmsg) [iomsg] {Input Message\\ \textbf{s}};
+\node (enc) [encdec, right of = inmsg, xshift=1.5cm ] {Encoder:\\ $\textbf{b}=\gamma(\textbf{s})$};
+\node (dec) [encdec, right of = enc, xshift=2.5cm ] {Decoder:\\ $\textbf{s}=\gamma^{-1}(\textbf{b})$};
+\node (outmsg) [iomsg, right of = dec, xshift=1.5cm ] {Output Message\\ \textbf{s}};
+\draw [arrow] (enc) -- node[anchor=south] {bit-stream $\mathbf{b}$} (dec);
+\draw [arrow] (enc) -- node[anchor=north] {$\mathbf{b}=00101$} (dec);
+\draw [arrow] (inmsg) -- (enc);
+\draw [arrow] (dec) -- (outmsg);
+\end{tikzpicture}
+\end{center}
+\bit
+\item \loud{Encoder:} Convert message $\mathbf{s}$ to bit-stream $\mathbf{b}$. Transmit $\mathbf{b}$.
+\item \loud{Decoder:}  Parse $\mathbf{b}$ and convert back to message $\mathbf{s}$.  
+\item[\iarrow] \ALERT{Decoder can exactly recover message from bitstream by inverting encoder operation.}
+\eit
+\smallskip
+%\bit
+%\item 
+\loud{Bit rate reduction only possible if source messages $\mathbf{s}$ have statistical properties that can be exploited for compression. }
+%\eit
+\end{frame}
+
+
+
+
+
+\begin{frame}{Lossless coding framework}
+\loud{Messages:}
+\begin{itemize}
+%\item Reversible transmission of messages:
+%\begin{itemize} 
+%\item Encoder transmits message by converting it to a bit-sequence. 
+%\item Decoder receives only bit-sequence, but can uniquely recover bit-sequence from message.  
+%\end{itemize}
+\item Assume that a \textbf{finite alphabet} $\mathcal{A}=\{a_1,\dots,a_N\}$ of \textbf{source symbols} $a_k$ is given. 
+\item A \textbf{message} is a finite sequence $\textbf{s}=(a_{k_1},\dots,a_{k_l})$ of source symbols.
+\item Write $\mathcal{A}^{<\infty}$ for the set of messages. 
+\end{itemize}
+\loud{Importance of lossless coding:}
+\bit
+\item Important in its own right. Lossless transmission might be desirable (Zip, PNG,...).
+\item Even lossy compression systems (audio, image, video compression) contain lossless part:
+\bit
+\item Loss in information arises from quantization. All other parts are (more or less) lossless.
+\item Before transmitting message, encoder can exactly compute quantization error and can adjust quantization stepsize
+to required quality.  
+\item Lossless transmission guarantees that error computed by encoder equals error in decoded message.  
+\eit
+\eit
+\end{frame}
+
+\section{Uniquely decodable codes}
+\begin{frame}{Uniquely decodable codes}
+\loud{Code}
+\bit
+\item Let $\mathcal{B}^{<\infty}$ denote the set of finite binary sequences. A \textbf{code} is a mapping 
+\[
+\gamma: \mathcal{A}\longrightarrow \mathcal{B}^{<\infty}. 
+\]
+\item The bit-sequences $\gamma(a_k)$ are called \textbf{codewords}.
+\eit
+\loud{Non-singular code}
+\bit
+\item A code is called \textbf{non-singular} if  $\gamma$ is injective, i.e. if 
+$\gamma(a_i)\neq \gamma(a_j)$ for all $ a_i\neq a_j$. 
+\eit 
+\loud{Uniquely decodable code}
+\bit
+\item A code induces a mapping $\gamma^{<\infty}:\mathcal{A}^{<\infty}\to\mathcal{B}^{<\infty}$, 
+\begin{align*}
+\gamma^{<\infty}\left((a_{k_1},\dots,a_{k_l})\right):=\left[\gamma(a_{k_1}),\dots,\gamma(a_{k_l})\right],
+\end{align*}
+$[\:]$ the concatenation of sequences. 
+\item A code is called \textbf{uniquely decodable} if $\gamma^{<\infty}$ is injective.
+\item Uniquely decodable: Each bit-sequence arises by at most one message. 
+\eit
+\end{frame}
+
+\section{Examples of codes}
+\input{Lossless_I/BananamanEncoding_New.tex}
+\input{Lossless_I/BananamanDecoding_New.tex}
+
+
+\section{Probabilities of source symbols and average codeword length}
+\begin{frame}{Probabilities of source symbols and average codeword length}
+\loud{Known probability masses of source symbols}
+\bit
+\item Assume that symbols $a_k$ have known probabilities $p_k:=P(a_k)$.
+\item The \loud{probability masses} $p_k$ satisfy
+\begin{equation*}
+\boxed{0 \leq p_k\leq 1 \:\forall k; \quad \sum_{k=1}^Np_k=1.} 
+\end{equation*}
+%\bit
+%\item $0 \leq p_k\leq 1 \:\forall k$.
+%\item $ \sum_{k=1}^Np_k=1$.
+%\eit
+\item Probabilstic framework enables mathematical theory of communication. Will be extended to stationary random processes 
+and continuous probability distributions.
+%\bit 
+%\item Stationary random processes for lossless source coding. 
+%\item Continous probability distributions for lossy source coding. 
+%\eit
+\eit 
+\smallskip
+\loud{Average codeword length:}
+\bit
+\item Let $\ell_k(\gamma)$ be the length of $\gamma(a_k)$. The average codeword length is defined as
+\begin{align*}
+\overline{\ell}(\gamma):=\sum_{k=1}^Np_k\cdot \ell_k(\gamma).
+\end{align*} 
+\item[\iarrow]\ALERT{Goal: Find uniquely decodable codes of minial average codeword length.}
+\eit
+%\ALERT{Goal: Find uniquely decodable codes of minial average codeword length.}
+\end{frame}
+
+
+
+\section{Prefix codes}
+\begin{frame}{Prefix codes}
+\loud{Prefix codes}
+\begin{itemize}
+\item A \textbf{prefix code} is a non-singular code where no codeword is a prefix of a codeword different from it.
+%\item Prefix code: If $a_1,\:a_2\in\mathcal{A}$, $a_1\neq a_2$, then $\cwd(a_1)\neq \cwd(a_2)$ and $\cwd(a_1)$ is not 
+%a prefix of $\cwd(a_2)$.
+\item Prefix codes are uniquely decodable.
+\end{itemize}
+\loud{Prefix codes as binary trees}
+\begin{itemize} 
+\item Prefix codes can always be represented by \textbf{binary trees}: 
+\begin{itemize} 
+\item Alphabet letters correspond to terminal nodes. 
+\item Codewords are given by concatenation of labels on path from root to terminal nodes. 
+\end{itemize}
+\item Decoding of a bitstream: 
+\bit
+\item Start with root of binary tree. 
+\item Read bit-by bit and follow code-tree from root until a terminal node is reached \\ $\rightarrow$ next codeword is decoded. 
+\item Go back to root of binary tree.   
+\eit
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example of a prefix code}
+A prefix code for the alphabet $\mathcal{A}=\{a,b,c,d,e\}$:
+\begin{figure}
+\begin{tikzpicture}%[edge from parent/.style={draw,-latex}]
+[level distance=1.3cm,
+  level 1/.style={sibling distance=4.0cm},
+  level 2/.style={sibling distance=2.5cm}]
+  \node [circle, draw]{}
+    child {node [circle, draw]{}
+      child {node [circle, draw,  fill=black, align=center, label=below:{a=(0,0)}]{} edge from parent node[ midway, left] {$0$}}
+      child {node [circle, draw, fill=black,label=below:{b=(0,1)}]{} edge from parent node[ midway, right] {$1$}}
+      edge from parent node[midway,left]{0}
+    }
+    child {node [circle, draw]{}
+      child {node [circle, draw,fill=black,label=below:{c=(1,0)}]{}edge from parent node[midway,left]{0}}
+      child {node [circle, draw]{}
+      child{node[circle,draw, fill=black,label=below:{d=(1,1,0)}]{}edge from parent node[midway,left]{0}}      
+      child{node[circle,draw, fill=black,label=below:{e=(1,1,1)}]{}edge from parent node[midway,right]{1}}
+      edge from parent node[midway,right]{1}
+      }
+      edge from parent node[midway,right]{1}
+    };
+\end{tikzpicture}
+%\caption{Example of a prefix code for the alphabet $\mathcal{A}=\{a,b,c,d,e\}$.}
+\end{figure}
+Example for bit-stream parsing: \textbf{bitstream}: 001100110111 $\mathbf{\rightarrow}$ \textbf{message}: adbce .
+\end{frame}
+
+\begin{frame}{Prefix code: Instantaneous decodability}
+Prefix code not only uniquely decodable, but \loud{instantaneously decodable:}
+\bit
+\item Read bit by bit, can output symbol as soon as codeword is read. 
+\item \loud{Advantage:} Decoder does not need to wait for whole bitstream to start decoding.
+\eit 
+
+\loud{Further advantage of instatenous decodability:} 
+\bit
+\item Mixture of different types of symbols (different alphabets) possible. 
+\item In complex scenarios like video codec, order and presence of symbols is given by a \loud{syntax}. 
+\item Example: Syntax elements can be prediction mode (motion vector or intra prediction mode) and prediction residual. 
+\item Prefix code: Decoding with different codeword tables for different syntax elements possible:
+\bit
+\item Decode motion vector for given block with prefix code $A$.  
+\item Decode prediction residual for block with prefix code $B$. 
+\item Decode prediction mode of next block with prefix code $A$ ...
+\eit
+\eit
+
+\end{frame}
+
+\begin{frame}{Proper binary tress}
+\loud{Proper binary trees:} 
+\bit
+\item A binary tree is called \loud{proper} if each node is either a leaf node or has two children.
+\item A proper binary tree $\mathcal{T}_1$:
+\begin{center}
+\begin{forest}
+for tree={%
+    l sep=0.2cm,
+    s sep=0.5cm
+    }
+[
+ , circle, draw
+     [
+      , circle, draw
+       [
+        , circle, draw, fill
+       ]
+       [
+        , circle, draw, fill
+       ]
+     ]
+     [
+      , circle, draw, fill
+     ]
+]
+\end{forest}
+\end{center}
+\item A non-proper binary tree $\mathcal{T}_2$:
+
+\begin{center}
+\begin{forest}
+for tree={%
+    l sep=0.2cm,
+    s sep=0.5cm
+    }
+[
+ , circle, draw
+     [
+      , circle, draw
+       [
+        , circle, draw, fill
+       ]
+       [
+        , circle, draw, fill
+       ]
+     ]
+     [
+      , circle, draw, color=red, fill
+       [
+         , circle, draw, fill
+       ]
+     ]
+]
+\end{forest}
+\end{center}
+\eit
+
+\end{frame}
+
+\begin{frame}{Proper binary trees and prefix codes without structural redundancy}
+\loud{Decrease codeword-lengths by making tree proper:}
+\bit
+\item Let prefix code $\gamma$ be represented by binary tree $\mathcal{T}$.
+\item Remove interior nodes of $\mathcal{T}$ that are a single child of 
+other nodes.
+\item Resulting tree $\mathcal{T}_{new}$ is proper. 
+\item If $\gamma_{new}$ is prefix code corresponding to $\mathcal{T}_{new}$, then:
+\bit
+\item $\gamma_{new}$ can code the same number of symbols as $\gamma$.
+\item For each symbol $a$, length of $\gamma_{new}(a)$ is smaller or equal than length of $\gamma(a)$. 
+\eit
+\item [\iarrow]\loud{Prefix code without structural redundancy: } Prefix code represented by proper binary tree.
+\eit
+
+\loud{Example}
+\bit
+\item Remove red interior 
+node of $\mathcal{T}_2$ to obtain $\mathcal{T}_1$.
+\item If $\gamma_2$ is code for $\mathcal{T}_2$, codewords of $\gamma_2$ are $\{00, 01, {\color{red}1}0 \}$.
+\item If $\gamma_1$ is code for $\mathcal{T}_1$, codewords of $\gamma_1$ are $\{00, 01, 1 \}$.
+\eit
+\end{frame}
+
+
+\begin{frame}{Path lengths for proper binary trees}
+%\loud{Path lengths for proper binary trees}
+\bit
+\item Let $\mathcal{T}$ be a proper binary tree with leave node $\mathsf{n}$. 
+\bit
+\item Let $\mathsf{l}$ denote the length of the path from the root node of $\mathcal{T}$ to $\mathsf{n}$.
+\item Create new binary tree $\mathcal{T}^{new}$ by appending two childre $\mathsf{n}_1$ and $\mathsf{n}_2$ to 
+$\mathsf{n}$. 
+\item Let $\mathsf{l}_1$ and $\mathsf{l}_2$ denote the lengths of paths to $\mathsf{n}_1$ and $\mathsf{n}_2$. Then:
+\begin{align*}
+2^{-\mathsf{l}}=2^{-\mathsf{l}_1}+2^{-\mathsf{l}_2}. 
+\end{align*}
+\eit 
+\item [\iarrow] Induction on height of tree and number of nodes for given height: 
+\begin{align*}
+\sum_{k=1}^M2^{-\mathsf{l}_k}=1
+\end{align*} 
+for the lengths $\mathsf{l}_1,\dots,\mathsf{l}_M$ of paths to the nodes $n_1,\dots,n_M$ of any proper binary tree. 
+\item [\iarrow] If $\mathcal{T}$ is any binary tree, prune to a proper binary tree as above. Path lengths decrease. Thus:  
+\begin{align*}
+\sum_{k=1}^M2^{-\ell_k}\leq 1
+\end{align*}
+hods for any binary tree. 
+\eit 
+\end{frame}
+
+\section{Kraft inequality and construction of prefix codes}
+\begin{frame}{Kraft inequality for prefix codes} 
+\begin{theorem}[Kraft inequality for prefix codes necessary and sufficient]
+\bit 
+\item \textbf{Kraft inequality:}
+For a prefix code $\gamma$, one has 
+\begin{align}\label{KraftPrefix}
+\sum_{k=1}^N2^{-\ell_k}\leq 1
+\end{align}
+with equality if and only if $\gamma$ has no structural redundancy. 
+\item \textbf{Conversely:} Given positive integers $\ell_1,\dots,\ell_N$ that satisfy \eqref{KraftPrefix}, there exists a prefix code such that the length of the $k$-th codeword is $\ell_k$. 
+\eit 
+\end{theorem} 
+\loud{Proof of Kraft inequality:}
+\bit
+\item Follows immediately from above statments about path lengths of (proper) binary trees.
+\eit
+\loud{Proof of converse statemnt:}
+\bit
+\item Explicit construction of prefix code starting from perfect binary tree.
+\eit
+\end{frame}
+
+
+
+
+%\begin{frame}{Proof of Kraft-MacMillan inequality}
+%\loud{Preparation:}
+%\begin{itemize}
+%\item For $\ell, m\in\mathbb{N}$, let $K_{\ell}(m)$ denote the number of all messages of $m$ codewords that have combined length $\ell$. 
+%\item There are only $2^\ell$ messages of length $\ell$, thus one has
+%\begin{align}\label{upperK}
+%K_\ell(m)\leq 2^\ell. 
+%\end{align}
+%\item Let $\ell_{\max}$ denote the maximal codeword length. 
+%\item Trick: Take powers of $m$ of left hand side of \eqref{KraftMcMillan} and let $m\to\infty$. 
+%\end{itemize}
+%\end{frame}
+
+
+\begin{frame}{Proof of converse statement}
+\begin{itemize}
+\item Assume $\ell_1\leq \ell_2\leq \dots\leq \ell_N=\ell_{max}$. 
+\item Consider perfect binary tree $\mathcal{T}$ of height $\ell_{max}$: Unique binary tree of height $\ell_{max}$ with $2^{\ell_{max}}$ many leave nodes. 
+\item Let $S_1$ denote the first $2^{\ell_{max}-\ell_1}$ leave nodes of $\mathcal{T}$, and inductively, for $j\leq N$ let $S_{j}$ denote the next $2^{\ell_{max}-\ell_j}$ leave nodes of $\mathcal{T}$.
+\item By \eqref{KraftPrefix}, 
+\begin{align*}
+\sum_{k=1}^j2^{\ell_{max}-\ell_k}\leq 2^{\ell_{\max}}\cdot \sum_{k=1}^{N}2^{-\ell_k}\leq 2^{\ell_{max}}
+\end{align*}
+and thus each set $S_j$ is well defined.
+\item Traverse each $S_k$ backward up to common root node $n_k$. If $S_k$ consist of one node, no backward traversion, $S_k=n_k$. 
+\item Each root node $n_k$ is located at hight $\ell_k$ within $\mathcal{T}$. 
+\item [\iarrow] The $n_k$ define code-words of length $\ell_k$.  
+\item  Illustration of proof below.  
+
+\end{itemize}
+\qed
+\end{frame}
+
+
+\begin{frame}{Illustration of prefix code construction if Kraft inequality holds} 
+\bit
+\item Assume $\ell_1=1$, $\ell_2=2$, $\ell_3=3$, $\ell_4=3$. Thus:
+\begin{align*}
+2^{-\ell_1}+2^{-\ell_2}+2^{-\ell_3}+2^{-\ell_4}=1. 
+\end{align*} 
+\item Let $\mathcal{T}$ be perfect binary tree of height 3:
+\begin{center}
+\begin{forest}
+[
+ , circle, draw%, color=blue, fill
+   [
+   , circle, draw%, color=blue, fill
+     [
+       , circle, draw%, color=blue, fill
+         [
+           , circle, draw, color=blue, fill
+         ]
+         [
+           , circle, draw, color=blue, fill
+         ]
+     ]
+     [
+       , circle, draw%, color=blue, fill
+         [
+           , circle, draw, color=blue, fill
+         ]
+         [
+           , circle, draw, color=blue, fill
+         ]
+     ]
+   ]
+   [
+   , circle, draw
+     [
+       , circle, draw%, color=red, fill
+        [
+         , circle, draw, color=red, fill
+        ]
+        [
+         , circle, draw, color=red, fill
+        ]
+     ]
+     [
+      , circle, draw
+        [
+         , circle, draw, color =green, fill
+        ]
+        [
+         , circle, draw, color = violet, fill
+        ]
+     ]
+   ]
+]
+\end{forest}
+.
+\end{center}
+\smallskip
+\item Blue, red, green, and violet leave nodes comprise the sets $\mathcal{S}_1,\:\mathcal{S}_2, \:\mathcal{S}_3, \:\mathcal{S}_4$. 
+\eit
+\end{frame}
+
+
+
+
+\begin{frame}{Illustration of prefix code construction if Kraft inequality holds} 
+\bit
+\item Move upwards from the node sets $\mathcal{S}_1,\:\mathcal{S}_2, \:\mathcal{S}_3, \:\mathcal{S}_4$ until a single root node is reached.
+\item Here $\mathcal{S}_3$ and $\mathcal{S}_4$ are single nodes, thus no upward moving. 
+\item Obtain 4 subtrees $\mathcal{T}_1,\:\mathcal{T}_2, \:\mathcal{T}_3, \:\mathcal{T}_4$. 
+\begin{center}
+\begin{forest}
+[
+ , circle, draw%, color=blue, fill
+   [
+   , circle, draw, color=blue, fill
+     [
+       , circle, draw, color=blue, fill
+         [
+           , circle, draw, color=blue, fill
+         ]
+         [
+           , circle, draw, color=blue, fill
+         ]
+     ]
+     [
+       , circle, draw, color=blue, fill
+         [
+           , circle, draw, color=blue, fill
+         ]
+         [
+           , circle, draw, color=blue, fill
+         ]
+     ]
+   ]
+   [
+   , circle, draw
+     [
+       , circle, draw, color=red, fill
+        [
+         , circle, draw, color=red, fill
+        ]
+        [
+         , circle, draw, color=red, fill
+        ]
+     ]
+     [
+      , circle, draw
+        [
+         , circle, draw, color =green, fill
+        ]
+        [
+         , circle, draw, color = violet, fill
+        ]
+     ]
+   ]
+]
+\end{forest}
+.
+\end{center}
+\smallskip
+\item Nodes of $\mathcal{T}_1,\:\mathcal{T}_2, \:\mathcal{T}_3, \:\mathcal{T}_4$ are drawn in blue, red, violet, green. 
+\eit
+\end{frame}
+
+
+
+
+
+
+
+
+
+\begin{frame}{Illustration of prefix code construction if Kraft inequality holds} 
+\bit
+\item From $\mathcal{T}$, cut out all nodes of $\mathcal{T}_1,\:\mathcal{T}_2, \:\mathcal{T}_3, \:\mathcal{T}_4$ that are not parent nodes.
+\item Resulting binary tree represents the prefix code with desired properties:
+\begin{center}
+\begin{forest}
+for tree={%
+    l sep=1.0cm,
+    s sep=1.5cm
+    }
+[
+ , circle, draw%, color=blue, fill
+   [
+   , circle, draw, color=blue, fill
+   ]
+   [
+   , circle, draw
+     [
+       , circle, draw, color=red, fill
+     ]
+     [
+      , circle, draw
+        [
+         , circle, draw, color =green, fill
+        ]
+        [
+         , circle, draw, color = violet, fill
+        ]
+     ]
+   ]
+]
+\end{forest}
+.
+\end{center}
+\item Prefix code: {\color{blue}a}=0, {\color{red} b}=10, {\color{green}c}=110, {\color{violet}d}=111. 
+\eit
+\end{frame}
+
+
+
+%\begin{frame}
+%
+%\begin{forest}
+%[
+% , circle, draw%, color=blue, fill
+%   [
+%   b
+%     [
+%       d
+%         [
+%           h
+%         ]
+%         [
+%           i
+%         ]
+%     ]
+%     [
+%       e
+%         [
+%           j
+%         ]
+%         [
+%           k
+%         ]
+%     ]
+%   ]
+%   [
+%   , circle, draw
+%     [
+%       , circle, draw, color=red, fill
+%        [
+%         l
+%        ]
+%        [
+%          m
+%        ]
+%     ]
+%     [
+%      g
+%        [
+%         n
+%        ]
+%        [
+%         o
+%        ]
+%     ]
+%   ]
+%]
+%\end{forest}
+%\end{frame}
+
+
+
+
+
+\section{Kraft-McMillan inequality}
+\begin{frame}{Kraft-McMillan inequality}
+
+Kraft inequality extends to arbitrary uniquely decodable codes:
+\begin{theorem}[Kraft-McMillan inequality]
+For any uniquely decodable code $\gamma$  one has
+\begin{align}\label{KraftMcMillan}
+\sum_{k=1}^N 2^{-\ell_k}\leq 1. 
+\end{align}
+\end{theorem}
+\loud{Preparation for proof:}
+\begin{itemize}
+\item For $\ell, m\in\mathbb{N}$, let $K_{\ell}(m)$ denote the number of all bit sequences of length $\ell$ that arise from $m$ codewords under $\gamma^{<\infty}$. 
+\item There are only $2^\ell$  bit sequences of length $\ell$, thus one has
+\begin{align}\label{upperK}
+K_\ell(m)\leq 2^\ell. 
+\end{align}
+\item Let $\ell_{\max}$ denote the maximal codeword length. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Proof of Kraft-MacMillan inequality}
+\loud{Idea of proof:} Take powers of $m$ of left hand side of \eqref{KraftMcMillan} and let $m\to\infty$.
+\begin{itemize}
+\item %Trick: Take powers of $m$ of left hand side of \eqref{KraftMcMillan} and let $m\to\infty$.
+ For every $m$ one has
+\begin{align}\label{KraftPowerm}
+\left(\sum_{k=1}^N 2^{-\ell_k}\right)^m & = \sum_{k_1=1}^N\cdots\sum_{k_m=1}^N2^{-\ell_{k_1}-\dots-\ell_{k_m}} \nonumber\\
+&=\sum_{\ell=1}^{m\cdot \ell_{\max}}K_{\ell}(m)2^{-\ell}\nonumber\\
+&\leq m\cdot \ell_{\max},
+\end{align}
+where the last inequality follows from \eqref{upperK}.
+\item Since 
+\begin{align*}
+\lim_{m\to\infty}(m\cdot\ell_{\max})^{\frac{1}{m}}=1,
+\end{align*} 
+taking $m$-th rooth of left and right hand side of \eqref{KraftPowerm} proves \eqref{KraftMcMillan}. 
+\end{itemize}
+\qed 
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{Consequences of Kraft-MacMillan and open question} 
+
+%\loud{Possibility to check non-unique decodability:}  
+%\bit
+%\item Given code can not be uniquely decodable if \eqref{KraftMcMillan} does not hold for its codeword-lengths. 
+%\eit
+
+\loud{Suffices to consider prefix codes:} 
+\bit 
+\item For each uniquely decodable code, there exists a prefix code that has exactly the same codeword lengths.
+\item Tree representing the corresponding prefix code can be constructed explicitly, see proof of converse statement of Kraft inequality. 
+\eit
+
+\ALERT{Open question:
+Can one give lower and upper bounds for the optimal average codeword length achievable by any uniquely decodable code?}\\
+\smallskip
+\smallskip
+\loud{Will be shown:}
+\bit
+\item Lower bound is given by the \loud{entropy} of the source-symbol distribution.
+\item First upper bound: \loud{Shannon code}. Prefix code with average codeword length not greater than entropy plus 1.
+\item Shannon code not always optimal, can have structural redundancies. Next lecture: \loud{Huffman codes}. 
+\eit 
+
+
+\end{frame}
+
+\section{Kullback-Leibler divergence}
+\begin{frame}{Kullback-Leibler divergence}
+\begin{definition}[Kullback-Leibler divergence]
+For two probability masses $p$ and $q$ on the symbol alphabet $\mathcal{A}$,  the number
+\begin{align*}
+D(p||q):=\sum_{k=1}^Np_k\log_2\left(\frac{p_k}{q_k}\right)
+\end{align*}
+is called the Kullback-Leibler divergence from $q$ to $p$. 
+\end{definition}
+Important property of Kullback-Leibler (KL) divergence: 
+\begin{proposition}[Divergence Inequality]
+One has $D(p||q)\geq 0$ with equality if and only if $p=q$.
+\end{proposition}
+\bit
+\item Divergence inequality central for bounds of optimal average codeword length.
+\item Sometimes also called Gibbs inequality. 
+\eit
+\end{frame}
+
+
+\begin{frame}{Proof of Divergence Inequality. Preparation.}
+\begin{lemma}[Elementary bound for natural logarithm]
+One has $\ln(x)\leq x-1$ for all $x\in(0,\infty)$ and equality if and only if $x=1$.
+\end{lemma} 
+\loud{Proof of lemma: }
+\begin{itemize}
+\item Bernoulli inequality: 
+\begin{align*}
+(1+x)^{n}\geq 1+nx,\quad \forall x\in(-1,\infty), \quad \forall n\in\mathbb{N}. 
+\end{align*}
+and equality if and only if $n=1$ or $x=0$. Proof by induction on $n$.
+\item Thus 
+\begin{align}\label{IneqExp}
+\exp(y)=lim_{n\to\infty}\left(1+\frac{y}{n}\right)^{n}\geq 1+y,\quad \forall y\in\mathbb{R} 
+\end{align}
+and equality if and only $y=0$. 
+\item Setting  $y=\ln(x)$ in \eqref{IneqExp}, Lemma follows. $\qed$
+\end{itemize} 
+\end{frame}
+
+
+
+\begin{frame}{Proof of Divergence Inequality}
+One has: 
+\begin{align*}
+D(p||q)=&\sum_kp_k\log_2\left(\frac{p_k}{q_k}\right)\\
+=&\frac{1}{\ln(2)}\sum_kp_k\ln\left(\frac{p_k}{q_k}\right)\\
+=&-\frac{1}{\ln(2)}\sum_kp_k\ln\left(\frac{q_k}{p_k}\right)\\
+\geq & \frac{1}{\ln(2)}\sum_kp_k\left(1-\frac{q_k}{p_k}\right) \tag {+}\label{Tag1}\\
+=&\frac{1}{\ln(2)}\left(\sum_kp_k-\sum_kq_k\right)=0.
+\end{align*}
+Here, \eqref{Tag1} follows from previous lemma, equality if and only if $q_k=p_k$ for all $k$. $\qed$
+\end{frame}
+
+\section{Entropy and bounds for optimal average codeword length}
+\begin{frame}{Entropy} 
+\begin{definition}[Entropy of discrete pmf]
+The entropy $H(p)$ of the discrete probability mass function $p$ is defined as
+\begin{align*}
+H(p):=\sum_{k=1}^N-p_k\cdot \log_2(p_k).
+\end{align*}
+\end{definition}
+\bit 
+\item Entropy is a measure of uncertainty for the distribution. 
+\item If $N$ is the number of symbols in $\mathcal{A}$, then 
+\[ 
+H(p)\leq \log_2(N).
+\] 
+Equality if and only if $p$ is the uniform distribution, 
+i.e. $p_k=1/N$ for all k.\\ $\rightarrow$ Maximal uncertainty for the uniform distribution. 
+\item Proof: Exercise! Use Divergence Inequality.
+\eit
+\smallskip
+\ALERT{
+Entropy is central quantity to bound average code-length from below and above.
+}  
+\end{frame}
+
+
+
+\begin{frame}{Entropy as lower bound for average codeword length}
+\begin{theorem}[Entropy is lower bound for average codeword length]\label{TheoremEntr}
+One has 
+\begin{equation*}
+\boxed{H(p) \leq \overline{\ell}(\gamma)} 
+\end{equation*}
+for any uniquely decodable code $\gamma$.
+\end{theorem}
+\loud{Main steps of proof}
+\bit
+\item Use \loud{Kraft-MacMillan inequality} and \loud{Divergence Inequality}. 
+\item Let 
+\begin{align*}
+C:=\sum_{k=1}^N2^{-\ell_k}.
+\end{align*}
+\item Define a pmf $q$ by 
+\begin{align}\label{DefqEntr}
+q_k:=\frac{2^{-\ell_k}}{C}.
+\end{align}
+\eit
+\end{frame}
+
+
+\begin{frame}{Proof entropy lower bound for average codeword length}
+One has
+\begin{align*}
+\overline{\ell}-H(p)=&\sum_kp_k\ell_k+\sum_kp_k\log_2(p_k)\\
+=&-\sum_kp_k\log_2\left(2^{-\ell_k}\right)+\sum_kp_k\log_2(p_k)\\
+%=&\sum_kp_k\log_2\left(\frac{p_k}{2^{-\ell_k}}\right)\nonumber\\
+=&\sum_kp_k\log_2\left(\frac{p_k\cdot C}{2^{-\ell_k}\cdot C}\right)\\
+=&\sum_kp_k\left(\log_2\left(\frac{p_k}{q_k}\right)-\log_2(C)\right)\\
+=&D(p||q)-\sum_kp_k\log_2(C)\\
+=&D(p||q)-\log_2(C).
+\end{align*}
+\loud{Divergence Inequality:} $D(p||q)\geq 0$. \\
+\loud{Kraft-MacMillan Inequality:} $C\leq 1$, i.e. $-\log_2(C)\geq 0$ .  $\qed$
+\end{frame}
+
+\begin{frame}{Redundancy of a uniquely decodable code}
+\loud{Redundancy: Measure of efficiency of a uniquely decodable code $\gamma$}.
+\bit
+\item Absolute redundancy: 
+\begin{align*}
+\rho(\gamma):=\overline{\ell}(\gamma)-H(p)\geq 0.
+\end{align*}
+\item Relative redundancy:
+\begin{align*}
+r(\gamma):=\frac{\overline{\ell}(\gamma)}{H(p)}\geq 1.
+\end{align*}
+\eit
+\smallskip
+\loud{Absolute redundancy zero if and only if each probability mass is negative integer power of two:}
+\bit
+\item If $p_k=2^{-i_k}$, $i_k\in\mathbb{N}$, by converse to Kraft-inequality, there exists a prefix-code $\gamma$ with lengths $\ell_k=i_k$. Obviously, 
+$\overline{\ell}(\gamma)=H(p)$. 
+\item Conversely, if $\rho(\gamma)=0$, then for pmf $q$ as in \eqref{DefqEntr}, proof of preceding theorem implies $D(p||q)=0$ and $C=1$. Thus 
+$p_k=2^{-\ell_k}$. $\qed$
+\eit
+\end{frame}
+
+
+\begin{frame}{Shannon Code}
+\loud{Redundancy-free code not possible always possible, but:}
+\bit 
+\item For each $k\in\{1,\dots,N\}$ let 
+\begin{align}\label{ShannonCode}
+\ell_k:=\lceil-\log_2({p_k})\rceil.
+\end{align}
+\item One has  
+\begin{align*}
+\sum_k2^{-\ell_k}=&\sum_k2^{-\lceil-\log_2({p_k})\rceil}
+\leq\sum_k2^{\log_2(p_k)}=1.
+\end{align*}
+\item Thus, by Kraft-inequality, there exists a prefix-code with codeword-lengths $\ell_k$ given by \eqref{ShannonCode}. 
+\item Such a code is called \loud{Shannon Code}.
+\item Used to prove that entropy plus one is upper bound for optimal average codeword length. 
+\eit
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{Entropy plus one as upper bound for optimal average codeword length}
+\begin{proposition}[Average codeword length not greater than entropy plus one possible]
+There exists a uniquely decodable code whose average codeword length $\overline{\ell}(\gamma)$ satisfies
+\begin{equation*}
+\overline{\ell}(\gamma)\leq H(p)+1.
+\end{equation*}
+\end{proposition}
+%Proof of proposition: 
+%\bit
+%\item 
+\loud{Proof: Upper bound for average codeword length $\overline{\ell}$ of Shannon Code:}
+%\item One has
+\begin{align*}
+\overline{\ell}=&\sum_kp_k\ell_k \\ =&\sum_kp_k\lceil-\log_2({p_k})\rceil\\ \leq &\sum_kp_k(-\log_2({p_k})+1) 
+\\ =&H(p)+1.\qed 
+\end{align*}
+ %\eit
+\end{frame} 
+
+
+\end{document}

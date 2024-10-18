@@ -1,0 +1,124 @@
+
+
+\begin{frame}{Example: Variable-Length Coding for Scalars}
+  \vspace{-1.5ex}
+  \bit\TabPositions{9.2em,22.5em}
+\item Symbol alphabet:
+  $\set{A}=\{{\color{red}{\text{A}}},
+  {\color{officegreen}{\text{B}}},
+  {\color{saddlebrown}{\text{M}}},{\color{blue}{\text{N}}}\}$
+\item[]~\\[-1ex]
+  {\relsize{-1}
+  \begin{minipage}{0.32\linewidth}
+    \begin{center}
+      {\bf code~A}\\[.5ex]
+      \begin{tabular}{|c|l|}
+        \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{00}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{01}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{10}\\
+    \color{blue}{N}        & ~~~\color{blue}{11}\\
+        \hline
+    \end{tabular}
+    \end{center}
+  \end{minipage}
+  \begin{minipage}{0.32\linewidth}
+    {\begin{center}
+      {\bf code~B}\\[.5ex]
+      \begin{tabular}{|c|l|}
+        \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{010}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{100}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{10}\\
+    \color{blue}{N}        & ~~~\color{blue}{0}\\
+        \hline
+    \end{tabular}
+    \end{center}}
+    \end{minipage}
+  \begin{minipage}{0.32\linewidth}
+    {\begin{center}
+      {\bf code~C}\\[.5ex]
+      \begin{tabular}{|c|l|}
+        \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{0}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{110}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{111}\\
+    \color{blue}{N}        & ~~~\color{blue}{10}\\
+        \hline
+    \end{tabular}
+    \end{center}}
+  \end{minipage}\\[4ex]
+  }
+  \eit
+  \vspace{-2ex}{\bf Decoding:}
+  \bit\TabPositions{4.5em,18em}
+\item<2-> Code A:\tab$\ve{b}=\text{``%
+        \temporal< 3 >{01}{{\color{officegreen}01}}{{\color{gray!50}01}}%
+        \temporal< 4 >{00}{{\color{red}00}}{{\color{gray!50}00}}%
+        \temporal< 5 >{11}{{\color{blue}11}}{{\color{gray!50}11}}%
+        \temporal< 6 >{00}{{\color{red}00}}{{\color{gray!50}00}}%
+        \temporal< 7 >{11}{{\color{blue}11}}{{\color{gray!50}11}}%
+        \temporal< 8 >{00}{{\color{red}00}}{{\color{gray!50}00}}%
+        \temporal< 9 >{10}{{\color{saddlebrown}10}}{{\color{gray!50}10}}%
+        \temporal<10 >{00}{{\color{red}00}}{{\color{gray!50}00}}%
+        \temporal<11 >{11}{{\color{blue}11}}{{\color{gray!50}11}}%
+  ``}$
+  \tab\iarrow\quad$\ve{s}=\text{``%
+        \temporal< 3>{}{{\color{officegreen}B}}{B}%
+        \temporal< 4>{}{{\color{red}A}}{A}%
+        \temporal< 5>{}{{\color{blue}N}}{N}%
+        \temporal< 6>{}{{\color{red}A}}{A}%
+        \temporal< 7>{}{{\color{blue}N}}{N}%
+        \temporal< 8>{}{{\color{red}A}}{A}%
+        \temporal< 9>{}{{\color{saddlebrown}M}}{M}%
+        \temporal<10>{}{{\color{red}A}}{A}%
+        \temporal<11>{}{{\color{blue}N}}{N}%
+    \uncover<12->{``}}$
+
+\item<13-> Code B:\tab$\ve{b}=\text{``%
+  \temporal<14->{100}{{\color{magenta}100}}{100}%
+  01000100010100100%
+  ``}$
+  \tab\iarrow\quad$\ve{s}=\text{``%
+        \temporal<14->{}{{\color{officegreen}B} or {\color{saddlebrown}M}{\color{blue}N}}{?}%
+        \uncover<14->{~...``}}$
+
+\item<15-> Code C:\tab$\ve{b}=\text{``%
+        \temporal<16 >{110}{{\color{officegreen}110}}{{\color{gray!50}110}}%
+        \temporal<17 >{0}{{\color{red}0}}{{\color{gray!50}0}}%
+        \temporal<18 >{10}{{\color{blue}10}}{{\color{gray!50}10}}%
+        \temporal<19 >{0}{{\color{red}0}}{{\color{gray!50}0}}%
+        \temporal<20 >{10}{{\color{blue}10}}{{\color{gray!50}10}}%
+        \temporal<21 >{0}{{\color{red}0}}{{\color{gray!50}0}}%
+        \temporal<22 >{111}{{\color{saddlebrown}111}}{{\color{gray!50}111}}%
+        \temporal<23 >{0}{{\color{red}0}}{{\color{gray!50}0}}%
+        \temporal<24 >{10}{{\color{blue}10}}{{\color{gray!50}10}}%
+  ``}$
+  \tab\iarrow\quad$\ve{s}=\text{``%
+        \temporal<16>{}{{\color{officegreen}B}}{B}%
+        \temporal<17>{}{{\color{red}A}}{A}%
+        \temporal<18>{}{{\color{blue}N}}{N}%
+        \temporal<19>{}{{\color{red}A}}{A}%
+        \temporal<20>{}{{\color{blue}N}}{N}%
+        \temporal<21>{}{{\color{red}A}}{A}%
+        \temporal<22>{}{{\color{saddlebrown}M}}{M}%
+        \temporal<23>{}{{\color{red}A}}{A}%
+        \temporal<24>{}{{\color{blue}N}}{N}%
+    \uncover<25->{``}}$
+%  \item<26->[\ALERT{\iarrow}]\bigskip\ALERT{Necessary condition: Unique decodability:}\\[1ex]
+%    \qquad\ALERT{Each bitstream uniquely represents a single message!}
+  \eit%\vspace{-10ex}
+  
+    \vspace{-2ex}{\bf Unique decodability:}
+    \bit\TabPositions{18em}
+    \item Code A and Code C:\tab Uniquely decodable.
+     \item Code B: \tab Not uniquely decodable. 
+     \eit
+  \end{frame}
+

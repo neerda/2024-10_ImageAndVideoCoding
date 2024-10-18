@@ -1,0 +1,72 @@
+\begin{frame}{Example: Variable-Length Coding for Scalars}
+  \vspace{-1.5ex}
+  \bit\TabPositions{9.2em,22.5em}
+\item Symbol alphabet:
+  $\set{A}=\{{\color{red}{\text{A}}},
+  {\color{officegreen}{\text{B}}},
+  {\color{saddlebrown}{\text{M}}},{\color{blue}{\text{N}}}\}$
+\item<2->[]~\\[-1ex]
+  {\relsize{-1}
+  \begin{minipage}{0.32\linewidth}
+    \begin{center}
+      {\bf code~A}\\[.5ex]
+      \begin{tabular}{|c|l|}
+        \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{00}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{01}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{10}\\
+    \color{blue}{N}        & ~~~\color{blue}{11}\\
+        \hline
+    \end{tabular}
+    \end{center}
+  \end{minipage}
+  \begin{minipage}{0.32\linewidth}
+    \uncover<5->{\begin{center}
+      {\bf code~B}\\[.5ex]
+      \begin{tabular}{|c|l|}
+        \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{010}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{100}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{10}\\
+    \color{blue}{N}        & ~~~\color{blue}{0}\\
+        \hline
+    \end{tabular}
+    \end{center}}
+    \end{minipage}
+  \begin{minipage}{0.32\linewidth}
+    \uncover<7->{\begin{center}
+      {\bf code~C}\\[.5ex]
+      \begin{tabular}{|c|l|}
+        \hline
+    \color{black}letter & \color{black}codeword\\
+    \hline\rule{0ex}{2.5ex}%
+    \color{red}{A}         & ~~~\color{red}{0}\\
+    \color{officegreen}{B} & ~~~\color{officegreen}{110}\\
+    \color{saddlebrown}{M} & ~~~\color{saddlebrown}{111}\\
+    \color{blue}{N}        & ~~~\color{blue}{10}\\
+        \hline
+    \end{tabular}
+    \end{center}}
+  \end{minipage}\\[4ex]
+  }
+\item<3-> Example message: \tab$\ve{s}=\text{``{\color{officegreen}{B}\color{red}{A}\color{blue}{N}\color{red}{A}\color{blue}{N}\color{red}{A}\color{saddlebrown}{M}\color{red}{A}\color{blue}{N}}''}$
+\item<4->[\iarrow] Bitstream (code A): \tab$\ve{b}=\text{``{\color{officegreen}{01}\color{red}{00}\color{blue}{11}\color{red}{00}\color{blue}{11}\color{red}{00}\color{saddlebrown}{10}\color{red}{00}\color{blue}{11}}''}$
+  \tab(18 bits)
+  \item<6->[\iarrow] Bitstream (code B): \tab$\ve{b}=\text{``{\color{officegreen}{100}\color{red}{010}\color{blue}{0}\color{red}{010}\color{blue}{0}\color{red}{010}\color{saddlebrown}{10}\color{red}{010}\color{blue}{0}}''}$
+  \tab(20 bits)
+  \item<8->[\iarrow] Bitstream (code C): \tab$\ve{b}=\text{``{\color{officegreen}{110}\color{red}{0}\color{blue}{10}\color{red}{0}\color{blue}{10}\color{red}{0}\color{saddlebrown}{111}\color{red}{0}\color{blue}{10}}''}$
+    \tab(16 bits)
+%  \item<9->[\ALERT{\iarrow}]\medskip\smallskip\ALERT{Goal: Minimize average codeword length}
+%    \vspace{-1ex}$$
+%    \usebeamercolor{alerted text}\color{fg}\bar{\ell}=\EV{\ell(S)}=\sum_kp_k\cdot\ell_k
+%    $$
+%\item Code A and code C: \tab uniquely decodable.
+%\item Code B: \tab not uniquely decodable. 
+  \eit\vspace{-10ex}
+  \end{frame}
+
+
