@@ -1,0 +1,755 @@
+
+
+\newcommand{\HuffmanExample}{%
+  \begin{tikzpicture}
+    [
+    snode/.style={text=red,anchor=west,font=\relsize{1}},
+    pnode/.style={rounded rectangle,draw=black,inner sep=0pt,text=officegreen,font=\bf,minimum height=4ex,minimum width=6ex,scale=0.9},
+    lbla/.style={inner sep=2pt,anchor=south,yshift=2pt,blue,pos=0.5},
+    lblb/.style={lbla,anchor=north,yshift=-4pt},
+    hl/.style={draw=blue,line width=2pt},
+    ]  
+
+    \pgfmathsetmacro{\dn}{0.8}
+    \pgfmathsetmacro{\dl}{2.0}
+    \pgfmathsetmacro{\leftx}{-4*\dl}
+    \pgfmathsetmacro{\topy}{8.5*\dn}
+    \pgfmathsetmacro{\boty}{-0.5*\dn}
+    
+    \begin{scope}[visible on=<1|handout:0>]
+      \node[anchor=north west,align=left] (step0) at ({\leftx},{\topy}) 
+      {\underline{given:}\\[.5ex]alphabet $\set{A}$ with pmf $\{p_k\}$};
+    \end{scope}
+
+    \begin{scope}[visible on=<1->]
+      \node[anchor=south west] (table) at ({\leftx},{\boty}) {\hfitbox{3.5cm}{%
+          \begin{tabular}{>{\color{red}}c<{}>{\color{officegreen}}c<{}>{\color{blue}}l<{}}
+            \color{black}$a_k$ & \color{black}$p_k$ & \color{black}codewords\\
+            \hline\rule{0ex}{2.5ex}%
+            a     & 0.16 & \action<27->{~~~~111}\\
+            b     & 0.04 & \action<27->{~~~~0001}\\
+            c     & 0.04 & \action<27->{~~~~0000}\\
+            d     & 0.16 & \action<27->{~~~~110}\\
+            e     & 0.23 & \action<27->{~~~~01}\\
+            f     & 0.07 & \action<27->{~~~~1001}\\
+            g     & 0.06 & \action<26->{~~~~1000}\\
+            h     & 0.09 & \action<27->{~~~~001}\\
+            i     & 0.15 & \action<27->{~~~~101}
+          \end{tabular}%
+        }};
+    \end{scope}
+
+    \begin{scope}[visible on=<2|handout:0>]
+      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+      {\underline{first step:}\\[.5ex]assign symbols and probabilities to terminal nodes};
+    \end{scope}
+
+    \begin{scope}[visible on=<3-4|handout:0>]
+      \node[pnode]                            (a) at ({0*\dl},{8*\dn}) {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode,alt={<4->{fill=gray!25}{}}] (b) at ({0*\dl},{7*\dn}) {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,alt={<4->{fill=gray!25}{}}] (c) at ({0*\dl},{6*\dn}) {0.04};   \draw (c.east) node[snode] {c};
+      \node[pnode]                            (d) at ({0*\dl},{5*\dn}) {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                            (e) at ({0*\dl},{4*\dn}) {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode]                            (f) at ({0*\dl},{3*\dn}) {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode]                            (g) at ({0*\dl},{2*\dn}) {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                            (h) at ({0*\dl},{1*\dn}) {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode]                            (i) at ({0*\dl},{0*\dn}) {0.15};   \draw (i.east) node[snode] {i};
+      \begin{scope}[visible on=<4->]
+        \node[pnode] (bc) at ({-1*\dl},{6.5*\dn}) {0.08};
+        \draw   (bc) -- (b);
+        \draw   (bc) -- (c);
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[visible on=<5-6|handout:0>]
+      \node[pnode]                             (a)    at ({0*\dl},{8*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode]                             (bc)   at ({0*\dl},{6.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({1*\dl},{7*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({1*\dl},{6*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \node[pnode]                             (d)    at ({0*\dl},{5*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                             (e)    at ({0*\dl},{4*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode,alt={<6->{fill=gray!25}{}}]  (f)    at ({0*\dl},{3*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,alt={<6->{fill=gray!25}{}}]  (g)    at ({0*\dl},{2*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                             (h)    at ({0*\dl},{1*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode]                             (i)    at ({0*\dl},{0*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \begin{scope}[visible on=<6->]
+        \node[pnode] (fg) at ({-1*\dl},{2.5*\dn}) {0.13};
+        \draw   (fg) -- (f);
+        \draw   (fg) -- (g);
+      \end{scope}
+    \end{scope}
+    
+    \begin{scope}[visible on=<7-8|handout:0>]
+      \node[pnode]                             (a)    at ({0*\dl},{8*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode]                             (bc)   at ({0*\dl},{6.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({1*\dl},{7*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({1*\dl},{6*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \node[pnode]                             (d)    at ({0*\dl},{5*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                             (e)    at ({0*\dl},{4*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode]                             (fg)   at ({0*\dl},{2.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({1*\dl},{3*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({1*\dl},{2*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                             (h)    at ({0*\dl},{1*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode]                             (i)    at ({0*\dl},{0*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+    \end{scope}
+    
+    \begin{scope}[visible on=<8|handout:0>]
+      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+      {\underline{next step:}\\[.5ex]re-order for better readability};
+    \end{scope}
+
+    \begin{scope}[visible on=<9-10|handout:0>]
+      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode]                             (a)    at ({0*\dl},{7*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode]                             (d)    at ({0*\dl},{6*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                             (i)    at ({0*\dl},{5*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode]                             (fg)   at ({0*\dl},{3.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({1*\dl},{4*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({1*\dl},{3*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode,alt={<10->{fill=gray!25}{}}] (h)    at ({0*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode,alt={<10->{fill=gray!25}{}}] (bc)   at ({0*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({1*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({1*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \begin{scope}[visible on=<10->]
+        \node[pnode] (hbc) at ({-1*\dl},{1.25*\dn}) {0.17};
+        \draw   (hbc) -- (h);
+        \draw   (hbc) -- (bc);
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[visible on=<11-12|handout:0>]
+      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode]                             (a)    at ({0*\dl},{7*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode]                             (d)    at ({0*\dl},{6*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode,alt={<12->{fill=gray!25}{}}] (i)    at ({0*\dl},{5*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode,alt={<12->{fill=gray!25}{}}] (fg)   at ({0*\dl},{3.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({1*\dl},{4*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({1*\dl},{3*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                             (hbc)  at ({0*\dl},{1.25*\dn})  {0.17};
+      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \draw   (hbc)   -- (h);
+      \draw   (hbc)   -- (bc);
+      \begin{scope}[visible on=<12->]
+        \node[pnode] (ifg) at ({-1*\dl},{4.25*\dn})  {0.28};
+        \draw   (ifg) -- (i);
+        \draw   (ifg) -- (fg);
+      \end{scope}
+    \end{scope}
+    
+    \begin{scope}[visible on=<13-14|handout:0>]
+      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode,alt={<14->{fill=gray!25}{}}] (a)    at ({0*\dl},{7*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode,alt={<14->{fill=gray!25}{}}] (d)    at ({0*\dl},{6*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                             (ifg)  at ({0*\dl},{4.25*\dn})  {0.28};
+      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{5*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{3.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{4*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{3*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                             (hbc)  at ({0*\dl},{1.25*\dn})  {0.17};
+      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \draw   (hbc)   -- (h);
+      \draw   (hbc)   -- (bc);
+      \draw   (ifg)   -- (i);
+      \draw   (ifg)   -- (fg);
+      \begin{scope}[visible on=<14->]
+        \node[pnode] (ad) at ({-1*\dl},{6.5*\dn})  {0.32};
+        \draw   (ad) -- (a);
+        \draw   (ad) -- (d);
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[visible on=<15-16|handout:0>]
+      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode]                             (ad)   at ({0*\dl},{6.5*\dn})   {0.32};
+      \node[pnode,fill=gray!25]                (a)    at ({1*\dl},{7*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode,fill=gray!25]                (d)    at ({1*\dl},{6*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                             (ifg)  at ({0*\dl},{4.25*\dn})  {0.28};
+      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{5*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{3.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{4*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{3*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                             (hbc)  at ({0*\dl},{1.25*\dn})  {0.17};
+      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \draw   (hbc)   -- (h);
+      \draw   (hbc)   -- (bc);
+      \draw   (ifg)   -- (i);
+      \draw   (ifg)   -- (fg);
+      \draw   (ad) -- (a);
+      \draw   (ad) -- (d);
+    \end{scope}
+
+    \begin{scope}[visible on=<16|handout:0>]
+      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+      {\underline{next step:}\\[.5ex]re-order for better readability};
+    \end{scope}
+
+    \begin{scope}[visible on=<17-18|handout:0>]
+      \node[pnode]                             (ad)   at ({0*\dl},{7.5*\dn})   {0.32};
+      \node[pnode,fill=gray!25]                (a)    at ({1*\dl},{8*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode,fill=gray!25]                (d)    at ({1*\dl},{7*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode]                             (ifg)  at ({0*\dl},{5.25*\dn})  {0.28};
+      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{6*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{4.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{5*\dn})     {0.07};    \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{4*\dn})     {0.06};    \draw (g.east) node[snode] {g};
+      \node[pnode,alt={<18->{fill=gray!25}{}}] (e)    at ({0*\dl},{3*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode,alt={<18->{fill=gray!25}{}}] (hbc)  at ({0*\dl},{1.25*\dn})  {0.17};
+      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {0.09};    \draw (h.east) node[snode] {h};
+      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {0.04};    \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {0.04};    \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \draw   (hbc)   -- (h);
+      \draw   (hbc)   -- (bc);
+      \draw   (ifg)   -- (i);
+      \draw   (ifg)   -- (fg);
+      \draw   (ad) -- (a);
+      \draw   (ad) -- (d);
+      \begin{scope}[visible on=<18->]
+        \node[pnode] (ehbc) at ({-1*\dl},{2.125*\dn})  {0.40};
+        \draw   (ehbc) -- (e);
+        \draw   (ehbc) -- (hbc);
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[visible on=<19-20|handout:0>]
+      \node[pnode,alt={<20->{fill=gray!25}{}}] (ad)   at ({0*\dl},{7.5*\dn})   {0.32};
+      \node[pnode,fill=gray!25]                (a)    at ({1*\dl},{8*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode,fill=gray!25]                (d)    at ({1*\dl},{7*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode,alt={<20->{fill=gray!25}{}}] (ifg)  at ({0*\dl},{5.25*\dn})  {0.28};
+      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{6*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{4.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{5*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{4*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode]                             (ehbc) at ({0*\dl},{2.125*\dn}) {0.40};
+      \node[pnode,fill=gray!25]                (e)    at ({1*\dl},{3*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode,fill=gray!25]                (hbc)  at ({1*\dl},{1.25*\dn})  {0.17};
+      \node[pnode,fill=gray!25]                (h)    at ({2*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode,fill=gray!25]                (bc)   at ({2*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)    at ({3*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)    at ({3*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \draw   (hbc)   -- (h);
+      \draw   (hbc)   -- (bc);
+      \draw   (ifg)   -- (i);
+      \draw   (ifg)   -- (fg);
+      \draw   (ad) -- (a);
+      \draw   (ad) -- (d);
+      \draw   (ehbc) -- (e);
+      \draw   (ehbc) -- (hbc);
+      \begin{scope}[visible on=<20->]
+        \node[pnode] (adifg) at ({-1*\dl},{6.375*\dn})  {0.60};
+        \draw   (adifg) -- (ad);
+        \draw   (adifg) -- (ifg);
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[visible on=<21->]
+      \node[pnode,alt={<22->{fill=gray!25}{}}] (adifg) at ({0*\dl},{6.375*\dn}) {0.60};
+      \node[pnode,fill=gray!25]                (ad)    at ({1*\dl},{7.5*\dn})   {0.32};
+      \node[pnode,fill=gray!25]                (a)     at ({2*\dl},{8*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+      \node[pnode,fill=gray!25]                (d)     at ({2*\dl},{7*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+      \node[pnode,fill=gray!25]                (ifg)   at ({1*\dl},{5.25*\dn})  {0.28};
+      \node[pnode,fill=gray!25]                (i)     at ({2*\dl},{6*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+      \node[pnode,fill=gray!25]                (fg)    at ({2*\dl},{4.5*\dn})   {0.13};
+      \node[pnode,fill=gray!25]                (f)     at ({3*\dl},{5*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+      \node[pnode,fill=gray!25]                (g)     at ({3*\dl},{4*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+      \node[pnode,alt={<22->{fill=gray!25}{}}] (ehbc)  at ({0*\dl},{2.125*\dn}) {0.40};
+      \node[pnode,fill=gray!25]                (e)     at ({1*\dl},{3*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+      \node[pnode,fill=gray!25]                (hbc)   at ({1*\dl},{1.25*\dn})  {0.17};
+      \node[pnode,fill=gray!25]                (h)     at ({2*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+      \node[pnode,fill=gray!25]                (bc)    at ({2*\dl},{0.5*\dn})   {0.08};
+      \node[pnode,fill=gray!25]                (b)     at ({3*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+      \node[pnode,fill=gray!25]                (c)     at ({3*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+      \draw   (bc)    -- (b);
+      \draw   (bc)    -- (c);
+      \draw   (fg)    -- (f);
+      \draw   (fg)    -- (g);
+      \draw   (hbc)   -- (h);
+      \draw   (hbc)   -- (bc);
+      \draw   (ifg)   -- (i);
+      \draw   (ifg)   -- (fg);
+      \draw   (ad) -- (a);
+      \draw   (ad) -- (d);
+      \draw   (ehbc) -- (e);
+      \draw   (ehbc) -- (hbc);
+      \draw   (adifg) -- (ad);
+      \draw   (adifg) -- (ifg);
+      \begin{scope}[visible on=<22->]
+        \node[pnode,fill=gray!25] (root) at ({-1*\dl},{4.25*\dn})  {1.00};
+        \draw   (root) -- (adifg);
+        \draw   (root) -- (ehbc);
+        \node [anchor=north] at (root.south) {root};
+      \end{scope}
+    \end{scope}
+
+    \begin{scope}[visible on=<23-24|handout:0>]
+      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+      {\underline{next step:}\\[.5ex]label branches with {\color{blue}0} and {\color{blue}1}};
+    \end{scope}
+
+    \begin{scope}[visible on=<24->]
+      \draw (root)--(adifg)                    node [lbla] {1};
+      \draw         (adifg)--(ad)              node [lbla] {1};
+      \draw                  (ad)--(a)         node [lbla] {1};
+      \draw                  (ad)--(d)         node [lblb] {0};
+      \draw         (adifg)--(ifg)             node [lblb] {0};
+      \draw                  (ifg)--(i)        node [lbla] {1};
+      \draw                  (ifg)--(fg)       node [lblb] {0};
+      \draw                         (fg)--(f)  node [lbla] {1};
+      \draw                         (fg)--(g)  node [lblb] {0};
+      \draw (root)--(ehbc)                     node [lblb] {0};
+      \draw         (ehbc)--(e)                node [lbla] {1};
+      \draw         (ehbc)--(hbc)              node [lblb] {0};
+      \draw                 (hbc)--(h)         node [lbla] {1};
+      \draw                 (hbc)--(bc)        node [lblb] {0};
+      \draw                        (bc)--(b)   node [lbla] {1};
+      \draw                        (bc)--(c)   node [lblb] {0};
+    \end{scope}
+
+    \begin{scope}[visible on=<25-26|handout:0>]
+      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+      {\underline{next step:}\\[.5ex]assign codewords\\(follow branches from root\\to terminal nodes)};
+    \end{scope}
+
+    \begin{scope}[visible on=<26|handout:0>]
+      \draw[hl] (root)--(adifg);
+      \draw[hl]         (adifg)--(ifg);
+      \draw[hl]                  (ifg)--(fg);
+      \draw[hl]                         (fg)--(g);
+    \end{scope}
+
+    \begin{scope}[visible on=<28>]
+      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+      {$\begin{array}{r@{\;\;}c@{\;\;}l}
+          \bar{\ell} &=& 2.98\\[.5ex]
+          H(p)&\approx&2.9405\\[.5ex]
+          \varrho&\approx&0.0395~\,(\,1.34\,\%\,)
+        \end{array}$
+      };
+    \end{scope}
+  \end{tikzpicture}
+}
+
+
+
+
+
+%\newcommand{\HuffmanExampleOld}{%
+%  \begin{tikzpicture}
+%    [
+%    snode/.style={text=red,anchor=west,font=\relsize{1}},
+%    pnode/.style={circle,draw=black,inner sep=0pt,text=officegreen,font=\bf,minimum size=4ex},
+%    lbla/.style={inner sep=2pt,anchor=south,yshift=2pt,blue,pos=0.5},
+%    lblb/.style={lbla,anchor=north,yshift=-4pt},
+%    hl/.style={draw=blue,line width=2pt},
+%    ]  
+%
+%    \pgfmathsetmacro{\dn}{0.8}
+%    \pgfmathsetmacro{\dl}{2.0}
+%    \pgfmathsetmacro{\leftx}{-4*\dl}
+%    \pgfmathsetmacro{\topy}{8.5*\dn}
+%    \pgfmathsetmacro{\boty}{-0.5*\dn}
+%    
+%    \begin{scope}[visible on=<1|handout:0>]
+%      \node[anchor=north west,align=left] (step0) at ({\leftx},{\topy}) 
+%      {\underline{given:}\\[.5ex]alphabet $\set{A}$ with pmf $\{p_k\}$};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<1->]
+%      \node[anchor=south west] (table) at ({\leftx},{\boty}) {\hfitbox{3cm}{%
+%          \begin{tabular}{>{\color{red}}c<{}>{\color{officegreen}}l<{}>{\color{blue}}l<{}}
+%            \color{black}$a_k$ & \color{black}$p_k$ & \color{black}$\ve{b}_k$\\
+%            \hline\rule{0ex}{2.5ex}%
+%            a     & 0.16 & \action<27->{111}\\
+%            b     & 0.04 & \action<27->{0001}\\
+%            c     & 0.04 & \action<27->{0000}\\
+%            d     & 0.16 & \action<27->{110}\\
+%            e     & 0.23 & \action<27->{01}\\
+%            f     & 0.07 & \action<27->{1001}\\
+%            g     & 0.06 & \action<26->{1000}\\
+%            h     & 0.09 & \action<27->{001}\\
+%            i     & 0.15 & \action<27->{101}
+%          \end{tabular}%
+%        }};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<2|handout:0>]
+%      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+%      {\underline{first step:}\\[.5ex]assign symbols and probabilities to terminal nodes\\
+%        (use {\color{officegreen}$100\,p_k$} for better readability)};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<3-4|handout:0>]
+%      \node[pnode]                            (a) at ({0*\dl},{8*\dn}) {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode,alt={<4->{fill=gray!25}{}}] (b) at ({0*\dl},{7*\dn}) {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,alt={<4->{fill=gray!25}{}}] (c) at ({0*\dl},{6*\dn}) {4};    \draw (c.east) node[snode] {c};
+%      \node[pnode]                            (d) at ({0*\dl},{5*\dn}) {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                            (e) at ({0*\dl},{4*\dn}) {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode]                            (f) at ({0*\dl},{3*\dn}) {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode]                            (g) at ({0*\dl},{2*\dn}) {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                            (h) at ({0*\dl},{1*\dn}) {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode]                            (i) at ({0*\dl},{0*\dn}) {15};   \draw (i.east) node[snode] {i};
+%      \begin{scope}[visible on=<4->]
+%        \node[pnode] (bc) at ({-1*\dl},{6.5*\dn}) {8};
+%        \draw   (bc) -- (b);
+%        \draw   (bc) -- (c);
+%      \end{scope}
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<5-6|handout:0>]
+%      \node[pnode]                             (a)    at ({0*\dl},{8*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode]                             (bc)   at ({0*\dl},{6.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({1*\dl},{7*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({1*\dl},{6*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \node[pnode]                             (d)    at ({0*\dl},{5*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                             (e)    at ({0*\dl},{4*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode,alt={<6->{fill=gray!25}{}}]  (f)    at ({0*\dl},{3*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,alt={<6->{fill=gray!25}{}}]  (g)    at ({0*\dl},{2*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                             (h)    at ({0*\dl},{1*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode]                             (i)    at ({0*\dl},{0*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \begin{scope}[visible on=<6->]
+%        \node[pnode] (fg) at ({-1*\dl},{2.5*\dn}) {13};
+%        \draw   (fg) -- (f);
+%        \draw   (fg) -- (g);
+%      \end{scope}
+%    \end{scope}
+%    
+%    \begin{scope}[visible on=<7-8|handout:0>]
+%      \node[pnode]                             (a)    at ({0*\dl},{8*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode]                             (bc)   at ({0*\dl},{6.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({1*\dl},{7*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({1*\dl},{6*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \node[pnode]                             (d)    at ({0*\dl},{5*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                             (e)    at ({0*\dl},{4*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode]                             (fg)   at ({0*\dl},{2.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({1*\dl},{3*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({1*\dl},{2*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                             (h)    at ({0*\dl},{1*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode]                             (i)    at ({0*\dl},{0*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%    \end{scope}
+%    
+%    \begin{scope}[visible on=<8|handout:0>]
+%      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+%      {\underline{next step:}\\[.5ex]re-order for better readability};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<9-10|handout:0>]
+%      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode]                             (a)    at ({0*\dl},{7*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode]                             (d)    at ({0*\dl},{6*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                             (i)    at ({0*\dl},{5*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode]                             (fg)   at ({0*\dl},{3.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({1*\dl},{4*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({1*\dl},{3*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode,alt={<10->{fill=gray!25}{}}] (h)    at ({0*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,alt={<10->{fill=gray!25}{}}] (bc)   at ({0*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({1*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({1*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \begin{scope}[visible on=<10->]
+%        \node[pnode] (hbc) at ({-1*\dl},{1.25*\dn}) {17};
+%        \draw   (hbc) -- (h);
+%        \draw   (hbc) -- (bc);
+%      \end{scope}
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<11-12|handout:0>]
+%      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode]                             (a)    at ({0*\dl},{7*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode]                             (d)    at ({0*\dl},{6*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode,alt={<12->{fill=gray!25}{}}] (i)    at ({0*\dl},{5*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode,alt={<12->{fill=gray!25}{}}] (fg)   at ({0*\dl},{3.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({1*\dl},{4*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({1*\dl},{3*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                             (hbc)  at ({0*\dl},{1.25*\dn})  {17};
+%      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \draw   (hbc)   -- (h);
+%      \draw   (hbc)   -- (bc);
+%      \begin{scope}[visible on=<12->]
+%        \node[pnode] (ifg) at ({-1*\dl},{4.25*\dn})  {28};
+%        \draw   (ifg) -- (i);
+%        \draw   (ifg) -- (fg);
+%      \end{scope}
+%    \end{scope}
+%    
+%    \begin{scope}[visible on=<13-14|handout:0>]
+%      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode,alt={<14->{fill=gray!25}{}}] (a)    at ({0*\dl},{7*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode,alt={<14->{fill=gray!25}{}}] (d)    at ({0*\dl},{6*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                             (ifg)  at ({0*\dl},{4.25*\dn}) {28};
+%      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{5*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{3.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{4*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{3*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                             (hbc)  at ({0*\dl},{1.25*\dn})  {17};
+%      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \draw   (hbc)   -- (h);
+%      \draw   (hbc)   -- (bc);
+%      \draw   (ifg)   -- (i);
+%      \draw   (ifg)   -- (fg);
+%      \begin{scope}[visible on=<14->]
+%        \node[pnode] (ad) at ({-1*\dl},{6.5*\dn})  {32};
+%        \draw   (ad) -- (a);
+%        \draw   (ad) -- (d);
+%      \end{scope}
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<15-16|handout:0>]
+%      \node[pnode]                             (e)    at ({0*\dl},{8*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode]                             (ad)   at ({0*\dl},{6.5*\dn})   {32};
+%      \node[pnode,fill=gray!25]                (a)    at ({1*\dl},{7*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode,fill=gray!25]                (d)    at ({1*\dl},{6*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                             (ifg)  at ({0*\dl},{4.25*\dn})  {28};
+%      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{5*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{3.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{4*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{3*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                             (hbc)  at ({0*\dl},{1.25*\dn})  {17};
+%      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \draw   (hbc)   -- (h);
+%      \draw   (hbc)   -- (bc);
+%      \draw   (ifg)   -- (i);
+%      \draw   (ifg)   -- (fg);
+%      \draw   (ad) -- (a);
+%      \draw   (ad) -- (d);
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<16|handout:0>]
+%      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+%      {\underline{next step:}\\[.5ex]re-order for better readability};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<17-18|handout:0>]
+%      \node[pnode]                             (ad)   at ({0*\dl},{7.5*\dn})   {32};
+%      \node[pnode,fill=gray!25]                (a)    at ({1*\dl},{8*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode,fill=gray!25]                (d)    at ({1*\dl},{7*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode]                             (ifg)  at ({0*\dl},{5.25*\dn})  {28};
+%      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{6*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{4.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{5*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{4*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode,alt={<18->{fill=gray!25}{}}] (e)    at ({0*\dl},{3*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode,alt={<18->{fill=gray!25}{}}] (hbc)  at ({0*\dl},{1.25*\dn})  {17};
+%      \node[pnode,fill=gray!25]                (h)    at ({1*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,fill=gray!25]                (bc)   at ({1*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({2*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({2*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \draw   (hbc)   -- (h);
+%      \draw   (hbc)   -- (bc);
+%      \draw   (ifg)   -- (i);
+%      \draw   (ifg)   -- (fg);
+%      \draw   (ad) -- (a);
+%      \draw   (ad) -- (d);
+%      \begin{scope}[visible on=<18->]
+%        \node[pnode] (ehbc) at ({-1*\dl},{2.125*\dn})  {40};
+%        \draw   (ehbc) -- (e);
+%        \draw   (ehbc) -- (hbc);
+%      \end{scope}
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<19-20|handout:0>]
+%      \node[pnode,alt={<20->{fill=gray!25}{}}] (ad)   at ({0*\dl},{7.5*\dn})   {32};
+%      \node[pnode,fill=gray!25]                (a)    at ({1*\dl},{8*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode,fill=gray!25]                (d)    at ({1*\dl},{7*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode,alt={<20->{fill=gray!25}{}}] (ifg)  at ({0*\dl},{5.25*\dn})  {28};
+%      \node[pnode,fill=gray!25]                (i)    at ({1*\dl},{6*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode,fill=gray!25]                (fg)   at ({1*\dl},{4.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)    at ({2*\dl},{5*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)    at ({2*\dl},{4*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode]                             (ehbc) at ({0*\dl},{2.125*\dn}) {40};
+%      \node[pnode,fill=gray!25]                (e)    at ({1*\dl},{3*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode,fill=gray!25]                (hbc)  at ({1*\dl},{1.25*\dn})  {17};
+%      \node[pnode,fill=gray!25]                (h)    at ({2*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,fill=gray!25]                (bc)   at ({2*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)    at ({3*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)    at ({3*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \draw   (hbc)   -- (h);
+%      \draw   (hbc)   -- (bc);
+%      \draw   (ifg)   -- (i);
+%      \draw   (ifg)   -- (fg);
+%      \draw   (ad) -- (a);
+%      \draw   (ad) -- (d);
+%      \draw   (ehbc) -- (e);
+%      \draw   (ehbc) -- (hbc);
+%      \begin{scope}[visible on=<20->]
+%        \node[pnode] (adifg) at ({-1*\dl},{6.375*\dn})  {60};
+%        \draw   (adifg) -- (ad);
+%        \draw   (adifg) -- (ifg);
+%      \end{scope}
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<21->]
+%      \node[pnode,alt={<22->{fill=gray!25}{}}] (adifg) at ({0*\dl},{6.375*\dn}) {60};
+%      \node[pnode,fill=gray!25]                (ad)    at ({1*\dl},{7.5*\dn})   {32};
+%      \node[pnode,fill=gray!25]                (a)     at ({2*\dl},{8*\dn})     {16};   \draw (a.east) node[snode] {a};
+%      \node[pnode,fill=gray!25]                (d)     at ({2*\dl},{7*\dn})     {16};   \draw (d.east) node[snode] {d};
+%      \node[pnode,fill=gray!25]                (ifg)   at ({1*\dl},{5.25*\dn})  {28};
+%      \node[pnode,fill=gray!25]                (i)     at ({2*\dl},{6*\dn})     {15};   \draw (i.east) node[snode] {i};
+%      \node[pnode,fill=gray!25]                (fg)    at ({2*\dl},{4.5*\dn})   {13};
+%      \node[pnode,fill=gray!25]                (f)     at ({3*\dl},{5*\dn})     {7};    \draw (f.east) node[snode] {f};
+%      \node[pnode,fill=gray!25]                (g)     at ({3*\dl},{4*\dn})     {6};    \draw (g.east) node[snode] {g};
+%      \node[pnode,alt={<22->{fill=gray!25}{}}] (ehbc)  at ({0*\dl},{2.125*\dn}) {40};
+%      \node[pnode,fill=gray!25]                (e)     at ({1*\dl},{3*\dn})     {23};   \draw (e.east) node[snode] {e};
+%      \node[pnode,fill=gray!25]                (hbc)   at ({1*\dl},{1.25*\dn})  {17};
+%      \node[pnode,fill=gray!25]                (h)     at ({2*\dl},{2*\dn})     {9};    \draw (h.east) node[snode] {h};
+%      \node[pnode,fill=gray!25]                (bc)    at ({2*\dl},{0.5*\dn})   {8};
+%      \node[pnode,fill=gray!25]                (b)     at ({3*\dl},{1*\dn})     {4};    \draw (b.east) node[snode] {b};
+%      \node[pnode,fill=gray!25]                (c)     at ({3*\dl},{0*\dn})     {4};    \draw (c.east) node[snode] {c};
+%      \draw   (bc)    -- (b);
+%      \draw   (bc)    -- (c);
+%      \draw   (fg)    -- (f);
+%      \draw   (fg)    -- (g);
+%      \draw   (hbc)   -- (h);
+%      \draw   (hbc)   -- (bc);
+%      \draw   (ifg)   -- (i);
+%      \draw   (ifg)   -- (fg);
+%      \draw   (ad) -- (a);
+%      \draw   (ad) -- (d);
+%      \draw   (ehbc) -- (e);
+%      \draw   (ehbc) -- (hbc);
+%      \draw   (adifg) -- (ad);
+%      \draw   (adifg) -- (ifg);
+%      \begin{scope}[visible on=<22->]
+%        \node[pnode,fill=gray!25] (root) at ({-1*\dl},{4.25*\dn})  {\relsize{-1}100};
+%        \draw   (root) -- (adifg);
+%        \draw   (root) -- (ehbc);
+%        \node [anchor=north] at (root.south) {root};
+%      \end{scope}
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<23-24|handout:0>]
+%      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+%      {\underline{next step:}\\[.5ex]label branches with {\color{blue}0} and {\color{blue}1}};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<24->]
+%      \draw (root)--(adifg)                    node [lbla] {1};
+%      \draw         (adifg)--(ad)              node [lbla] {1};
+%      \draw                  (ad)--(a)         node [lbla] {1};
+%      \draw                  (ad)--(d)         node [lblb] {0};
+%      \draw         (adifg)--(ifg)             node [lblb] {0};
+%      \draw                  (ifg)--(i)        node [lbla] {1};
+%      \draw                  (ifg)--(fg)       node [lblb] {0};
+%      \draw                         (fg)--(f)  node [lbla] {1};
+%      \draw                         (fg)--(g)  node [lblb] {0};
+%      \draw (root)--(ehbc)                     node [lblb] {0};
+%      \draw         (ehbc)--(e)                node [lbla] {1};
+%      \draw         (ehbc)--(hbc)              node [lblb] {0};
+%      \draw                 (hbc)--(h)         node [lbla] {1};
+%      \draw                 (hbc)--(bc)        node [lblb] {0};
+%      \draw                        (bc)--(b)   node [lbla] {1};
+%      \draw                        (bc)--(c)   node [lblb] {0};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<25-26|handout:0>]
+%      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+%      {\underline{next step:}\\[.5ex]assign codewords\\(follow branches from root\\to terminal nodes)};
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<26|handout:0>]
+%      \draw[hl] (root)--(adifg);
+%      \draw[hl]         (adifg)--(ifg);
+%      \draw[hl]                  (ifg)--(fg);
+%      \draw[hl]                         (fg)--(g);
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<28>]
+%      \node[anchor=north west,align=left] at ({\leftx},{\topy}) 
+%      {$\begin{array}{rcl}
+%          \bar{\ell} &=& 2.98\\[.5ex]
+%          H(p)&\approx&2.9405\\[.5ex]
+%          \varrho&\approx&0.0395~(1.34\%)
+%        \end{array}$
+%      };
+%    \end{scope}
+%
+%    \begin{scope}[visible on=<0|handout:1>]
+%      \node[anchor=north west,align=left] at ({-1.8*\dl},{0*\dn}) 
+%      {\underline{note:} nodes are labeled with {\color{officegreen}$100\,p_k$}};
+%    \end{scope}
+%  \end{tikzpicture}
+%}
+
+
+\begin{frame}{Example: Construction of a Huffman Code}
+  \slidefitbox{\HuffmanExample}
+\end{frame}
+
+
+ 

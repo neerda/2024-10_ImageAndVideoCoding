@@ -1,0 +1,46 @@
+
+
+
+\begin{frame}{Optimal Encoder Mapping:~ Modified Nearest Neighbour Condition}
+\vspace{-1ex}\bit
+\item<+-> Optimal encoding mapping for MSE distortion
+\begin{align*}
+(u_k-s'_{k-1})^2+\lambda\cdot\ell_{k-1} =&(u_k-s'_k)^2+\lambda\cdot\ell_k
+\\ 
+\iff u_k^2-2u_ks'_{k-1}+(s'_{k-1})^2+\lambda\cdot\ell_{k-1} = &u_k^2-2u_ks'_k+(s'_{k})^2+\lambda\cdot\ell_{k}
+\\
+\iff 2u_k(s'_k-s'_{k-1})=&(s'_k)^2-(s'_{k-1})^2+\lambda\,(\ell_k-\ell_{k-1})
+\\
+\iff 2u_k(s'_k-s'_{k-1}) = &(s'_k-s'_{k-1})(s'_k+s'_{k-1})+\lambda\,(\ell_k-\ell_{k-1})
+\end{align*}
+
+%
+%  \vspace{-1ex}\beqan
+%    J(u_k\cond\set{I}_{k-1})
+%    &\!\!\!=\!\!\!&
+%        J(u_k\cond\set{I}_k)\\[.5ex]
+%  \uncover<+->{
+%    (u_k-s'_{k-1})^2+\lambda\cdot\ell_{k-1}
+%    &\!\!\!=\!\!\!&
+%        (u_k-s'_k)^2+\lambda\cdot\ell_k\\[.5ex]}
+%  \uncover<+->{
+%    u_k^2-2u_ks'_{k-1}+(s'_{k-1})^2+\lambda\cdot\ell_{k-1}
+%    &\!\!\!=\!\!\!&
+%        u_k^2-2u_ks'_k+(s'_{k})^2+\lambda\cdot\ell_{k}\\[.5ex]}
+%  \uncover<+->{
+%    2u_k(s'_k-s'_{k-1})
+%    &\!\!\!=\!\!\!&
+%       (s'_k)^2-(s'_{k-1})^2+\lambda\,(\ell_k-\ell_{k-1})\\[.5ex]}
+%  \uncover<+->{
+%    2u_k(s'_k-s'_{k-1})
+%    &\!\!\!=\!\!\!&
+%       (s'_k-s'_{k-1})(s'_k+s'_{k-1})+\lambda\,(\ell_k-\ell_{k-1})}
+%  \eeqan
+\item[\iarrow]<+->\bigskip \loud{Modified nearest neighbour condition for MSE distortion}
+  $$
+  \boxed{\;u_k = \frac{1}{2}\,\big(s'_{k-1}+s'_k)+
+        \frac{\lambda}{2}\,\left(\frac{\ell_k-\ell_{k-1}}{s'_k-s'_{k-1}}\right)\;}
+  $$
+\item[\ALERT{\iarrow}]<+->\smallskip \ALERT{Threshold is shifted towards the reconstruction level with the longer codeword}
+\eit\vspace{-5ex}
+\end{frame}

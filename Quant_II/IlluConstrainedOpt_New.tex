@@ -1,0 +1,85 @@
+
+
+\begin{frame}{Convex Optimization: Illustration}
+  \vspace{-2ex}
+\begin{center}
+\hfitbox{0.65\textwidth}{%
+  \begin{tikzpicture}
+     \begin{axis}[
+        compat=newest,
+        width=8cm,height=7cm,
+        axis lines=none,
+        xmin=-0.5,xmax=1.1,ymin=-0.3,ymax=1.1,
+        clip mode=individual, % ensures curves are plot one after another
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=2.5mm,width=1.5mm]},line width=0.75pt}] 
+               (axis cs: -0.5,0) -- (axis cs: 1.2,0);
+          \draw[->,style={-{Latex[length=2.5mm,width=1.5mm]},line width=0.75pt}] 
+               (axis cs: 0,-0.1) -- (axis cs: 0,1.1);
+          \node[black, anchor=north east] at (axis cs: 0,1.1) {$D$};
+          \node[black, anchor=north east] at (axis cs: 1.3,0) {$R$};
+        }
+     ]
+     \pgfmathsetmacro{\a}{30}
+     \pgfmathsetmacro{\ex}{-2.5}
+     \pgfmathsetmacro{\rt}{ln(-tan(\a)/\ex)/\ex}
+     \pgfmathsetmacro{\la}{tan(\a)}
+     \pgfmathsetmacro{\xx}{(\rt-\la*exp(\ex*\rt))/(1+\la*\la)}
+     \addplot[name path=func,myblue!20,samples=101,domain=0.0:1.1,line width=1.0pt,mark=none] 
+              {exp(\ex*x)};
+     \path[name path=axis] (axis cs: 0,1) -- (axis cs: 1.1,1);
+     \addplot[myblue!20] fill between[of=func and axis,soft clip={domain=0:1.1}];
+     \begin{scope}[visible on=<4->]
+        \addplot[mygreen,samples=101,domain=-0.5:1.0,line width=1.0pt,mark=none]
+           {\ex*exp(\ex*\rt)*x}; 
+        \draw[mygreen,domain={180-\a}:180] plot (axis cs: {0.4*cos(\x)},{0.4*sin(\x)});
+        \node[mygreen] at (axis cs: {0.25*cos(180-0.5*\a)},{0.25*sin(180-0.5*\a)}) 
+             {$\alpha$};
+        \node[mygreen,anchor=south west] at (axis cs: -0.5,{-0.5*\ex*exp(\ex*\rt)}) 
+             {$-\lambda\cdot R$};
+        \node[mygreen,anchor=north west] at (axis cs: -0.5,-0.1)
+             {$\lambda=\tan\alpha$};
+        \draw[vividviolet,line width=1.0pt] 
+             (axis cs: {\xx},{\ex*exp(\ex*\rt)*\xx}) -- (axis cs: {\rt},{exp(\ex*\rt)});
+        \node[myviolet,anchor=south east] 
+             at (axis cs: {0.5*\rt+0.5*\xx},{(0.5*\rt+0.5*\xx)/\la+exp(\ex*\rt)-\rt/\la})
+             {$C$};
+     \end{scope}
+     \begin{scope}[visible on=<5->]
+        \addplot[myblue,samples=101,domain=0.0:1.1,line width=1.0pt,mark=none] 
+                {exp(\ex*x)};
+        \node[anchor=east] at (axis cs:-0.1, 0.7) {%
+          \color{myblue}\small convex hull};
+        \draw[myblue,-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt]
+        (-0.1,0.7) -- ({ln(0.7)/\ex},{0.7});
+     \end{scope}
+     \begin{scope}[visible on=<2->]
+        \draw[myred,line width=1.0pt] 
+             (axis cs: {\rt},-0.05) -- (axis cs: {\rt},1.1);
+        \node[myred,anchor=north west] at (axis cs: {\rt-0.02},-0.03) {$R_{\text{target}}$};
+     \end{scope}
+     \begin{scope}[visible on=<3->]
+       \draw[myred,fill] (axis cs:  {\rt},{exp(\ex*\rt)}) circle [radius=2.5pt];
+       \node[myred,anchor=south west,yshift=-.5ex] at (axis cs: 0.8,0.45) {%
+         \color{myred}\small solution of constrained problem
+       };
+       \draw[myred,-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt]
+       (0.8,0.45) -- ({\rt+0.02},{exp(\ex*\rt)+0.02});
+     \end{scope}
+     \node[anchor=north west,align=left] at (axis cs: 1.12,1.1) {%
+       \color{myblue}\small region of achievable\\
+       \color{myblue}\small rate-distortion points\\
+       \color{myblue}\small for scalar quantizer\\
+       };
+     \end{axis}
+  \end{tikzpicture}
+}
+\end{center}
+\vspace{-1ex}
+\bit\TabPositions{12em}
+  \item<6->[\iarrow] Points on \textcolor{myblue}{convex hull}:\tab Minimize \textcolor{myviolet}{distance $C$} to line \textcolor{mygreen}{$D=-\lambda\cdot R$}
+  \item<7->[\iarrow] Geometrical interpretation:\tab Rotate coordinate system by \textcolor{mygreen}{angle $\alpha$}
+\eit\vspace{-5ex}
+\end{frame}
+
+

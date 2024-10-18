@@ -1,0 +1,1031 @@
+%\documentclass{beamer}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{tikz}
+%\usetikzlibrary{trees}
+%\usepackage{lipsum}
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\begin{document}
+
+\section{Rate distortion theory II}
+
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=16pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\begin{figure}
+\includegraphics[width=0.26\textwidth]{RD_II/RD_Plot_Final.png}
+\captionsetup{labelformat=empty}
+%\caption{Illustration of convexity.}
+\end{figure}
+\end{frame}
+
+
+
+
+\subsection{Review of last lecture: Lossy source codes}
+
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\begin{frame}{Lossy source codes. Rate and distortion.}
+Given discrete random variable $X$ with values in some $\mathbb{R}^N$ with finite alphabet $\mathcal{A}_X$ and distribution $p_{X}$. 
+%\vspace{-0.03cm}
+
+\loud{Lossy source codes} $Q=(\alpha,\gamma,\beta)$:
+\bit
+\item $\alpha: \mathcal{A}_X\to \mathcal{I}_K:=\{1,\dots,K\}$, \loud{quantization}
+\item $\gamma$: \loud{Lossless mapping}. Uniquely decodable code for $\mathcal{I}_K$. 
+\item $\beta: \mathcal{I}_K\to\widehat{\mathcal{A}}$, \loud{inverse quantization}. Set $\widehat{\mathcal{A}}\subset\mathbb{R}^N$ is called \loud{reproduction alphabet}. 
+\item In general: $\beta(\alpha(x))\neq x$. Information can not be recovered exactly by decoder.
+%\item Rate and distortion 
+\eit
+\loud{Rate and distortion of $Q$:}
+\bit
+\item \loud{Rate $r(Q)$:} Expected length of codewords $\gamma(\alpha(x))$ with $x\in\mathcal{A}$:  
+\begin{align*}
+r(Q):=\sum_{\mathbf{x}\in\mathcal{A}}p_X(x)\ell(\gamma(\alpha(x)).
+\end{align*}
+\item \loud{Distortion $\delta(Q)$:} Expected 
+ deviation of original and reconstructed symbols measured with a given \loud{distortion function} $d$:
+\begin{align*}
+\delta(Q):=\sum_{\mathbf{x}\in\mathcal{A}}p_X(x)d(x,\beta(\alpha(x))).
+\end{align*}
+\eit
+\end{frame}
+
+
+
+\begin{frame}{Fundamental task of lossy source coding. Rate distortion function.}
+\loud{Fundamental task of lossy source coding:}
+\bit
+\item []For a maximal allowable distortion $D$, find a source code $Q$ of rate $r(Q)$ as small 
+as possible such that $\delta(Q)\leq D$. 
+\eit 
+
+\loud{Rate distortion function: }
+\bit
+\item Quantifies how good the above task can be solved at all. For $D\in [0,\infty)$, one puts
+\begin{align*}
+R(D)= \inf\{r(Q)\colon \text{$Q$ is a source code with $\delta(Q)\leq D$}\}.
+\end{align*}
+\item For $D=0$, lossless scenario: 
+\bit
+\item Can bound $R(0)$ in terms of \loud{entropy} of the source $X$. 
+\item \loud{Huffman coding}: Explicit construction of optimal source code.  
+\eit 
+\eit 
+\loud{\iarrow$ $ Goal: Describe $R(D)$ also for $D>0$. Fundamental theorem of lossy source coding.} 
+\end{frame}
+
+\subsection{Extension to random processes}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\begin{frame}{Source code for $N$ realizations of a random variable} 
+\loud{Setup:} Study joint coding of $N$ independent realizations of a random variable. .
+\bit
+\item For a random variable $X:\Omega\rightarrow\mathbb{R}$, define $X^N:\Omega^N\rightarrow\mathbb{R}$ by 
+\begin{align*}
+X^N:=(X,\dots,X); \quad p^{\times N}:=p_{X^N},\quad  p^{\times N}(x_1,\dots,x_N)=p_X(x_1)\cdots p_X(x_N)
+\end{align*}
+\item $X^N$ is an $\mathbb{R}^N$-valued random-variable.  
+\item Definition of source code $Q_N=(\alpha_N,\gamma,\beta_N)$  for $X^N$ is as before.
+\bit
+\item Encoder mapping $\alpha_N:\mathcal{A}^N\to \mathcal{I}_{K'}$.
+\item Uniquely decodable code $\gamma_N$ on $\mathcal{I}_{K'}'$.
+\item Decoder mapping $\beta_N:\mathcal{I}_{K'}'\to\mathcal{A}^N$. 
+\eit
+\item Rate $r(Q_N)$  and distortion $\delta(Q_N)$ of $Q_N$ are measured per symbol: 
+\begin{align*}
+r(Q_N)=1/N\sum_{x\in\mathcal{A}^N}p^{\times N}(x)\ell(\gamma_N(\alpha_N(x))), \quad \delta(Q_N)= 1/N\sum_{x\in\mathcal{A}^N}p^{\times N}(x)d(x,\beta_N(\alpha_N(x))).
+\end{align*} 
+\item[\iarrow] Rate distortion function for $X^N$ defined as above. 
+\eit
+\end{frame}
+
+
+\begin{frame}{Joint coding needed even for iid souces} 
+\loud{Joint coding important for optimality} 
+\bit
+\item A typical source code for $X^N$ is \loud{not} necessarily comprised by the concatenation of $N$ 
+source codes for the indiviudal $X_i$, i.e. $N$ source codes of $X$, \loud{although} the $X_i$ are indpendent.
+\item In fact:  For optimal source codes, one cannot expect this to be true. 
+\eit
+\vspace{-3.5mm}
+\loud{Example from lossless case:}
+\bit
+\item  Assume that $X$ is any random variable such that $p_X(a)\neq 2^{-m}$, $m\in\mathbb{N}$, for an $a\in\mathcal{A}$. 
+\item We know: Huffman code $\gamma$ for $X$ is optimal, \loud{but}
+$\overline{\ell}(\gamma)=H(X)+\epsilon$ with an $\epsilon>0$.
+\item Thus: Coding $X^N$ by coding each $X_i$ with $\gamma$  gives average codeword length $H(X)+\epsilon$ per symbol..    
+\item On the other hand: Average codeword length per symbol of a joint  Huffman code for $X^N$
+can be bounded by $1/N(H(X^N)+1)=H(X)+1/N$. 
+\item[\iarrow] Thus: Joint coding is better than marginal coding even for iid sources. 
+\eit
+\vspace{-2.5mm}
+\loud{Joint coding even much more important and helpful in lossy case:}
+\bit
+\item Only joint coding, i.e. \loud{vector quantization} exploits the \loud{space filling advantage}
+\item Will be treated later. 
+\eit
+\end{frame}
+
+\subsection{Mutual information and informational rate distortion function}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\begin{frame}{Mutual information for two random variables}
+Let $X$ and $Y$ be discrete random variables with alphabets $\mathcal{A}_X$ and $\mathcal{A}_Y$.
+
+\loud{Mutual information $I(X;Y)$:} 
+\bit
+\item Reduction of uncertainty of $X$ after observing $Y$: 
+\item[\iarrow] Entropy as measure for uncertainty: 
+\begin{align}\label{DefMutInf}
+I(X;Y):=H(X)-H(X|Y). 
+\end{align}  
+\item In terms of the probability mass functions, one has 
+\begin{align*}
+I(X;Y)=\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left(\frac{p_{X,Y}(x,y)}{p_{X}(x)p_{Y}(y)}\right). 
+\end{align*}
+\item[\iarrow] Mutual information is symmetric:
+\[
+I(X;Y)=I(Y;X).
+\]
+\item[\iarrow]  Applying Divergence Inequality: Mutual information is zero if and only if $X$ and $Y$ are independent. 
+\eit
+\end{frame}
+\begin{frame}{Mutual information for conditional probability mass functions:} 
+\loud{Mutual information can be defined given a marginal and a conditional distribution} 
+\bit
+\item Let $p$ be a pmf with finite alphabet $\mathcal{A}$. 
+\item For some finite alphabet $\mathcal{B}$, let a conditional probabibility mass function $q(\cdot|x)$ on $\mathcal{A}$ be given. 
+\item This means: $q(\cdot|x)$ is a probability mass function on $\mathcal{B}$ for 
+each $x\in\mathcal{A}$. 
+\item The pmf $p$ and the conditonal pmf $q$ define the probability masses $p(x)q(\hat{x}|x)$ of a joint distribution on $\mathcal{A}\times\mathcal{B}$.
+\item[\iarrow] Thus: According to \eqref{DefMutInf}, one defines
+\begin{align*}
+I(p;q)=H(p)-H(q|p)=\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}p(x)q(\hat{x}|x)\log_2\left(\frac{q(\hat{x}|x)}{p(x)}\right).
+\end{align*}
+\item Definitions are consistent: For two random variables $X$ and $Y$, one has
+\begin{align*}
+I(X;Y)=I(p_X;p_Y). 
+\end{align*}
+\eit 
+\end{frame}
+
+\begin{frame}{The informational rate distortion function}
+\begin{definition}
+Let $\mathcal{A}$ be a finite source with pmf $p$. 
+The informational rate-distortion function is defined as 
+\begin{align}\label{DefInfRDRProb}
+R^{(I)}(D):=\inf\{I(p;q)\colon \sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}q(\hat{x}|x)p(x)d(x,\hat{x})\leq D\}
+\end{align}
+where $q$ is taken over the set of all conditional probabilities $q(\cdot|x)$ with finite alphabet $\mathcal{B}$.
+\end{definition}
+\ALERT{Main result: Informational rate distortion function can be used to describe rate distortion function of source coding.} 
+
+\loud{\iarrow$ $ Advantage: } Function $R^{(I)}$ and analog for continuous sources is easier to study than rate distortion function.
+%\begin{itemize}
+%\item \loud{Main result: } Informational rate distortion function can be used to compute rate distortion function. 
+%\item \loud{\iarrow Advantage: } Function $R^{(I)}$ and continuous analog is easier to study than rate distortion function. 
+%\item Example: It can be shown that $R^{(I)}$ is convex. Important property even of R-D functions ``appearing in practise''. 
+%\item Function $R^{I}$ can even be computed explicity for Gaussian sources.
+%\item Algorithm  
+%\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Conditional probabilities in the informational rate distortion function} 
+
+\loud{Conditional probabilities q appearing in $R^{(I)}$: }
+\bit 
+\item A finite alphabet $\mathcal{B}$ of size $m=|\mathcal{B}|$ is given. 
+\item For each $x\in\mathcal{A}$ a probability mass function $q(\cdot|x)$  on $\mathcal{B}$ is given. 
+\item If  $n:=|\mathcal{A}|$, for the given $\mathcal{B}$, conditional probabilites  $q$ correspond to all real $n\times m$-matrices $Q=(q_{i,j})$ such that 
+\bit
+\item $0 \leq q_{i,j} \leq 1$, for all $i,j$. 
+\item $\sum_{j=1}^mq_{i,j}=1$ for all $i\in\{1,\dots,n\}$. 
+\eit
+\item[\iarrow] Minimization of \eqref{DefInfRDRProb} for all $\mathcal{B}$ and all such $Q$ that additionally satisfy the distortion constraint.
+\item Alphabet $\mathcal{B}$ can be chosen freely, i.e. infimum over all possible $\mathcal{B}$ and $q$. 
+\item Accordingly: Reproduction alphabets $\widehat{\mathcal{A}}$ of source codes can also be chosen freely.  
+\item One can also fix a reproduction alphabet $\mathcal{B}$ both for the definition of all source codes and of informational rate-distortion function.  
+\item Then: Infimum in \eqref{DefInfRDRProb}  is attained by some $q$, minimization of \eqref{DefInfRDRProb} is a convex optimization problem.
+\item[\iarrow] \loud{Blahut-Arimoto algorithm: } Minimizing of \eqref{DefInfRDRProb} for fixed $\mathcal{B}$.  
+\eit 
+\end{frame}
+
+\subsection{Fundamental theorem of lossy source coding}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\begin{frame}{Fundamental theorem of lossy source coding for discrete iid processes}
+Main theorem of lossy source coding due to Shannon: 
+\begin{theorem}[Fundamental theorem of lossy source coding]
+Let $X$ be a discrete random variable. Fix an additive distortion measure. 
+\begin{enumerate}
+\item The informational rate distortion function $R^{I}$ is always a \loud{lower bound} for the rate distortion function: 
+For every $N\in\mathbb{N}$ and every sorce code $Q_N$ for $X^N$ one has  
+\begin{align}\label{BoundRate}
+r(Q_N)\geq R^{(I)}(\delta(Q_N)). 
+\end{align}
+\item The bound \eqref{BoundRate} is \loud{asymptotically achievable}. For every $D\in[0,\infty)$ and every $\epsilon>0$, there exits an $N_0\in\mathbb{N}$ such that for each $N\geq N_0$, there 
+exists a source code $Q_N$ for $X^N$ such that 
+\begin{align*}
+\delta(Q_N)\leq D+\epsilon
+\end{align*}
+and such that
+\begin{align*}
+r(Q_{N})\leq R^{(I)}(D). 
+\end{align*}
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+%\begin{frame}{Fundamental theorem of lossy source coding: Outlook on the proof.}
+%\loud{Outlook: Idea of proof of lower bound in fundamental lossy source coding theorem:}
+%\bit
+%\item Use \loud{convexity} of informational rate distortion function, see .. . 
+%\item Use basic properties of entropy: \loud{Chain rule} and \loud{data processing inequalities}. 
+%\eit 
+%\loud{Outlook: Idea of the proof of asymptotic achievability: Random coding}
+%\bit
+%\item For each $N$ and $R'$, consider the set of all $\mathcal{A}^N$-valued sequences of length $2^{NR'}$.
+%\item Each sequence defines a source code of rate $R'$.
+%\item Set of sequences forms itself naturally a probability space, the \loud{ensemble set $\mathcal{E}$}.   
+%\item Using \loud{theorem of large numbers}, show that for given rate $R'>R^{(I)}(D)$, expectation value of distortion on the ensemble 
+%set is not greater than $D+\epsilon$ as $N\to \infty$.   
+%\item To apply theorem of large numbers forces, one needs to consider $N\to\infty$ and not the single alphabet $\mathcal{A}$. 
+%\item Consequence: there exists at least one sequence in $\mathcal{E}$ with distortion not larger than $D+\epsilon$. 
+%\eit
+%\item Details will be given in next lecture.
+%\loud{Comments on the proof of asymptotic achievability: }
+%\bit
+%\item \loud{Proof is not constructive: } One only concludes that such a lossy code exists, no explicit construction. Different to lossless case: Huffman codes are defined explicitly.  
+%\item Method of proof is similar to proof of \loud{Channel Coding Theorem}, although settings of source coding and channel coding are independent (Source-Channel-Separation Theorem). 
+%\eit
+%\end{frame}
+
+\begin{frame}{Fundamental theorem of lossy source coding: Comments and outlook on the proof of lower bound.}
+
+\bit
+\item Statement and proof of above theorem, in particular asymptotic achievability, are \textit{not obvious at all}. 
+\item Proof will be given in next lectures. 
+\eit
+\vspace{-2.5mm}
+\loud{Application of fundamental theorem: Can describe rate distortion function for model sources}:
+\bit
+\item Example in the discrete case: Binary source. 
+\item Continuous case: \loud{Gaussian sources}.
+\item More general sources: \loud{Shannon lower bound}. 
+\bit
+\item Can estimate rate-distortion function from below. 
+\item Estimate 
+is \loud{asymptotically tight} for high rates or small distortions.  
+\eit 
+\eit 
+
+\loud{Outlook: Idea of proof of lower bound in fundamental lossy source coding theorem:}
+\bit
+\item Use \loud{convexity} of informational rate distortion function. 
+\item Use basic properties of entropy: \loud{Chain rule} and \loud{data processing inequalities}. 
+\eit 
+\end{frame}
+
+
+\begin{frame}{Asymptotic achievabilty: Outlook on the proof. }
+\loud{Outlook: Idea of the proof of asymptotic achievability: Random coding}
+\bit
+\item Let $q$ be a conditional probability on alphabet $\widehat{\mathcal{A}}$ close to the infimum in \eqref{DefInfRDRProb}.  
+\item For each $N$ and $R'$, consider the set of all ${\widehat{\mathcal{A}}}^N$-valued sequences of length $2^{NR'}$.
+\item Each sequence defines a source code of rate $R'$; all symbols coded with equal length. 
+\item Set of sequences forms itself naturally a probability space, the \loud{ensemble set $\mathcal{E}$}.   
+\item Using \loud{theorem of large numbers}, show that for given rate $R'>R^{(I)}(D)$, expectation value of distortion on the ensemble 
+set is not greater than $D+\epsilon$ as $N\to \infty$.   
+%\item To apply theorem of large numbers forces, one needs to consider $N\to\infty$ and not the single alphabet $\mathcal{A}$. 
+\item Since expectation vaue not larger than $D+\epsilon$, there exists at least one sequence in $\mathcal{E}$ with distortion not larger than $D+\epsilon$. 
+\eit
+\loud{Comments on the proof of asymptotic achievability: }
+\bit
+\item \loud{Proof is not constructive: } One only concludes that such a lossy code exists, no explicit construction. Different to lossless case: Huffman codes are defined explicitly.  
+\item Method of proof is similar to proof of \loud{Channel Coding Theorem}, although settings of source coding and channel coding are independent (Source-Channel-Separation Theorem). 
+\eit 
+\end{frame}
+
+
+\subsection{Data processing inequalities}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\begin{frame}{Data processing inequalities: Statement}
+%\loud{Definition:} 
+\begin{definition}
+Let $\mathbf{Z}$ be a discrete, $\mathbb{R}^n$-valued random variable. A discrete, $\mathbb{R}^m$-valued random variable \loud{$\mathbf{Y}$ determines $\mathbf{Z}$}, if $Z=\phi(\mathbf{Y})$ for 
+a function $\phi:\mathbb{R}^m\to\mathbb{R}^n$.
+\end{definition}
+%\bit
+%\item Let $\mathbf{Z}$ be a discrete, $\mathbb{R}^n$-valued random variable.
+%\item \loud{Definition:} A discrete, $\mathbb{R}^m$-valued random variable \loud{$\mathbf{Y}$ determines $\mathbf{Z}$}, if $Z=\phi(\mathbf{Y})$ for 
+%a function $\phi:\mathbb{R}^m\to\mathbb{R}^n$.
+%\eit
+\vspace{-2.5mm}
+
+\loud{Heuristically:} If $\mathbf{Y}$ determines $\mathbf{Z}$:
+\bit%\small
+\item Knowing $\mathbf{Y}$, uncertainty about $\mathbf{Z}$ should be zero.
+\item Uncertainty of $\mathbf{Z}$ should not be greater than uncertainty of $\mathbf{Y}$.
+\item Knowing $\mathbf{Z}$ does not decrease the uncertainty ofanother random-variable $\mathbf{X}$ more than knowing $\mathbf{Y}$.    
+\eit 
+\loud{\iarrow Entropy as measure for uncertainty:}
+\begin{proposition}[Data processing inequalities]
+Let $\mathbf{Y}$ be a discrete, $\mathbb{R}^m$-valued random variable. Let 
+$\phi:\mathbb{R}^m\to\mathbb{R}^n$ and let $\mathbf{Z}=\phi(\mathbf{Y})$. 
+Then one has 
+\begin{align*}
+H(\mathbf{Z}|\mathbf{Y})=0 \qquad\text{and} \qquad H(\mathbf{Z})\leq H(\mathbf{Y}).  
+\end{align*}
+If $\mathbf{X}$ is another random variable, then 
+$H(\mathbf{X}|\mathbf{Y})\leq H(\mathbf{X}|\mathbf{Z})$. 
+\end{proposition}
+\end{frame}
+
+\begin{frame}{Data processing inequalities: Proof}
+\bit 
+\item One has $p_{Z|Y}(z|y)=1$ if $z=\phi(y)$ and $p_{Z|Y}(z|y)=0$, else. Thus 
+$H(\mathbf{Z}|\mathbf{Y})=0$.
+\item With chain rule for entropy, it follows that
+\begin{align*}
+H(\mathbf{Y})=H(\mathbf{Y})+H(\mathbf{Z}|\mathbf{Y})=H(\mathbf{Y},\mathbf{Z})=H(\mathbf{Z})+H(\mathbf{Y}|\mathbf{Z}).
+\end{align*}
+Since entropy is non-negative, it follows that $H(\mathbf{Y})\geq H(\mathbf{Z})$.
+\item 
+One has $p_{X,Y,Z}(x,y,z)=p_{X,Y}(x,y)$ if $z=\phi(y)$ and $p_{X,Y,Z}(x,y,z)=0$, else. 
+\item For $z=\phi(y)$ and 
+$p_Y(y)\neq 0$, one has $p_{X|Y,Z}(x|z,y)=p_{X|Y}(x,y)$. 
+\item[\iarrow] This implies that $H(\mathbf{X}|\mathbf{Y})=H(\mathbf{X}|\mathbf{Y},\mathbf{Z})$.
+\item Last lecture: $H(\mathbf{X}|\mathbf{Y},\mathbf{Z})\leq H(\mathbf{X}|\mathbf{Z})$ .
+Thus $H(\mathbf{X}|\mathbf{Y})\leq H(\mathbf{X}|\mathbf{Z})$. \qed
+\eit 
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Informational rate distortion function is lower bound for rate distortion function}
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\subsubsection{Convexity of the informational rate distortion function}
+\begin{frame}{Review: Convexity and concavity}
+\loud{Recall: Convexity of a function}
+\bit
+\item A function $f:(a,b)\to\mathbb{R}$ is called \loud{convex} if for any two point $p_1,\:p_2\in (a,b)$, the straight
+line between $(p_1, f(p_1))$ and $(p_2, f(p_2))$ lies above the graph of $f$:
+\begin{align}\label{eqconv}
+f((1-\lambda)p_1+\lambda p_2)\leq (1-\lambda)f(p_1)+\lambda f(p_2), \quad \forall \lambda\in [0,1] 
+\end{align}  
+\item  $f$ is called \loud{strictly convex} if strict inequality holds in \eqref{eqconv} for all $\lambda\in (0,1)$ and 
+all $p_1\neq p_2$. 
+\item $f$ is calleld (strictly) \loud{concave}, if $-f$ is (strictly) convex. 
+\eit
+\begin{figure}
+\includegraphics[width=0.26\textwidth]{RD_II/RD_Plot_Convex_Final.png}
+\captionsetup{labelformat=empty}
+\caption{Illustration of convexity.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Elementary properties of convex functions}
+\loud{Jensen's inequality}
+\bit
+\item If $f$ is convex on $(a,b)$, then for all $\lambda_1,\dots,\lambda_n\in[0,1]$ with $\lambda_1+\dots+\lambda_n=1$ and all 
+$p_1,\dots,p_n\in (a,b)$, one has
+\begin{align*}
+f(\lambda_1 p_1+\dots+\lambda_np_n)\leq \lambda_1f(p_1)+\dots+\lambda_nf(p_n). 
+\end{align*}
+\item If $f$ is strictly convex and all $p_i$ different, equality only if $\lambda_i=1$ for an $i\in\{1,\dots,n\}$. 
+\item Proof by induction.
+\eit
+\loud{Characterization for continuously differentiable functions}
+\bit
+\item If $f$ is continously differentiable, then $f$ is (strictly) convex if and only if $f'$ is (strictly) monotonically increasing. 
+\item Analogous statement for concave functions.  
+\item Proof: Application of  mean value theorem of differential calculus.
+\eit
+
+
+\end{frame}
+
+\begin{frame}{Concavity of entropy}
+\begin{proposition}[Concavity of entropy]
+Let $p_1$, $p_2$ be probability mass functions on a finite alphabet $\mathcal{A}$. 
+Then for every $\lambda\in(0,1)$ one has 
+\begin{align*}
+H((1-\lambda)p_1+\lambda p_2)\geq (1-\lambda)H(p_1)+\lambda H(p_2), \quad \text{equality if an only if $p_1=p_2$}. 
+\end{align*}
+\end{proposition}
+%\vspace{-0.1cm}
+%\small Heuristic explanation: Averaging two pmfs gives a `more equidistributed pmf' $\iarrow$ entropy increases. 
+\vspace{-2.9mm}
+%\smallskip
+\loud{Proof: } 
+%\vspace{-1.5mm}
+\bit 
+\item Let $f(t):=-t\log_2(t)$. 
+\item The derivative $f'(t)=-\frac{1}{\ln(2)}(1+\ln(t))$ is strictly decreasing $\loud\iarrow$ f is strictly concave. 
+\item[\iarrow] By definition of the entropy:
+\begin{align*}
+H((1-\lambda)p_1+\lambda p_2)=\sum_{a\in\mathcal{A}}f((1-\lambda)p_1(a)+\lambda p_2(a))
+\geq & \sum_{a\in\mathcal{A}}\left((1-\lambda)f(p_1(a))+\lambda f(p_2(a))\right)\\
+=&(1-\lambda)H(p_1)+\lambda H(p_2).
+\end{align*} 
+ \item Statement of equality follows from strict concavity of $f$.  \qed
+\eit
+Heuristic explanation: Averaging two pmfs gives a `more equidistributed pmf' $\iarrow$ entropy increases. 
+\end{frame}
+
+
+
+
+\begin{frame}{Convexity of the informational rate distortion function}
+\begin{proposition}[Convexity of $R^{(I)}$]
+The informational rate distortion function $R^{(I)}$ is convex.
+\end{proposition}
+\vspace{-2.9mm}
+\loud{Proof: } 
+%\vspace{-1.0mm}
+\bit
+\item \loud{Main idea:} Use concavity of entropy, i.e. convexity of negative entropy. 
+\item Let $\lambda\in [0,1]$ and $D_1,\:D_2\in[0,\infty)$. %One needs to show that
+%\[
+%R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq (1-\lambda)R_I(D_1)+\lambda R(D_2). 
+%\]
+%
+%
+\item Let $q_1$ and $q_2$ be any conditional probabilities with alphabets $\mathcal{B}_1$ and $\mathcal{B}_2$ such that
+\begin{align}\label{DistConstrIndiv}
+\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}_1}p(x)q_1(\hat{x}|x)d(x,\hat{x})<D_1; \quad \sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}_2}p(x)q_2(\hat{x}|x)d(x,\hat{x})<D_2.
+\end{align}
+
+\item Define a conditional probability $q_3$ with alphabet $\mathcal{B}=\mathcal{B}_1\cup\mathcal{B}_2$ as 
+\begin{align*}
+q_3=(1-\lambda)p_1+\lambda p_2
+\end{align*}
+\item By \eqref{DistConstrIndiv}, putting $p=p_X$, $q_3$ satisfies the distortion constraint
+\begin{align}\label{DistConstrQ3}
+\sum_{x\in\mathcal{A}}p(x)\sum_{\hat{x}\in\mathcal{B}}q_3(\hat{x}|x)d(x,\hat{x}) \leq (1-\lambda)D_1+\lambda D_2. 
+\end{align}
+\eit
+\end{frame}
+
+
+\begin{frame}{Proof of the convexity of $R^{(I)}$}
+\bit
+\item By the concavity of entropy: 
+\begin{align*}
+-H(q_3|p)=-\sum_{x\in\mathcal{A}}p(x)H(q_3(\cdot|x))\leq& -\sum_{x\in\mathcal{A}}p(x)\left((1-\lambda)H(q_1(\cdot|x))+\lambda H(q_2(\cdot|x))\right)\\
+=&-(1-\lambda)H(q_1|p)-\lambda H(q_2|p)
+\end{align*}
+\item [\iarrow] Using definition of $R^{(I)}$ and \eqref{DistConstrQ3}:
+\begin{align}\label{estD}
+R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq I(p;q_3)=H(p)-H(p|q_3)\leq &(1-\lambda)H(p)+H(p|q_1)+\lambda( H(p)+H(p|q_2)) \nonumber\\ =&(1-\lambda)I(p;q_1)+\lambda I(p;q_2).
+\end{align}
+\item Now use:
+\bit
+\item $q_1$ and $q_2$ were arbitrary conditional probabilities satisfying \eqref{DistConstrIndiv}. 
+\item Infimum of linear combinations is linear combination of infima. 
+\item Infimum is largest lower bound. 
+\eit
+\item[\iarrow] It follows from \eqref{estD} that
+\begin{align*}
+R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq (1-\lambda)R^{(I)}(D_1)+\lambda R^{(I)}(D_2). 
+\end{align*}
+\qed
+\eit 
+\end{frame}
+
+
+
+%%\subsubsection{Lower bound of rate by mutual informations}
+%%
+%%\begin{frame}{Lower bound for rate by mutual informations I}
+%%\begin{proposition}[Estimate of rate by mutual informations]
+%%Let $Q=(\alpha,\gamma,\beta)$ be a source code for $X^N$. 
+%%Let $Y:=\beta(\alpha(X^N))$ with $Y=(Y_1,\dots,Y_N)$.
+%%Then one has 
+%%\begin{align}\label{EqRateSumMut}
+%%r(Q)\geq (1/N)\sum_{i=1}^{N}I(X_i,Y_i).
+%%\end{align}
+%%\end{proposition}
+%%\loud{Proof:}
+%%\bit 
+%%\item The encoder needs to transmit $\alpha(X^N)$. \loud{Entropy is lower bound for rate } and $r$ is rate per symbol:
+%%\begin{align*}
+%%r(Q)\geq (1/N)H(\alpha(X^N)).
+%%\end{align*}
+%%\item Since $\alpha(X^N)$ determines $Y$, by the \loud{data processing inequality} one has 
+%%\begin{align*}
+%%H(\alpha(X^N))\geq H(Y).
+%%\end{align*}
+%%\item Since $X^N$ determines $Y$, one has $H(Y|X^N)=0$.  Using the symmetry of $I$, it follows that
+%%\begin{align*}
+%%H(Y)=H(Y)-H(Y|X^N)=I(Y;X^N)=I(X^N;Y)=H(X^N)-H(X^N|Y).
+%%\end{align*}
+%%\eit 
+%%\end{frame}
+%%
+%%
+%%\begin{frame}{Lower bound for rate by mutual informations II}
+%%\bit
+%%\item Since $\mathbf{X}$ determines $\mathbf{Y}$, one has $H(\mathbf{Y}|X^N)=0$ by the data processing inequality.  Using the symmetry of $I$, it follows that
+%%\begin{align*}
+%%H(\mathbf{Y})=H(\mathbf{Y})-H(\mathbf{Y}|X^N)=I(\mathbf{Y};X^N)=I(X^N;\mathbf{Y})=H(X^N)-H(X^N|\mathbf{Y}).
+%%\end{align*}
+%%\item Since $\mathbf{Y}$ determines $Y_i$ via the projection onto the $i$-th coordinate, it follows that
+%%\begin{align*}
+%%H(X_i|\mathbf{Y})\leq H(\mathbf{X}|Y_i). 
+%%\end{align*}
+%%By the chain rule, one has 
+%%%\begin{align*}
+%%%H(\mathbf{X}|Y_i)=\sum_
+%%%\end{align*}
+%%\item Since $X^N$ is iid, one has
+%%\begin{align*}
+%%H(X^N)=\sum_{i=1}^NH(X_i).
+%%\end{align*}
+%%\item By the chain-rule, one has
+%%\begin{align*}
+%%H(X^N|Y)=\sum_{i=1}^NH(X_i|Y,X_1,\dots,X_{i-1}).
+%%\end{align*}
+%%\item Since $(Y,X_1,\dots,X_{i-1})$ determines $Y_i$ (or since ``conditioniong does not increase entropy'') one has
+%%\begin{align*}
+%%H(X_i|Y,X_1,\dots,X_{i-1})\leq H(X_i|Y_i).  
+%%\end{align*}
+%%\item Combining all above items gives
+%%\begin{align*}
+%%r(Q)\geq (1/N) \sum_{i=1}^N(H(X_i)-H(X_i|Y_i))=(1/N) \sum_{i=1}^NI(X_i|Y_i). \qed
+%%\end{align*}
+%%\eit 
+%%\end{frame}
+%%
+%%\subsubsection{Completion of the proof}
+%%\begin{frame}{Completion of the proof I}
+%%\loud{Idea: Use previous proposition and convexity of $R^{(I)}$}.
+%%\bit
+%%\item Let $Q=(\alpha,\beta,\gamma)$ be a source code for $X^N$.
+%%\item Let $Y$ and $Y_i$ be as in prevous proposition and let $p_{X_i,Y_i}$ be the joint distribution of $X_i$ and $Y_i$. 
+%%\item Let 
+%%\begin{align*}
+%%\delta_i:=\sum_{(x,y)\in\mathcal{A}\times\hat{\mathcal{A}}}p_{X_i,Y_i}(x,y)d(x,y)
+%%\end{align*}
+%%be the expected distortion between $X_i$ and $Y_i$. 
+%%\item By \eqref{EqRateSumMut} and by the definition of $R^{(I)}$, one has 
+%%\begin{align}\label{VorletzteGlr}
+%%r(Q)\geq &
+%%(1/N) \sum_{i=1}^NI(X_i;Y_i)\nonumber\\ \geq &(1/N)\sum_{i=1}^NR^{(I)}(\delta_i).
+%%\end{align}
+%%\eit 
+%%\end{frame}
+%%
+%%
+%%\begin{frame}{Completion of the proof II}
+%%
+%%\bit
+%%\item For $x\in\mathcal{A}$, $y\in\widehat{\mathcal{A}}$, joint distribution $p_{X_i,Y_i}$ satisfies
+%%\begin{align*}
+%%p_{X_i,Y_i}(x,y)=p_X^{\times N}(\mathbf{x}=(x_1,\dots,x_i,\dots,x_N)\in\mathcal{A}^N\colon Y_i(\mathbf{x})=y\text{ and $x_i=x$}).%,\quad x\in\mathcal{A}, \quad y\in\widehat{\mathcal{A}}.
+%%\end{align*}
+%%\item Since distortion function is additive, 
+%%if $\beta_i$ denotes the $i$-th component of $\beta$, it follows that 
+%%\begin{align*}
+%%\delta(Q)=&(1/N)\sum_{\mathbf{x}\in\mathcal{A}^N}p_X^{\times N}(\mathbf{x})\sum_{i=1}^Nd(x_i,\beta_i(\alpha(\mathbf{x})))=(1/N)\sum_{i=1}^N\delta_i. 
+%%\end{align*} 
+%%\item By \eqref{VorletzteGlr} and the convexity of $R^{(I)}$, it follows that
+%%\begin{align*}%\label{LetzteGlr}
+%%r(Q)\geq (1/N)\sum_{i=1}^NR^{(I)}(\delta_i)\geq & R^{(I)}\biggl((1/N)\sum_{i=1}^N\delta_i\biggr)\\ =&R^{(I)}(\delta(Q)).
+%%\end{align*}
+%%\qed
+%%\eit
+%%\end{frame}
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%\subsection{Proof of asymptotic achievability}
+%%\begin{frame}
+%% \vspace{8.0ex}
+%%\begin{center}
+%%\begin{beamercolorbox}[sep=12pt,center]{part title}
+%%\usebeamerfont{section title}\insertsubsection\par
+%%\end{beamercolorbox}
+%%\end{center}
+%%\end{frame}
+%%
+%%\subsubsection{Setup for the proof} 
+%%\begin{frame}{Setup for the proof}
+%%\bit
+%%\item Let $D>0$, $\epsilon>0$ and $R'>R^{(I)}(D)$ be as in the fundamentel theorem of lossy source coding. 
+%%\item Can assume that $\epsilon$ is so small that $R'>R^{(I)}(D)+3\epsilon/2$.
+%%\item Let $q$ be a condtional probability on $\hat{\mathcal{A}}$ which satisfies the distortion constraint
+%%\begin{align*}
+%%\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\hat{\mathcal{A}}}q(\hat{x}|x)p_X(x)d(x,\hat{x})<D. 
+%%\end{align*}
+%%from \eqref{DefInfRDRProb} and for which
+%%$I(p;q)<R'$. 
+%%\item Marginal $p_X$ and conditional $q$ defined a joint distribution on $\mathcal{A}\times\hat{\mathcal{A}}$  
+%%\item Realize this joint distribution as distribution $p_{X,\hat{X}}$ of  
+%%an $\mathcal{A}\times\hat{\mathcal{A}}$-valued random variable $(X,\hat{X})$. 
+%%\item Define $p_{\hat{X}}^{\times N}$ on ${\hat{\mathcal{A}}}^N$ and  $p_{X,\hat{X}}^{\times N}$ on 
+%%$\mathcal{A}^N\times\hat{{\mathcal{A}}}^N$ by
+%%\begin{align}\label{DefJointII}
+%%p_{\hat{X}}^{\times N}(\hat{x}_1,\dots,\hat{x}_N)=&p_{\hat{X}}(\hat{x}_1)\cdot \cdots\cdot p_{\hat{X}}(\hat{x}_N)\nonumber;
+%%\\ p_{X\times\hat{X}}^{\times N}((x_1,\dots,x_N),(\hat{x}_1,\dots,\hat{x}_N))=&p_{X\times\hat{X}}(x_1,\hat{x}_1)\cdot \cdots\cdot p_{X\times\hat{X}}(x_N,\hat{x}_N).
+%%\end{align}
+%%\item Can assume that $R'$ is a rational number. Choose all $N$ such that $NR'$ is an integer.
+%%\eit
+%%\end{frame} 
+%%
+%%
+%%\subsubsection{The ensemble set and typical sequences}
+%%\begin{frame}{Definition of the ensemble set and random coding}
+%%\loud{The ensemle set $\mathcal{E}_N$:}
+%%\bit
+%%\item The set of all $\hat{\mathcal{A}}^N$-valued sequences of length $2^{NR'}$: 
+%%\[
+%%\mathcal{E}_N:=\{\mathcal{C}=({\hat{\mathbf{x}}}_1,\dots,{\hat{\mathbf{x}}}_{2^{NR'}})\colon {\hat{\mathbf{x}}}_i\in{\hat{\mathcal{A}}}^N\}.
+%%\]
+%%%\item Each $\mathcal{C}\in\mathcal{E}_N$ is called a \loud{codebook}. 
+%%\item $\mathcal{E}_N$ is a discrete propability space, probability $P_{\mathcal{E}_N}$ defined as
+%%\begin{align}\label{ProbEnsemble}
+%%P_{\mathcal{E}_N}(({\hat{\mathbf{x}}}_1,\dots,{\hat{\mathbf{x}}}_{2^{NR'}}))=p_{\hat{X}}^{\times N}({\hat{\mathbf{x}}}_1)\cdot \cdots \cdot p_{\hat{X}}^{\times N}({\hat{\mathbf{x}}}_{2^{NR'}}).
+%%\end{align}
+%%\item Using \loud{typical sequences}, each $\mathcal{C}=({\hat{\mathbf{x}}}_1,\dots,{\hat{\mathbf{x}}}_{2^{NR'}})\in\mathcal{E}_N$ defines a lossy source code for $\mathcal{A}^N$ of rate $R'$ bits per symbol.  
+%%%\item Use \loud{typical sequences} for the definition of the source codes, see below.
+%%\item[\iarrow] \loud{Random coding:} Ensemble set is a probability space of source codes. 
+%%\eit
+%%
+%%\end{frame}
+%%
+%%
+%%\begin{frame}{Typical sequences}
+%%\loud{The set of typical sequences $A_{d, \epsilon}^{(N)}$}:
+%%\bit
+%%\item Let $A_{d, \epsilon}^{(N)}$ be the set of all pairs 
+%%$(\mathbf{x},\hat{\mathbf{x}})\in\mathcal{A}^N\times{\hat{\mathcal{A}}}^N$ 
+%%such that the following four conditions hold. 
+%%\small
+%%\begin{align}
+%%\left|-\frac{1}{N}\log_2(p_X^{\times N}(\mathbf{x}))-H(X)\right|<\epsilon/2\label{FirstEqEntrTyp}\\
+%%\left|-\frac{1}{N}\log_2(p_{\hat{X}}^{\times N}(\hat{\mathbf{x}}))-H(\hat{X})\right|<\epsilon/2\label{SecondEqEntrTyp}\\
+%%\left|-\frac{1}{N}\log_2(p_{X,\hat{X}}^{\times N}(\mathbf{x},\hat{\mathbf{x}}))-H(X,\hat{X}))\right|<\epsilon/2\label{ThirdEqEntrTyp}\\
+%%\left|d_N(\mathbf{x},\hat{\mathbf{x}})-D\right|<\epsilon/2\label{EqDistTypical}.
+%%\end{align}
+%%\normalsize
+%%%
+%%%
+%%%\bit
+%%%\item $\left|-\frac{1}{N}\log_2(p_X^{\times N}(\mathbf{x}))-H(X)\right|<\epsilon$
+%%%\item $\left|-\frac{1}{N}\log_2(p_{\hat{X}}^{\times N}(\hat{\mathbf{x}}))-H(\hat{X})\right|<\epsilon$
+%%%\item $\left|-\frac{1}{N}\log_2(p_{X,\hat{X}}^{\times N}(\mathbf{x},\hat{\mathbf{x}}))-H(X,\hat{X}))\right|<\epsilon$
+%%%\item $\left|\log_2(d_N(\mathbf{x},\hat{\mathbf{x}}))-\mathbb{E}(d(X,\hat{X}))\right|<\epsilon$
+%%%\eit
+%%\item Apply \loud{law of large numbers}, reviewed below, to the random variables $\log_2(p_X)$, $\log_2(p_{\hat{X}})$, $\log_2(p_{X,\hat{X}})$, $d(X,\hat{X})$ and use 
+%%\eqref{DefJointI}, \eqref{DefJointII} and that $d_N$ is additive extension of $d$: 
+%%\item[\iarrow] For every $\epsilon>0$, one has 
+%%\begin{align}\label{ProbTypicalSet}
+%%\lim_{N\to\infty} p_{X,\hat{X}}^{\times N}\bigl(A_{d, \epsilon}^{(N)}\bigr)=1. 
+%%\end{align}
+%%\eit 
+%%
+%%\end{frame}
+%%
+%%
+%%\begin{frame}{Ensemble set as a set of source codes} 
+%%\loud{Each $\mathcal{C}\in\mathcal{E}_N$ defines a source-code for $\mathcal{A}^N$:}
+%%\bit
+%%\item[] \loud{Quantizaion $\alpha$:}
+%%\bit
+%%\item For $\mathcal{C}=({\hat{\mathbf{x}}}_1,\dots,{\hat{\mathbf{x}}}_{2^{NR'}})$ and $\mathbf{x}\in\mathcal{A}^N$ let 
+%%$\mathsf{i}=\alpha(\mathbf{x})$ be the smallest $\mathsf{i}\in\{1,\dots,2^{NR'}\}$ such that 
+%%\begin{align*}
+%%(\mathbf{x},{\hat{\mathbf{x}}}_{\mathsf{i}})\in A_{d,\epsilon}^{(N)}, 
+%%\end{align*}
+%%if such an $\mathsf{i}$ exists. If such an $\mathsf{i}$ does not exist, put $\mathsf{i}=1$. 
+%%\eit
+%%\item[] \loud{Lossless mapping $\gamma$:}
+%%\bit 
+%%\item Fixed length code: Each $i\in\{1,\dots,2^{NR'}\}$ is mapped to its binary representation of $NR'$ bits. 
+%%\eit 
+%%\item[] \loud{Inverse quantization $\beta$:}
+%%\bit 
+%%\item Map a given $i\in\{1,\dots,2^{NR'}\}$ to the element ${\hat{\mathbf{x}}}_i\in{\hat{\mathcal{A}}}^N$. 
+%%\eit
+%%%\item For $\mathbf{x}\in\mathcal{A}^N$ write $\mathcal{C}(x)\in\widehat{\mathcal{A}}^N$ for the corresponding decoded symbol, i. e. 
+%%%$\mathcal{C}(x)=\beta(\alpha(\mathbf{x}))$.  
+%%\eit
+%%\bit
+%%\item[\iarrow] \loud{Rate of all source codes $\mathcal{C}\in\mathcal{E}_N$ is  $NR'$, i.e. $R'$ bits per symbol. }
+%%\item[\iarrow]\loud{What about the distortion?} 
+%%\item[\iarrow]\loud{Key idea: } Show that \loud{expectation value of the distortion over $\mathcal{E}_N$} is smaller than $D+\epsilon$.
+%%\eit
+%%\end{frame}
+%%
+%%\subsubsection{Review of law of large numbers}
+%%
+%%\begin{frame}{Review: Law of large numbers}
+%%Let $(\Omega,P)$ be a discrete probability space.
+%%\bit
+%%\item A sequence $(X_i)_{i=1}^\infty$ of random variables is called \loud{independent identically distributed (iid)} if 
+%%\bit
+%%\item $p_{X_{i_1},\dots,X_{i_k}}=p_{X_{i_1}}\cdot \cdots \cdot p_{X_{i_k}} $ for all indices $1\leq i_1<\dots<i_k$
+%%\item $p_{X_i}=p_{X_j}$ for all $i$ and $j$. 
+%%\eit
+%%\item  If $(X_i)_{i=1}^\infty$ is iid, all expectation values
+%%\[
+%%\mathbb{E}(X_i)=\sum_{x\in\mathcal{A}_{X_i}}p_{X_i}(x)\cdot x.
+%%\]
+%%are equal.   
+%%\item \loud{\textbf{Law of large numbers}} (weak form): If $(X_i)_{i=1}^\infty$ is \textbf{iid}, then the \textbf{sequence 
+%%of averages} of the $X_i$ \textbf{converges} in probabilty \textbf{to the expecation value} $\mathbb{E}(X_i)=a$.
+%%For every $\epsilon>0$, one has 
+%%\[
+%%\lim_{N\to\infty}P\left(\left|\frac{1}{N}\sum_{i=1}^NX_i-a\right|>\epsilon\right)=0. 
+%%\]
+%%\eit 
+%%\end{frame}
+%%
+%%\begin{frame}{Law of large numbers: Example and comments}
+%%\loud{Example for theorem of large numbers: }
+%%\bit
+%%\item Throwing a dice gives probabilty mass function $\mu$ with $\mu(1)=\mu(2)=\dots=\mu(6)=1/6$ on $\mathbb{R}$. 
+%%\item By Kolmogorov's extension theorem: There exists a probabilty 
+%%space $\Omega$ and iid. random-vairables $(X_i)_{i=1}^\infty$ on $\Omega$ such that $p_{X_i}=\mu$ for all $i$. 
+%%\item Can interpret $X_i$ as independent trials of throwing a dice at time instances $i$.
+%%\item[\iarrow] Law of large numbers: If one performs $N$ independent trials of throwing a dice,  average value of outcomes approaches $3.5$ arbitrary close with an arbitrary high probability as $N\to\infty$. 
+%%\eit 
+%%\loud{Extensions:} 
+%%\bit
+%%\item Strong law of large numbers: The sequence of averages in fact converges allmost surely to $\mathbb{E}(X_i)$. This means that the probability of all $\omega\in\Omega$ where 
+%%it does not converge is zero. Not needed here. 
+%%\item Weak and strong law of large numbers also hold for continuous probability spaces and random variables, if expectation value is finite.
+%%\eit
+%%\end{frame}
+%%
+%%
+%%
+%%\subsubsection{Expected distortion over the ensemble set}
+%%\begin{frame}{Expected distortion over the ensemble set}
+%%Expected distortion over $\mathcal{E}_N$ with respect to $P_{\mathcal{E}_N}$ is 
+%%\begin{align*}%\label{ExpectedDist}
+%%\mathbb{E}_{P_{\mathcal{E}_N}}(\delta_N(\cdot))=\sum_{\mathcal{C}\in\mathcal{E}_N}P_{\mathcal{E}_N}(\mathcal{C})\delta_N(\mathcal{C}).
+%%\end{align*}
+%%
+%%\bit
+%%\item Each $\delta_N(\mathcal{C})$ is an expectation value over $\mathcal{A}^N$.
+%%\item [\iarrow] Expected distortion over $\mathcal{E}_N$ is an expectation value of expectation values.
+%%\item By \eqref{EqDistTypical}, for all $(\mathbf{x},\hat{\mathbf{x}})\in A_{d,\epsilon}^{(N)}$, one can estimate
+%%\begin{align}\label{EstDistTypical}
+%%d_N(\mathbf{x},\hat{\mathbf{x}})<D+\epsilon/2.
+%%\end{align}
+%%\item Since $\mathcal{A}$ and $\hat{\mathcal{A}}$ are finite, there exists a $D_{max}\in (0,\infty)$ such that for all $\mathbf{x}\in\mathcal{A}^N$ and all $\hat{\mathbf{x}}\in{\hat{\mathcal{A}}}^N$ one can 
+%%estimate
+%%\begin{align}\label{EstDistAlways}
+%%d_N(\mathbf{x},\hat{\mathbf{x}})<D_{max}.
+%%\end{align}
+%%\eit
+%%\end{frame}
+%%
+%%
+%%
+%%\begin{frame}{Bounding the expected distortion over the ensemble set}
+%%\loud{Idea:} 
+%%\bit
+%%\item Split $\mathbb{E}_{P_{\mathcal{E}_N}}(\delta_N(\cdot))$ into contributions from $A_{d,\epsilon}^{(N)}$ and from complement of $A_{d,\epsilon}^{(N)}$ . 
+%%\item On $A_{d,\epsilon}^{(N)}$, distortion behaves as expected. 
+%%\item Bound contribution from complement of $A_{d,\epsilon}^{(N)}$ invoking the mutual information $I(X;\hat{X})$. 
+%%\eit 
+%%
+%%\loud{Bounding contribution from non-typical sequences:} 
+%%\bit
+%%\item For $\mathbf{x}\in\mathcal{A}^N$ write $\mathcal{C}(x)\in\widehat{\mathcal{A}}^N$ for the corresponding decoded symbol, i. e. 
+%%$\mathcal{C}(x)=\beta(\alpha(\mathbf{x}))$.  
+%%\item For every $\mathbf{x}\in\mathcal{A}^N$ let 
+%%\begin{align*}
+%%P_e(\mathbf{x})=\sum_{\mathcal{C}\in\mathcal{E}_N\colon (\mathbf{x},C(\mathbf{x}))\notin A_{d,\epsilon}^{(N)}}P_{\mathcal{E}_N}(\mathcal{C}).
+%%\end{align*}
+%%\item $P_e(\mathbf{x})$ is the probability of all sequences $\mathcal{C}\in\mathcal{E}_N$ which do \textit{not} contain 
+%%an ${\hat{\mathbf{x}}}_i$ with $(\mathbf{x},{\hat{\mathbf{x}}}_i)\in A_{d, \epsilon}^{(N)}$.
+%%\eit
+%%
+%%\end{frame}
+%%
+%%
+%%
+%%\begin{frame}{Bounding expected distortion over the ensemble set in terms of probability $P_e(\mathbf{x})$}
+%%\bit
+%%\item Applying \eqref{EstDistTypical} and \eqref{EstDistAlways}, one can estimate 
+%%\small
+%%\begin{align}\label{EstimateByPE}
+%%\mathbb{E}_{P_{\mathcal{E}_N}}(\delta_N(\cdot))=& \sum_{\mathcal{C}\in\mathcal{E}}P_{\mathcal{E}_N}(\mathcal{C})\sum_{\mathbf{x}\in\mathcal{A}^N}p^{\times N}_X(\mathbf{x})d_N(\mathbf{x},\mathcal{C}(\mathbf{x}))\nonumber\\
+%%=&\sum_{\mathcal{C}\in\mathcal{E}_N}P_{\mathcal{E}_N}(\mathcal{C})\sum_{\mathbf{x}\colon (\mathbf{x},C(\mathbf{x}))\in A_{d,\epsilon}^{(N)}}p^{\times N}_X(\mathbf{x})d_N(\mathbf{x},\mathcal{C}(\mathbf{x}))
+%%+\sum_{\mathcal{C}\in\mathcal{E}_N}P_{\mathcal{E}_N}(\mathcal{C})\sum_{\mathbf{x}\colon (\mathbf{x},C(\mathbf{x}))\notin A_{d,\epsilon}^{(N)}}p^{\times N}_X(\mathbf{x})d_N(\mathbf{x},\mathcal{C}(x))\nonumber\\
+%%< &\sum_{\mathcal{C}\in\mathcal{E}_N}P_{\mathcal{E}_N}(\mathcal{C})\sum_{\mathbf{x}\colon (\mathbf{x},C(\mathbf{x}))\in A_{d,\epsilon}^{(N)}}p^{\times N}_X(\mathbf{x})(D+\epsilon/2) +\sum_{\mathcal{C}\in\mathcal{E}_N}P_{\mathcal{E}_N}(\mathcal{C})\sum_{\mathbf{x}\colon (\mathbf{x},C(\mathbf{x}))\notin A_{d,\epsilon}^{(N)}}p^{\times N}_X(\mathbf{x})D_{max}\nonumber\\
+%%\leq & D+\epsilon/2
+%%+\sum_{\mathcal{C}\in\mathcal{E}_N}P_{\mathcal{E}_N}(\mathcal{C})\sum_{\mathbf{x}\colon (\mathbf{x},C(\mathbf{x}))\notin A_{d,\epsilon}^{(N)}}p^{\times N}_X(\mathbf{x})D_{max}\nonumber\\
+%%= &D+\epsilon/2+\sum_{\mathbf{x}\in\mathcal{A}^N}p^{\times N}_X(\mathbf{x})P_e(\mathbf{x})D_{max}.
+%%\end{align}
+%%\normalsize
+%%\item[\iarrow] Need to estimate each $P_e(\mathbf{x})$. 
+%%\eit
+%%\end{frame}
+%%
+%%
+%%
+%%\begin{frame}{The probability $P_e(\mathbf{x})$}
+%%\bit
+%%\item Fix $\mathbf{x}\in\mathcal{A}^N$. 
+%%\item For each $i\in\{1,\dots,2^{NR'}\}$, the probability of all sequences $\mathcal{C}=({\hat{\mathbf{x}}}_1,\dots,{\hat{\mathbf{x}}}_i,\dots,{\hat{\mathbf{x}}}_{2^{NR'}})\in\mathcal{E}_N$ for which $(\mathbf{x},{\hat{\mathbf{x}}}_i)\notin A_{d, \epsilon}^{(N)}$
+%%is 
+%%\begin{align*}
+%%1-\sum_{\hat{\mathbf{x}}\in\hat{\mathcal{A}}^N\colon (\mathbf{x}, \hat{\mathbf{x}})\in A_{d, \epsilon}^{(N)}}p^{\times N}_{\hat{X}}(\hat{\mathbf{x}}).
+%%\end{align*}
+%%\item Thus, by \eqref{ProbEnsemble}, one has 
+%%\begin{align}\label{FormulaPe}
+%%P_e(\mathbf{x})=\bigl(1-\sum_{\hat{\mathbf{x}}\in\hat{\mathcal{A}}^N\colon (\mathbf{x}, \hat{\mathbf{x}})\in A_{d, \epsilon}^{(N)}}p^{\times N}_{\hat{X}}(\hat{\mathbf{x}})\bigr)^{2^{NR'}}.
+%%\end{align}
+%%\item[\iarrow] \loud{Bound each factor on the right hand side of \eqref{FormulaPe} invoking the mutual information $I(X;\hat{X})$ !}
+%%\item[\iarrow] Use next two lemmata. 
+%%\eit 
+%%\end{frame}
+%%
+%%\subsubsection{Main lemmata}
+%%
+%%\begin{frame}
+%%\begin{lemma}
+%%Let $\mathbf{x}\in\mathcal{A}^N$. For every $\hat{\mathbf{x}}\in\hat{\mathcal{A}}^N$ such that $(\mathbf{x}, \hat{\mathbf{x}})\in A_{d, \epsilon}^{(N)}$, one can estimate
+%%\begin{align}\label{EstLemmCondMarg}
+%%p^{\times N}_{\hat{X}}(\hat{\mathbf{x}})\geq p^{\times N}_{\hat{X}|X}(\hat{\mathbf{x}}|\mathbf{x})2^{-N(I(X,\hat{X})+ 3\epsilon/2)}.
+%%\end{align}
+%%\end{lemma}
+%%\vspace{-0.1cm}
+%%\small
+%%\loud{Proof} 
+%%\vspace{-0.13cm}
+%%\bit
+%%\item By the chain rule, one has $H(X,\hat{X})=H(\hat{X})+H(X|\hat{X})$. Thus one has
+%%\begin{align}\label{FormulaMut}
+%%I(X;\hat{X})=H(X)-H(X|\hat{X})=H(X)+H(\hat{X})-H(X,\hat{X}). 
+%%\end{align}
+%%\item For $(\mathbf{x},\hat{\mathbf{x}})\in A_{d,\epsilon}^{(N)}$ let
+%%\begin{align*}
+%%\alpha:=\log_2(p^{\times N}_{X\times\hat{X}}(\hat{\mathbf{x}},\mathbf{x}))-\log_2(p^{\times N}_X(\mathbf{x}))-\log_2(p^{\times N}_{\hat{X}}(\hat{\mathbf{x}})).
+%%\end{align*}
+%%\item Applying \eqref{FirstEqEntrTyp}, \eqref{SecondEqEntrTyp}, \eqref{ThirdEqEntrTyp} and \eqref{FormulaMut}, it follows that 
+%%\begin{align*}
+%%|\alpha/N-I(X;\hat{X})|\leq 3\epsilon/2. 
+%%\end{align*}
+%%
+%%\item Thus 
+%%\begin{align*}
+%%p^{\times N}_{\hat{X}|X}(\hat{\mathbf{x}}|\mathbf{x})=\frac{p^{\times N}_{X\times\hat{X}}(\hat{\mathbf{x}},\mathbf{x})}{p^{\times N}_X(\mathbf{x})}
+%%=&p^{\times N}_{\hat{X}}(\hat{\mathbf{x}})\frac{p^{\times N}_{X\times\hat{X}}(\hat{\mathbf{x}},\mathbf{x})}{p^{\times N}_X(\mathbf{x})p^{\times N}_{\hat{X}}(\hat{\mathbf{x}})}
+%%=p^{\times N}_{\hat{X}}(\hat{\mathbf{x}})2^{N\alpha/N}\leq p^{\times N}_{\hat{X}}(\hat{\mathbf{x}}) 2^{N(I(X;\hat{X})+3\epsilon/2)}. \qed
+%%\end{align*}
+%%\eit
+%%\end{frame}
+%%\begin{frame}
+%%\begin{lemma}
+%%For $x,y\in [0,1]$ and $N\in\mathbb{N}$ one can estimate
+%%\begin{align}\label{EstElementaryExponent}
+%%(1-xy)^N\leq 1-x+e^{-yN}
+%%\end{align}
+%%\end{lemma} 
+%%\loud{Proof}
+%%\bit
+%%\item As shown in first lecture, by Bernoulli inequality one has
+%%\begin{align}\label{EqExp}
+%%1-y\leq e^{-y}.
+%%\end{align}
+%%\item Let $g_y(x):=(1-xy)^N$. Then $g_y'(x)=-yN(1-xy)^{N-1}$ is monotonically increasing and thus $g_y$ is convex.  
+%%\item The estimate \eqref{EstElementaryExponent} clearly holds for $x=0$ and it holds for $x=1$ by \eqref{EqExp}. 
+%%\item It follows that 
+%%\begin{align*}
+%%(1-xy)^N=g_y(x)\leq (1-x)g_y(0)+xg_y(1) = &(1-x)+x(1-y)^N\\ \leq &(1-x)+(1-y)^N\\ \leq &(1-x)+e^{-Ny}. 
+%%\end{align*}
+%%\qed
+%%\eit
+%%\end{frame}
+%%
+%%
+%%\subsubsection{Completion of the proof}
+%%
+%%\begin{frame}{Completion of the proof of asymptotic achievability I}
+%%\bit
+%%\item Combining \eqref{FormulaPe}, \eqref{EstLemmCondMarg} and \eqref{EstElementaryExponent}, one can estimate
+%%\begin{align*}
+%%P_e(\mathbf{x})\leq &\biggl(1- \sum_{\substack{\hat{\mathbf{x}}\in\hat{\mathcal{A}}^N\\ (\mathbf{x}, \hat{\mathbf{x}})\in A_{d, \epsilon}^{(N)}}}p^{\times N}_{\hat{X}|X}(\hat{\mathbf{x}}|\mathbf{x})2^{-N(I(X,\hat{X})+ 3\epsilon/2)}\biggr)^{2^{NR'}}\\
+%%\leq & 1- \sum_{\substack{\hat{\mathbf{x}}\in\hat{\mathcal{A}}^N\\ (\mathbf{x}, \hat{\mathbf{x}})\in A_{d, \epsilon}^{(N)}}}p^{\times N}_{\hat{X}|X}(\hat{\mathbf{x}}|\mathbf{x})%+\exp\left(2^{-N(R'-I(X,\hat{X})-3\epsilon/2)}\right)
+%%+\exp\left(-2^{N(R'-I(X,\hat{X})- 3\epsilon/2)}\right).
+%%\end{align*}
+%%
+%%%Applying \eqref{ProbTypicalSet}, it follows that  
+%%\item Thus, one can estimate
+%%\begin{align}\label{EstSumPe}
+%%\sum_{\mathbf{x}\in\mathcal{A}^N}p^{\times N}_X(\mathbf{x})P_e(\mathbf{x})\leq &1-\sum_{(\mathbf{x},\hat{\mathbf{x}})\in\mathcal{A}^N\times{\hat{\mathcal{A}}}^N\colon (\mathbf{x}, \hat{\mathbf{x}})\in A_{d, \epsilon}^{(N)}}p^{\times N}_X(\mathbf{x})p_{\hat{X}|X}^{\times N}(\hat{\mathbf{x}}|\mathbf{x})+\exp\left(-2^{N(R'-I(X,\hat{X})- 3\epsilon/2)}\right)\nonumber\\
+%%=&1-p^{\times N}_{X,\hat{X}}(A_{d, \epsilon}^{(N)})+\exp\left(-2^{N(R'-I(X,\hat{X})- 3\epsilon/2)}\right).%\nonumber\\
+%%%\leq & \epsilon +\exp\left(2^{-N(R'-I(X,\hat{X})-3\epsilon)}\right). 
+%%\end{align}
+%%\eit
+%%\end{frame}
+%%
+%%
+%%
+%%\begin{frame}{Completion of the proof of asymptotic achievability II}
+%%\bit
+%%\item Since $R'>I(X,\hat{X})+3\epsilon/2$ by assumption, one has  
+%%\begin{align}\label{LimitExponentialI}
+%%\lim_{N\to\infty}\exp\left(-2^{N(R'-I(X,\hat{X})- 3\epsilon/2)}\right)=0.
+%%\end{align}
+%%\item Combining \eqref{EstimateByPE}, \eqref{EstSumPe}, \eqref{ProbTypicalSet} and \eqref{LimitExponentialI}, it follows that there exists an $N_0$ such that for 
+%%all $N\geq N_0$ one has
+%%\begin{align*}
+%%\mathbb{E}_{P_{\mathcal{E}_N}}(\delta_N(\cdot))\leq (D+\epsilon).
+%%\end{align*}
+%%\item Thus, for every $N\geq N_0$, there exists at least one $\mathcal{C}\in\mathcal{E}_N$ such that
+%%\begin{align*}
+%%\delta_N(\mathcal{C})\leq (D+\epsilon).
+%%\end{align*}
+%%\qed
+%%\eit
+%%
+%%\end{frame}
+%%
+%%
+\end{document}

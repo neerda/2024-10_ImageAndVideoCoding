@@ -1,0 +1,31 @@
+
+
+\begin{frame}{Entropy-Constrained Lloyd Algorithm for Given Pdf~ (MSE Distortion)}
+  \vspace{-1ex}Given is:
+  \begin{minipage}[t]{0.8\linewidth}
+    \vskip-1.5ex%
+\bit\itemMode{circle}
+\item<+-> the marginal probability density function $f(s)$ of the source
+\item<.-> a Lagrange multiplier $\lambda>0$
+  \eit
+  \end{minipage}
+  
+\medskip
+\uncover<+->{\STRUC{Iterative quantizer design}}
+\ben
+\item<.-> Choose an initial set of reconstruction levels~$\{s'_k\}$ and codeword lengths $\{\ell_k\}$
+\item<+->\smallskip Update the decision thresholds $\{u_k\}$ according to
+	{\vspace{-.5ex}\[
+          u_k = \frac{1}{2}\,\big(s'_{k-1}+s'_k)+
+          \frac{\lambda}{2}\,\left(\frac{\ell_k-\ell_{k-1}}{s'_k-s'_{k-1}}\right)
+	\]}
+\item<+-> Update the reconstruction levels~$\{s'_k\}$ and codeword lengths $\{\ell_k\}$ according to
+	{\vspace{-.5ex}\[
+	s'_k=\frac{\int_{u_k}^{u_{k+1}}s\,f(s)\;\d s}
+              {\int_{u_k}^{u_{k+1}}f(s)\;\d s}
+	      \quad\qquad\text{and}\qquad\quad
+              \ell_k=-\log_2\!\left(\int_{u_k}^{u_{k+1}}f(s)\;\d s\right)
+	\]}
+\item<+-> Repeat the previous two steps until convergence
+\een
+\end{frame}

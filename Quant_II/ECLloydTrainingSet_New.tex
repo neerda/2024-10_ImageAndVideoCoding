@@ -1,0 +1,31 @@
+
+
+\begin{frame}{Entropy-Constrained Lloyd Algorithm for a Training Set~ (MSE Distortion)}
+  \vspace{-1ex}Given is:
+  \begin{minipage}[t]{0.8\linewidth}
+    \vskip-1.5ex%
+\bit\itemMode{circle}
+\item<+-> a sufficiently large realization $\{s_n\}$ of the considered source
+\item<.-> a Lagrange multiplier $\lambda>0$
+  \eit
+  \end{minipage}
+  
+\medskip
+\uncover<.->{\STRUC{Iterative quantizer design}}
+\ben
+\item<.-> Choose an initial set of reconstruction levels~$\{s'_k\}$ and codeword lengths $\{\ell_k\}$
+\item<+->\smallskip Associate all samples of the training set $\{s_n\}$ with one of quantization intervals $\set{I}_k$
+  {\[
+    q(s_n)=\arg\,\min_{\forall k}\;\;(s_n-s'_k)^2+\lambda\cdot\ell_k
+	\]}
+\item<+-> Update the reconstruction levels~$\{s'_k\}$ and codeword lengths $\{\ell_k\}$ according to
+	{\vspace{-.5ex}\[
+	s'_k=\frac{1}{N_k}\sum_{n:\;q(s_n)=k}s_n
+	\quad\qquad\text{and}\qquad\quad
+        \ell_k=-\log_2\!\left(\frac{N_k}{N}\right)
+	      \]}
+        where $N_k$ is the number of samples associated with $\set{I}_k$
+        and $N$ is the total number of samples
+\item<+->\smallskip Repeat the previous two steps until convergence
+\een
+\end{frame}

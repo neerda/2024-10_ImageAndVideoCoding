@@ -1,0 +1,32 @@
+
+\begin{frame}{Lloyd Algorithm for a Training Set ~(MSE Distortion)}
+  \vspace{-1ex}Given is:
+  \begin{minipage}[t]{0.8\linewidth}
+    \vskip-1.5ex%
+\bit\itemMode{circle}
+\item<+-> the size $K$ of the quantizer (i.e., the number of quantization intervals)
+\item<.-> a sufficiently large realization $\{s_n\}$ of considered source
+  \eit
+  \end{minipage}
+  
+\medskip
+\uncover<+->{\STRUC{Iterative quantizer design}}
+\ben
+\item<.-> Choose an initial set of $K$ reconstruction levels~$\{s'_k\}$
+\item<+-> Associate all samples of the training set $\{s_n\}$ with one
+      of the quantization intervals~$\set{I}_k$
+	\[
+	q(s_n)=\arg \min_{\forall k}\;(s_n-s'_k)^2
+	\qquad\quad\;\,
+	\text{(nearest neighbor condition)}
+	\]
+\item<+-> Update the reconstruction levels $\{s'_k\}$ according to
+  \vspace{-.5ex}\[
+  s'_k=\frac{1}{N_k}\,\sum_{n:\,q(s_n)=k}s_n
+	\qquad\;\;
+	\text{(centroid condition)}\vspace{-1.0ex}
+	\]
+        where $N_k$ is the number of samples associated with $\set{I}_k$
+\item<+->\vspace{1.0ex} Repeat the previous two steps until convergence
+\een
+\end{frame}

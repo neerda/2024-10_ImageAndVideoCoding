@@ -1,0 +1,43 @@
+
+
+\begin{frame}{Quantization}
+  \begin{center}
+    \vspace{-2.0ex}
+      \hfitbox{0.90\linewidth}{%
+      \begin{tikzpicture}
+        \begin{axis}[
+            width=8cm,height=2.5cm,
+            axis lines=none,
+            xmin=-1.2,xmax=10.2,ymin=-1.1,ymax=1.1,
+            axis on top,
+            xtick=\empty,ytick=\empty,
+            enlargelimits=false,scale=1.7,
+          ]
+          \addplot+[ycomb,mark size=1.5pt,myblue,domain=-1:9.8,samples=50] {sin(x*45)};
+          \addplot[black,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}]  
+          coordinates { (-1.2,0) (10.2,0) };
+        \end{axis}
+        \begin{axis}[
+            yshift=-2.5cm,
+            width=8cm,height=2.5cm,
+            axis lines=none,
+            xmin=-1.2,xmax=10.2,ymin=-1.1,ymax=1.1,
+            axis on top,
+            xtick=\empty,ytick=\empty,
+            enlargelimits=false,scale=1.7,
+          ]
+          \addplot+[ycomb,mark size=1.5pt,myred,mark options={myred},domain=-1:9.8,samples=50] {(floor(0.5-0.5+4*sin(x*45))+0.5)/4.0};
+          \addplot[black,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}]  
+          coordinates { (-1.2,0) (10.2,0) };
+        \end{axis}
+        \draw[-{Latex[length=2.5mm,width=1.2mm]}] (5,0) -- (5,-1.0) node[pos=.5,anchor=west] {\footnotesize quantization};
+      \end{tikzpicture}
+    }
+  \end{center}
+  \vspace{-1.0ex}%
+  \bit
+\item ``Lossy part'' of source coding
+\item Non-reversible mapping from input to output samples
+\item Determines trade-off between signal fidelity and bit rate
+  \eit\vspace{-5ex}
+\end{frame}

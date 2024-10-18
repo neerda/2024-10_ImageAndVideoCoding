@@ -1,0 +1,25 @@
+
+
+\begin{frame}{Lloyd Quantizer: Minimization of Distortion}
+\STRUC{Necessary Conditions for Minimizing MSE Distortion}
+\ben
+\item<+-> Centroid condition
+  $$
+  s'_k = \frac{\int_{u_k}^{u_{k+1}}s\,f(s)\;\d s}
+              {\int_{u_k}^{u_{k+1}}f(s)\;\d s}
+  $$
+\item<+-> Nearest neighbour condition
+  $$
+  u_k=\frac{1}{2}\big(s'_{k}+s'_{k-1}\big)
+  $$
+\een
+\uncover<+->{\STRUC{Design of Lloyd quantizers}
+\bit
+\item In general: Cannot be derived in closed form 
+\item<+->[\iarrow]\smallskip Iterative algorithm consisting of
+  \bit\normalsize
+  \item Optimize decision thresholds $u_k$ given reconstruction levels~$s'_k$
+  \item Optimize reconstruction levels~$s'_k$ given decision thresholds~$u_k$ 
+  \eit
+\eit}\vspace{-3ex}
+\end{frame}

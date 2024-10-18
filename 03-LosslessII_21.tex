@@ -1,0 +1,976 @@
+%\documentclass{beamer}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{tikz}
+%\usetikzlibrary{trees}
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\begin{document}
+
+\newcommand{\SimpleHuffman}{%
+  \begin{tikzpicture}
+    [
+    snode/.style={text=red,anchor=west,font=\relsize{1}},
+    pnode/.style={rounded rectangle,draw=black,inner sep=0pt,text=officegreen,font=\bf,minimum height=4ex,minimum width=6ex,scale=0.9},
+    lbla/.style={inner sep=2pt,anchor=south,yshift=2pt,myblue,pos=0.5},
+    lblb/.style={lbla,anchor=north,yshift=-4pt},
+    hl/.style={draw=myblue,line width=2pt},
+    ]  
+    \pgfmathsetmacro{\dn}{0.8}
+    \pgfmathsetmacro{\dl}{2.8}
+    \pgfmathsetmacro{\leftx}{-3.3*\dl}
+    \pgfmathsetmacro{\midy}{4.25*\dn}
+    \pgfmathsetmacro{\boty}{-0.5*\dn}
+    \node[anchor=west] (table) at ({\leftx},{\midy}) {\hfitbox{4.2cm}{%
+        \begin{tabular}{>{\color{red}}c<{}>{\color{mygreen}}l<{}>{\color{myblue}}l<{}}
+          \color{black}$a_k$ & \color{black}$p_k$ & \color{black}codewords\\
+          \hline\rule{0ex}{2.5ex}%
+          a     & 0.16 & ~~~{111}\\
+          b     & 0.04 & ~~~{0001}\\
+          c     & 0.04 & ~~~{0000}\\
+          d     & 0.16 & ~~~{110}\\
+          e     & 0.23 & ~~~{01}\\
+          f     & 0.07 & ~~~{1001}\\
+          g     & 0.06 & ~~~{1000}\\
+          h     & 0.09 & ~~~{001}\\
+          i     & 0.15 & ~~~{101}
+        \end{tabular}%
+      }};
+    \node[pnode,fill=gray!25] (root)  at ({-1*\dl},{4.25*\dn}) {1.00};
+    \node[pnode,fill=gray!25] (adifg) at ({0*\dl},{6.375*\dn}) {0.60};
+    \node[pnode,fill=gray!25] (ad)    at ({1*\dl},{7.5*\dn})   {0.32};
+    \node[pnode,fill=gray!25] (a)     at ({2*\dl},{8*\dn})     {0.16};   \draw (a.east) node[snode] {a};
+    \node[pnode,fill=gray!25] (d)     at ({2*\dl},{7*\dn})     {0.16};   \draw (d.east) node[snode] {d};
+    \node[pnode,fill=gray!25] (ifg)   at ({1*\dl},{5.25*\dn})  {0.28};
+    \node[pnode,fill=gray!25] (i)     at ({2*\dl},{6*\dn})     {0.15};   \draw (i.east) node[snode] {i};
+    \node[pnode,fill=gray!25] (fg)    at ({2*\dl},{4.5*\dn})   {0.13};
+    \node[pnode,fill=gray!25] (f)     at ({3*\dl},{5*\dn})     {0.07};   \draw (f.east) node[snode] {f};
+    \node[pnode,fill=gray!25] (g)     at ({3*\dl},{4*\dn})     {0.06};   \draw (g.east) node[snode] {g};
+    \node[pnode,fill=gray!25] (ehbc)  at ({0*\dl},{2.125*\dn}) {0.40};
+    \node[pnode,fill=gray!25] (e)     at ({1*\dl},{3*\dn})     {0.23};   \draw (e.east) node[snode] {e};
+    \node[pnode,fill=gray!25] (hbc)   at ({1*\dl},{1.25*\dn})  {0.17};
+    \node[pnode,fill=gray!25] (h)     at ({2*\dl},{2*\dn})     {0.09};   \draw (h.east) node[snode] {h};
+    \node[pnode,fill=gray!25] (bc)    at ({2*\dl},{0.5*\dn})   {0.08};
+    \node[pnode,fill=gray!25] (b)     at ({3*\dl},{1*\dn})     {0.04};   \draw (b.east) node[snode] {b};
+    \node[pnode,fill=gray!25] (c)     at ({3*\dl},{0*\dn})     {0.04};   \draw (c.east) node[snode] {c};
+    \draw   (bc)    -- (b);
+    \draw   (bc)    -- (c);
+    \draw   (fg)    -- (f);
+    \draw   (fg)    -- (g);
+    \draw   (hbc)   -- (h);
+    \draw   (hbc)   -- (bc);
+    \draw   (ifg)   -- (i);
+    \draw   (ifg)   -- (fg);
+    \draw   (ad) -- (a);
+    \draw   (ad) -- (d);
+    \draw   (ehbc) -- (e);
+    \draw   (ehbc) -- (hbc);
+    \draw   (adifg) -- (ad);
+    \draw   (adifg) -- (ifg);
+    \draw   (root) -- (adifg);
+    \draw   (root) -- (ehbc);
+    \node [anchor=north] at (root.south) {root};
+    \draw (root)--(adifg)                    node [lbla] {1};
+    \draw         (adifg)--(ad)              node [lbla] {1};
+    \draw                  (ad)--(a)         node [lbla] {1};
+    \draw                  (ad)--(d)         node [lblb] {0};
+    \draw         (adifg)--(ifg)             node [lblb] {0};
+    \draw                  (ifg)--(i)        node [lbla] {1};
+    \draw                  (ifg)--(fg)       node [lblb] {0};
+    \draw                         (fg)--(f)  node [lbla] {1};
+    \draw                         (fg)--(g)  node [lblb] {0};
+    \draw (root)--(ehbc)                     node [lblb] {0};
+    \draw         (ehbc)--(e)                node [lbla] {1};
+    \draw         (ehbc)--(hbc)              node [lblb] {0};
+    \draw                 (hbc)--(h)         node [lbla] {1};
+    \draw                 (hbc)--(bc)        node [lblb] {0};
+    \draw                        (bc)--(b)   node [lbla] {1};
+    \draw                        (bc)--(c)   node [lblb] {0};
+  \end{tikzpicture}
+}
+
+\startnewpart[\SimpleHuffman]{Lossless Coding II}
+
+
+
+
+
+\section{Huffman Coding}
+
+
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\subsection{Introduction}
+
+\begin{frame}{Setup and problem statement}
+\loud{Lossless coding task: } 
+\bit
+\item Given a \loud{finite alphabet} $\mathcal{A}$ of symbols.
+\item Each symbol $a\in\mathcal{A}$ has a  \loud{probability mass} $p_a$.
+\item \loud{Goal: } Design \loud{uniquely decodable codes} $\gamma$ for $\mathcal{A}$ of \loud{minimal average codeword-length} $\overline{\ell}(\gamma)$. 
+\eit
+
+\loud{Entropy gives bounds for minimal average codeword length:}
+\bit
+\item One always has $H(p)\leq \overline{\ell}(\gamma)$, where $H(p)$ is the \loud{entropy} of the distribution $p$. 
+\item There exists a uniquely decodable code $\gamma$ with $\overline{\ell}(\gamma)\leq H(p)+1$. 
+\eit
+
+
+\loud{Open question:}
+\bit
+\item Can we \loud{explicitly construct} a uniquely decodable code of minimal average codeword length? 
+\eit
+
+\ALERT{\iarrow  Huffman Algorithm: Construct prefix code with minimal average codeword length. }
+\end{frame}
+
+\subsection{Huffman Algorithm}
+
+\begin{frame}{The Huffman Algorithm}
+\begin{minipage}[t]{0.8\linewidth}
+  \STRUC{Idea for Construction of Binary Code Tree}
+  \bit\small%
+  \item Consider optimal prefix codes for which the two least likely symbols correspond to codewords of maximum length that differ only in the final bit
+  \item[\iarrow]<3-> Choose the two least likely symbols and create a parent node 
+  \item[\iarrow]<6-> Repeat the procedure with the reduced alphabet
+ \eit
+\end{minipage}%
+
+  \vspace{-2.0ex}
+  \begin{center}
+    \begin{minipage}{0.8\linewidth}
+      \bablk<10->{Huffman Algorithm (via construction of binary code tree)}
+      \ben\small
+    \item\vspace{.3ex} Select the two letters $a$ and $b$ with the smallest probabilities $p_a$ and $p_b$
+    \item\vspace{.3ex} Create a parent node for the two letters $a$ and $b$ in the binary code tree
+    \item\vspace{.3ex} Replace the letters $a$ and $b$ with a new letter with probability $p_a+p_b$
+    \item\vspace{.3ex} If the resulting new alphabet contains more than a single letter,\\
+      repeat all previous steps with this alphabet
+    \item\vspace{.3ex} Convert the obtained binary code tree into a prefix code
+      \een
+      \eablk
+    \end{minipage}
+  \end{center}
+  \vspace{-10ex}
+\end{frame}
+
+
+\subsection{Huffman Algorithm example}
+
+\input{Lossless_II/HuffmanExample.tex}
+
+%\begin{frame}{Optimality of Huffmann codes}
+%
+%\begin{lemma}
+%Let $\gamma$ be an optimal code. If $a, b\in\mathcal{A}$ satisfy 
+%$p_a<p_b$, then $\ell(\gamma(a))\geq \ell(\gamma(b))$.
+%\end{lemma}
+%\loud{Proof: } Otherwise, exchanging codewords of $a$ and $b$ would give a code with strictly smaller average codeword length.
+%
+%\begin{lemma}
+%Let $\gamma$ be an optimal prefix code. Let $\ell_{max}(\gamma)$ be the maximal length of all codewords of $\gamma$. 
+%\bit
+%\item There are two codewords $\gamma(a)$ and $\gamma(b)$ of length $\ell_{max}(\gamma)$ that differ only in the final bit and such that 
+%$p_a$ is smallest symbol probability. 
+%\item There exists a prefix code with the same average codeword length as $\gamma$ for which there are two codewords $\gamma(a_{i_1})$ and $\gamma(a_{i_2})$ of length $\ell_{max}(\gamma)$ that differ only in the final bit and for which $p_{i_1}$ and $p_{i_2}$ correspond to the two smallest symbol 
+%probabilities. 
+%\eit 
+%\end{lemma}
+%\loud{Proof of second statemen:} Let $a$ and $b$ be as in the first statement. Let $c$ be a smybol such that $p_a$ and $p_c$ are 
+%the two smallest symbol probabilites. Exchange codewords for $b$ and $c$. Since $p_c\leq p_b$ and since $\ell(\gamma(b))\geq \ell(\gamma(c))$, resulting codes can not have larger average codeword length. Codeword lengths are the same since $\gamma$ was assumed to be optimal. 
+%\end{frame}
+
+\subsection{Optimality of Huffman codes}
+
+\begin{frame}{Optimality of Huffman codes: First lemma}
+\begin{lemma}[First Lemma for optimal prefix codes]
+Let $\gamma$ be an optimal prefix code. Let $\ell_{max}(\gamma)$ be the maximal length of all codewords of $\gamma$. 
+There are two codewords $\gamma(a)$ and $\gamma(b)$ of length $\ell_{max}(\gamma)$ that differ only in the final bit and such that 
+$p_a$ is the smallest symbol probability.
+\end{lemma}
+\loud{Proof:} 
+\bit
+\item Let $\mathcal{A}_{max}$ be the set of all symbols whose codewords have length $\ell_{max}(\gamma)$.
+\item Let $a\in\mathcal{A}_{max}$ have smallest probability $p_a$ among all symbols of $\mathcal{A}_{max}$. 
+\item If there exists  
+symbol $c\notin\mathcal{A}_{max}$  with $p_c<p_a$, exchanging codewords of $a$ and $c$ would 
+give code with strictly smaller average codeword length than $\gamma$. 
+\item [\iarrow] $p_a$ has to be smallest probability among all 
+symbols of $\mathcal{A}$. 
+\item[\iarrow]Last lecture: Since $\gamma$ is optimal, tree representing $\gamma$ has to be proper.
+Thus, parent node of $a$ has a child $b$ different from $a$. Then $b$ satisfies required properties.
+\eit 
+\end{frame}
+
+\begin{frame}{Optimality of Huffman codes: Second lemma}
+\begin{lemma}[Second Lemma for optimal prefix codes]
+There exists an optimal prefix code $\gamma$ with the following property: 
+There are two codewords $\gamma(a)$ and $\gamma(b)$ which are of maximal length, differ only in the final bit and such that 
+$p_a$ and $p_b$ are the two smallest symbol probabilities 
+\end{lemma}
+\loud{Proof:} 
+\bit
+\item Let $\gamma$ be an optimal prefix code.
+\item  Let $a$ and $b$ be as in previous lemma.
+\item Let $c$  be symbol such that $p_a$ and $p_c$ are the smallest probabilities. Then $p_c\leq p_b$ and $\ell(\gamma(c))\geq \ell(\gamma(b))$. 
+\item If $p_c=p_b$, Lemma is proved.
+\item Assume that $p_c<p_b$. Since $b$ has maximal codeword length, exchanging codwords of $b$ and $c$ gives code $\gamma'$ with $\overline{\ell}(\gamma')\leq \overline{\ell}(\gamma)$.  
+\item[\iarrow] Since $\gamma$ is optimal:  Exchanging $b$ and $c$ gives code with same average codeword length and desired property. 
+\eit 
+\end{frame}
+
+\begin{frame}{Optimality of Huffman codes}
+\begin{theorem}
+The Huffman algorithmy yields a prefix code that minimizes the average codeword length among 
+all uniquely decodable codes. 
+\end{theorem}
+\loud{Proof:}
+\bit
+\item Proof by induction on alphabet-size $N$. For $N=2$, statement obviously true. 
+\item Let $\gamma$ be an optimal prefix code  as in second lemma, symbols $a, b$ as in second lemma. 
+\item Represent $\gamma$ by tree. Merge $a$ and $b$ to their single parent node, get tree $\mathcal{T}^{\#}$.
+\item Let $\mathcal{A}^{\#}$ be alphabet arising from $\mathcal{A}$ by merging $a$ and $b$ to a single symbol 
+with probability $p_a+p_b$. Keep other symbol probabilities. 
+\item Let $\gamma_1$ be prefix code for $\mathcal{A}^{\#}$ represented by $\mathcal{T}^{\#}$ and let $\gamma_{2}$ be Huffman code for $\mathcal{A}^{\#}$.
+%\item One has $\overline{\ell}(\gamma)=\overline{\ell}(\gamma_1)+p_a+p_b$ by construction. 
+\item Induction hypothesis: $\ell(\gamma_1)\geq \ell(\gamma_2)$. 
+\item Thus $\overline{\ell}(\gamma)=\overline{\ell}(\gamma_1)+p_a+p_b\geq \overline{\ell}(\gamma_2)+p_a+p_b$
+\item Right hand side is average codeword-length of a Huffman code for $\mathcal{A}$.
+\qed 
+\eit
+\end{frame}
+
+
+
+\section{Coding of multiple sources}
+
+
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\subsection{Motivation}
+
+\begin{frame}{Motivational example}
+\ALERT{How to model the sources that one wants to compress?}
+\begin{figure}
+\centering
+\includegraphics[width=0.33\textwidth]{Lossless_II/Shannon_Bio.png}
+%\captionsetup{labelformat=empty}
+%\caption{Example for handwritten digits from MNIST.}
+\end{figure}
+\bit
+\item Assume one wants to design a lossless compression of texts written in German language.
+\item Inspecting the letter $h$ as an example: 
+\bit 
+\item Frequency of $h$ varies depending on previous letters. 
+\item Letters after $h$ have different distribution than letters after i.g. letter $a$. 
+\eit 
+\eit
+\end{frame}
+
+
+
+\begin{frame}{Motivational example}
+
+\begin{minipage}[t]{0.8\linewidth}
+\loud{First observation:} For a given position in the text,  probability of a given letter depends heavily 
+on previous letters.
+\bit\small
+\item Probability of letter $h$ is very large if previous letter was a $c$ but very small if previous letter was e.g. a $k$. 
+\item The more previous letters are considered, the better the probability for a given letter can be estimated. If previous
+two letters are $sc$, probability of $h$ is even larger.  
+\item Probabilty should never be one for any letter: Text may always contain typos. Process not deterministic.  
+\eit
+ \ALERT{\iarrow $\:$ Considering conditional probabilities between letters should be very useful for compression}. 
+\end{minipage}
+
+\begin{minipage}[t]{0.8\linewidth}
+\loud{Second observation:} The actual position within a text is not relevant for the probability of a given letter 
+or of a given block of letters.
+
+\smallskip
+\ALERT{\iarrow $\:$ Sequence of letters should be modelled as a stationary process}.
+\end{minipage}
+
+\end{frame}
+
+
+\begin{frame}{Motivational example}
+\begin{minipage}[t]{0.9\linewidth}
+\loud{Third observation:} 
+\bit\small
+\item The probability distribution on the ``set of all texts'' completely determines the probability 
+of a given letter or a block of letters. 
+\item \textbf{However: } It seems only realistic to model the probability of a given letter or of some finite small sequence of letters. 
+\item Underlying probability on the ``set of all texts'' remains unknown.
+\eit 
+\smallskip
+\ALERT{\iarrow $\:$ Full sample space with its probability only used formally, not explicitly. Rather: Random variables on the sample space 
+and their distributions are considered}.
+\end{minipage}
+
+\begin{minipage}[t]{0.9\linewidth}
+\loud{Case of images or videos:} Similar situation.
+\bit\small
+\item First example: Can think of each sample position and sample value as analogon for letters in texts. Conditional dependencies 
+more complicated. 
+\item In typical codecs: Consider quantized transform coefficients or side information as analogon. 
+\item Again modeled as a stationary random process with strong conditional dependencies. 
+%\item Underlying distribution on the full sample space, ``set of all natural images'' unknonw.   
+\eit
+\smallskip
+\ALERT{\iarrow $\:$ Make above observations formal in the sequel!} 
+\end{minipage}
+
+
+\end{frame}
+
+
+
+\subsection{Discrete probability spaces}
+
+\begin{frame}{Discrete probability spaces}
+\loud{Discrete probability space $(P,\Omega)$:} 
+\bit
+\item 
+\loud{Sample space:} Discrete set  $\Omega$. 
+\item \loud{Set of events:} Power set 
+\[
+\mathfrak{P}(\Omega)=\{A|A\subset\Omega\}
+\]
+of $\Omega$. 
+\item \loud{Probability:} Function $P:\mathfrak{P}(\Omega)\to[0,1]$, such that
+\begin{equation*}
+P(\Omega)=1
+\end{equation*}
+and such that
+\begin{align*}
+P(\bigsqcup_{i\in I}A_i)=\sum_{i\in I}P(A_i)
+\end{align*}
+for each countable index set $I$ an each family $(A_i)_{i\in I}$ of events with $A_i\cap A_j=\emptyset$ for $i\neq j$. 
+\eit 
+\end{frame}
+
+\begin{frame}{Discrete random variables} 
+
+\loud{Discrete random variable:}
+\bit
+\item 
+Function $X:\Omega\to\mathbb{R}$. 
+\item The \loud{alphabet} $\mathcal{A}_X$ of 
+$X$ is defined as $\mathcal{A}_X=\{X(\omega)\colon \omega\in\Omega\}$. 
+\eit
+\smallskip
+\loud{Probability mass function:} 
+\bit
+\item Function $p_X:\mathbb{R}\to [0,1]$, given by 
+\[
+p_X(x)=P(X=x)=P(\{\omega\in\Omega\colon X(\omega)=x\}).
+\]
+\item One has $0\leq p_X(a)\leq 1$ for all $a\in\mathcal{A}_X$ and $\sum_{a\in\mathcal{A}_X}p_X(a)=1$.
+\eit
+\smallskip
+\loud{Probability distribution:} 
+\bit
+\item Function $p_X:\mathfrak{P}(\mathbb{R})\to \mathbb{R}$ defined as 
+\[
+p_X(B):=P(X\in B)=P(\{\omega\in\Omega\colon X(\omega)\in B\}),\quad B\subseteq\mathbb{R}.
+\]
+\item One has 
+\[
+p_X(B)=\sum_{a \in \mathcal{A}_X\cap B}p_X(a).
+\]
+\eit 
+\end{frame}
+
+\begin{frame}{Joint distributions}
+ Let $X$, $Y$ be random variables on $\Omega$.
+
+\loud{Joint probability mass function:}
+\bit
+\item Function $p_{X,Y}:\mathbb{R}^2\to\mathbb{R}$, defined as 
+\begin{align*}
+p_{X,Y}(x,y)=P((X=x) \cap (Y=y))=P(\{\omega\in\Omega\colon X(\omega)=x\text{ and }Y(\omega)=y\}).
+\end{align*}
+\eit
+\loud{Joint distribution:}
+\bit
+\item 
+Function $p_{X,Y}:\mathcal{P}(\mathbb{R}^2)\to\mathbb{R}$ defined as 
+\begin{align*}
+p_{X,Y}(A)=P(\{\omega\in\Omega\colon (X(\omega),Y(\omega))\in A\}),\quad A\subseteq\mathbb{R}^2.
+\end{align*}
+\eit
+\loud{Marginal distributions: }
+\bit
+\item Distributions $p_X$ and $p_Y$.
+\item One has 
+\begin{align}\label{MarginalJoint}
+p_X(x)=\sum_{y\in\mathcal{A}_Y}p(x,y);\quad p_Y(y)=\sum_{x\in\mathcal{A}_X}p(x,y). 
+\end{align}
+\eit 
+\end{frame} 
+
+
+\begin{frame}{Conditional probability} 
+\loud{Conditional probability given an event}
+\bit
+\item For an event $B\in\mathfrak{P}(\Omega)$ with $P(B)>0$ and any event $A\in\mathfrak{P}(\Omega)$, define 
+\[
+P(A|B):=\frac{P(A\cap B)}{P(B)}
+\]
+as the conditional probability of $A$ given $B$ .
+\eit
+\loud{Conditional probability for random variables:}
+\bit
+\item  Let $X$, $Y$ be random variables on $\Omega$ with alphabets $\mathcal{A}_X$ and $\mathcal{A}_Y$. 
+\item For $x\in\mathcal{A}_X$ with $p_X(x)>0$ and for $y\in\mathcal{A}_Y$, the conditional probability $p_{Y|X}(y|x)$ of $y$ given $x$ is 
+\begin{align*}
+p_{Y|X}(y|x)=\frac{p_{X,Y}(x,y)}{p_X(x)}.
+\end{align*}
+\item $X$ and $Y$ are \loud{independent} if $p_{X,Y}=p_X\cdot p_Y$, i.e. $p_{Y|X}(y|x)=p_Y(y)$ for all $y$, all $x$ with $p_X(x)>0$.
+\eit
+\end{frame}
+
+
+\begin{frame}{Discrete random process} 
+\loud{Joint, marginal and conditional probabilities of $N$ random variables:}
+\bit
+\item Above defintions for two random variables $X$ and $Y$ extend directly to the case of $N$ random variables $X_1,\dots,X_N$. 
+\item Joint probability mass functions and distributions $p_{X_1,\dots,X_N}$ are defined as above.
+\item Conditional distribution $p_{X_N|X_1,\dots,X_{N-1}}(x_N|x_1,\dots,x_{N-1})$ defined as above. 
+\eit
+\loud{Discrete random process:}
+\bit
+\item A sequence $\mathcal{X}=(X_n)_{n=1}^\infty$ of discrete random variables on $\Omega$.
+\eit
+\loud{Stationary random process $\mathcal{X}$:}
+\bit
+\item All consecutive joint distributions are invariant under time. One has
+\[
+p_{X_1,\dots,X_N}=p_{X_{1+T},\dots,X_{N+T}}
+\]
+for all $T\in\mathbb{N}$ and all $N\in\mathbb{N}$. 
+\eit
+\end{frame}
+
+
+\subsection{Setup}
+
+
+\begin{frame}{Coding of combined sources}
+\loud{Goal:} 
+\bit
+\item Consider sources $X$ and $Y$ with alphabets $\mathcal{A}_X,  \mathcal{A}_Y$.
+\item Assume that joint distribution $p_{X,Y}$ is given.
+\item Want to code symbols of the combined alphabet $\mathcal{A}_X\times \mathcal{A}_Y$. Write symbols as $xy$, $x\in\mathcal{A}_X$, $y\in\mathcal{A}_Y$. 
+\eit
+
+\loud{Joint coding:}
+\bit
+\item Can treat joint distribution $p_{X,Y}$, alphabet $\mathcal{A}_X\times\mathcal{A}_Y$ as single distribution and single alphabet. 
+\item Then: Proceed as before, Shannon Code or Huffman Code.
+\item Joint entropy of  $p_{X,Y}$ is lower bound for optimal average codeword length. 
+\eit
+\loud{Problems of joint coding:}
+\bit
+\item Alphabet $\mathcal{A}_X\times\mathcal{A}_Y$ can be very large compared to individual alphabets $\mathcal{A}_X$, $\mathcal{A}_Y$. 
+\item Instantaneous decoding of individual symbols $x$ and $y$ from $xy$ not guaranteed.
+\item Even for joint prefix code: May need to wait for whole codeword for $xy$ before $x$ can be decoded. 
+\item Problems become worse if more than two sources are considered. 
+\eit 
+\end{frame}
+
+\subsection{Marginal and conditional coding}
+
+\begin{frame}{Marginal and conditional coding}
+\loud{Marginal coding}
+\bit
+\item Let $\gamma_X$ prefix code for $\mathcal{A}_X$ and $\gamma_Y$ prefix code for $\mathcal{A}_Y$. 
+\item Define a uniquely decodable code (\textbf{exercies!}) on symbols $xy$, with $x\in\mathcal{A}_X, \:y\in\mathcal{A}_Y$ by :
+\bit
+\item Code $x$ using $\gamma_X$.
+\item Code $y$ using $\gamma_Y$. 
+\eit
+\item This seems to solve above problems of joint coding. 
+\item \loud{But: } Possible dependencies between symbols $x$ and $y$ are not reflected. Efficiency may suffer. 
+\eit
+\loud{Conditional coding} 
+\bit
+\item Let $\gamma_X$ prefix code for $\mathcal{A}_X$. 
+\item For each $x_i$ in $\mathcal{A}_X$, let $\gamma_Y^{i}$ prefix code. Can use different codes for different $x_i$. 
+\item Define a uniquely decodable code on symbols $xy$, with $x\in\mathcal{A}_X, \:y\in\mathcal{A}_Y$ by :
+\bit
+\item Code $x$ using $\gamma_X$.
+\item If $x=x_i$, code $y$ using $\gamma_Y^i$. 
+\eit
+\item Exploit dependencies between $x$ and $y$ by optimizing $\gamma_Y^i$ for conditional probability $p(\cdot|x_i)$. 
+\eit 
+\end{frame}
+
+
+\begin{frame}{Average codeword lengths of marginal and conditional coding}
+\bit
+\item Average codeword length $\overline{\ell}_m$ of marginal code is (\textbf{exercise!})
+\begin{align}\label{CWMarg}
+\overline{\ell}_m= \overline{\ell}(\gamma_X)+\overline{\ell}(\gamma_Y) 
+\end{align}
+\item Average codword length $\overline{\ell}_c$ of conditional code:
+\begin{align}
+\overline{\ell}_c=&\sum_{x_i\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p(x_i,y)(\ell(\gamma_X(x_i))+\ell(\gamma_Y^i(y)))\nonumber\\
+=&\sum_{x_i\in\mathcal{A}_X}p(x_i)\ell(\gamma_X(x_i))+\sum_{x_i\in\mathcal{A}_X}p(x_i)\sum_{y\in\mathcal{A}_Y}p(y|x_i)\ell(\gamma_Y^i(y))\label{EqCondL}\\
+=&\overline{\ell}_{\gamma_X}+\sum_{x_i\in\mathcal{A}_X}p(x_i)\overline\ell(\gamma_Y^i)\nonumber,
+\end{align}
+where $\overline\ell(\gamma_Y^i)$ taken with respect to $p(\cdot|x_i)$.
+\item Choose optimal codes $\gamma_Y^{i}$. Then by optimality
+\[
+\sum_{y\in\mathcal{A}_Y}p(y|x_i)\ell(\gamma_Y^i(y))\leq \sum_{y\in\mathcal{A}_Y}p(y|x_i)\ell(\gamma_Y(y)).
+\] 
+\eit
+\end{frame}
+
+\begin{frame}{Comparison of optimal average codeword lengths for marginal and conditional coding}
+\bit
+\item Using the optimal codes $\gamma_Y^{i}$, one has
+\begin{align*}
+\sum_{x_i\in\mathcal{A}_X}p(x_i)\sum_{y\in\mathcal{A}_Y}p(y|x_i)\ell(\gamma_Y^i(y))\leq& \sum_{x_i\in\mathcal{A}_X}p(x_i)\sum_{y\in\mathcal{A}_Y}p(y|x_i)\ell(\gamma_Y(y))
+\\=&\sum_{y\in\mathcal{A}_Y}\sum_{x_i\in\mathcal{A}_X}p(x_i,y)\ell(\gamma_Y(y))
+\\=& \sum_{y\in\mathcal{A}_Y}p(y)\ell(\gamma_Y(y))
+\\=&\overline{\ell}(\gamma_Y).
+\end{align*}
+\item Applying \eqref{CWMarg} and \eqref{EqCondL} implies: 
+\item [\iarrow] \loud{Optimal average codeword length of conditional coding is less or equal than optimal average codeword length of marginal coding.}
+\eit
+\end{frame} 
+
+
+\subsection{Examples for conditional coding}
+
+\begin{frame}{Example for benefit of conditional coding}
+\loud{Given distribution: }
+\bit
+\item Consider sources $X$ and $Y$ with alphabets $\mathcal{A}_X=\{0,1\}$ and $\mathcal{A}_Y=\{0,1,2\}$. 
+\item Assume that the joint probability $p_{X,Y}$ is given as
+\begin{center} 
+ \begin{tabular}[hbt!]{ |c|c|c| } 
+ \hline
+ x & y & $p_{X,Y}(x,y)$ \\
+ \hline 
+0 & 0 & 1/4\\  
+0 & 1 & 1/8\\
+0 & 2 &  1/8\\
+1 & 0 & 1/8\\
+1 & 1 &  1/8\\
+1& 2& 1/4\\
+ \hline
+\end{tabular}.
+\end{center}
+\eit
+\smallskip
+%\item Joint entropy: 
+%\begin{align*}
+%H(X,Y)=-2\cdot 1/4\log_2(1/4)-4\cdot 1/8\log_2(1/8)=1+12/8=5/2.
+%\end{align*}
+\loud{Optimal average codeword length is 5/2=20/8:}
+\bit
+\item Each $p_{X,Y}(x,y)$ is negative 
+integer power of two, thus entropy equals average codeword length. Compute entropy, \textbf{exercise!}
+\item Alternative: Write down Shannon-Code or Huffman-Code explicitly, \textbf{exercise!}
+\eit
+\end{frame}
+
+\begin{frame}{Example for benefit of conditional coding}
+\loud{Marginal probabilities:}
+\bit 
+\item $p_X(0)=p_X(1)=1/2$
+\item $p_Y(0)=3/8, \:p_Y(1)=1/4, \:p_Y(2)=3/8.$
+\eit
+%\item Marginal entropies: 
+%\bit
+%\item $H(X)=1$
+%\item $H(Y)=-6/8\log_2(3/8)-1/4\log_2(1/4)$.
+%\eit
+%\eit
+\loud{Average codeword length using optimal marginal code is 21/8:}
+\bit
+\item Optimal codes for marginals $X$ and $Y$:
+\bit
+\item Code $\gamma_X$ with $\gamma_X(0)=0,\:\gamma_X(1)=1$ is optimal code for $p_X$ with average 
+codeword length $\bar{\ell}_{\gamma_X} = 1$.
+\item Code $\gamma_Y$ with $\gamma_Y(0)=0,\: \gamma_Y(1)=10,\: \gamma_Y(2)= 11$ is an optimal code for $p_Y$ with average 
+codeword length $\bar{\ell}_{\gamma_Y}=3/8+2\cdot 1/4+2\cdot 3/8=13/8$. 
+\eit
+\item Marginal code: Code symbols $xy$ by coding $x$ with $\gamma_X$ and then coding $y$ with $\gamma_Y$. 
+\item Marginal code has average codeword-length $1+13/8=21/8$, redundancy $R=1/8$.
+\item Marginal code not optimal.
+\eit
+
+
+\end{frame}
+
+\begin{frame}{Example for benefit of conditional coding}
+\loud{ Conditional probabilites: }
+\bit
+\item $p_{Y|X}(y=0|x=0)=1/2,\:p_{Y|X}(y=1|x=0)=1/4,\:p_{Y|X}(y=2|x=0)=1/4$ 
+\item $p_{Y|X}(y=0|x=1)=1/4,\:p_{Y|X}(y=1|x=1)=1/4,\:p_{Y|X}(y=2|x=1)=1/2$.
+\eit
+%\item Conditional entropy: $H(Y|X)=3/2$, exercise!  
+%\item Optimal codes: 
+%\bit
+%\item Code $0\mapsto 0$, $1\mapsto 10$, $2\mapsto 11$  is an optimal code for $p_{Y|X}(-|x=0)$,  
+%average codeword length $3/2$.
+%\item Code $0\mapsto 00$, $1\mapsto 01$, $2\mapsto 1$  is an optimal code for $p_{Y|X}(-|x=1)$,  
+%average codeword length $3/2$.
+%\eit
+\smallskip
+\loud{Average codeword length using conditional code is 5/4=20/8}
+\bit
+\item Code $\gamma^{0}_{Y}$, with $\gamma^{0}_Y(0)=0, \gamma^{0}_Y(1)=10, \gamma^{0}_Y(2)=11$ is an optimal code for $p_{Y|X}(\cdot|x=0)$,  
+average codeword length $3/2$.
+\item Code $\gamma^{1}_Y$, with $\gamma^{1}_Y(0)=00, \gamma^{1}_Y(1)=01, \gamma^{1}_Y(2)=1$ is an optimal code for $p_{Y|X}(\cdot|x=1)$,  
+average codeword length $3/2$.
+\item Code combined symbols $xy$ by conditional code: 
+\bit
+\item Code $x$ using $\gamma_X$.
+\item If $x=0$, code $y$ using $\gamma_Y^0$. If $x=1$, code $y$ using $\gamma_Y^1$. 
+\eit
+\item Average codeword length of this conditional code is $5/2=20/8$, \textbf{exercise! } 
+\item Conditional code is optimal. 
+\eit
+\smallskip
+\loud{\iarrow $\:$ Conditional code  has better average codeword length than marginal code. }
+\end{frame}
+
+\begin{frame}{Conditional coding not always benficial}
+\loud{Given distribution: }
+\bit
+\item Consider sources $X$ and $Y$ with alphabets $\mathcal{A}_X=\{0,1\}$ and $\mathcal{A}_Y=\{0,1,2\}$. 
+\item Assume that the joint probability $p_{X,Y}$ is given as
+\begin{center} 
+ \begin{tabular}[hbt!]{ |c|c|c| } 
+ \hline
+ x & y & $p_{X,Y}(x,y)$ \\
+ \hline 
+0 & 0 & 1/2\\  
+0 & 1 & 1/8\\
+0 & 2 &  1/8\\
+1 & 0 & 1/8\\
+1 & 1 &  1/16\\
+1& 2& 1/16\\
+ \hline
+\end{tabular}.
+\end{center}
+\eit
+\loud{Exercise: }
+\bit
+\item Optimal average code length is $17/8$.
+\item Optimal average code length for conditional coding is $19/8$.
+\item Optimal average code length for marginal coding is $19/8$.
+\eit 
+\end{frame}
+
+%\section{Fundamental Lossless Source Coding Theorem}
+%\begin{frame}
+% \vspace{8.0ex}
+%\begin{center}
+%\begin{beamercolorbox}[sep=12pt,center]{part title}
+%\usebeamerfont{section title}\insertsection\par
+%\end{beamercolorbox}
+%\end{center}
+%\end{frame}
+
+
+%\begin{frame}
+%\begin{Lemma}{Conditioning reduces entropy for more than one condition}
+%Let $X, Y, Z$ be random variables on a discrete probabilty space $\Omega$. 
+%Then one has 
+%\begin{align*}
+%H(Z|X,Y)\leq H(Z|Y). 
+%\end{align*}
+%\end{Lemma}
+%
+%\loud{Proof: } 
+%
+%\bit\small
+%\item 
+%One has 
+%\[
+%p(z|x,y)=\frac{p(z,y|x)}{p(y|x)}.
+%\]
+%\item This implies (\textbf{exercise!}):
+%\begin{align*} 
+%H(Z|X,Y)=H(Z,Y|X)-H(Y|X).
+%\end{align*}
+%\textbf{exercise!}
+%\item[\iarrow] \textbf{Conditioning does not increase entropy and chain rule for entropy: }
+%\begin{align*}
+%H(Z,Y|X)-H(Y|X)\leq &H(Z,Y)-H(Y|X)\\
+%=&H(Z|Y)+H(Y)-H(Y|X).
+%\end{align*}
+%\item[\iarrow] \textbf{Chain rule for entropy: }
+%\begin{align*}
+%H(Z,Y)-H(Y|X)=H(Z|Y)+H(Y)-H(Y|X).
+%\end{align*}
+%\eit
+%
+%
+%\begin{align*}
+%H(Z|X)-H(Z|X,Y)=\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}\sum_{z\in\mathcal{A}_Z}p(x,y,z)\log_2(\frac{p(z|x)}{p(z|(x,y))})
+%\end{align*}
+%\end{frame}
+
+
+\subsection{Conditional and joint entropy}
+
+\begin{frame}{Conditional and joint entropy}
+
+\ALERT{Goal: Derive relation between entropy and optimal average codeword length for a random process similar as for 
+the case of a single random variable}.
+
+\iarrow$\:$ Need to introduce concepts for the entropy of a random process and derive some properties. 
+
+\vskip 4pt 
+Let $X$ and $Y$ be random variables on a discrete probability space $(\Omega,P)$ with alphabets $\mathcal{A}_X,\:\mathcal{A}_Y$. 
+\vskip 1pt
+\loud{Conditional entropy of $Y$ given $X$:} 
+\begin{align*}
+H(Y|X):=\sum_{x\in\mathcal{A}_X}p_X(x)H(p(\cdot|x))=-\sum_{x\in\mathcal{A}_X }\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2(p_{Y|X}(y|x)).
+\end{align*}
+\textbf{Convention} Here and in the sequel, sums are meant as ommitting summands with probability zero. 
+%\bit
+%\item \textbf{Convention} Here and in the sequel, sums are meant as ommitting summands with $p_X(x)=0$. 
+%\item One has 
+%\begin{align}\label{MarginalJointEntropy}
+%H(Y|X)
+%=-&-\sum_{x\in\mathcal{A}_X }\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2(p_{Y|X}(y|x)).
+%\end{align}
+%\eit
+
+\loud{Joint entropy of $X$ and $Y$:} 
+\begin{align*}
+H(X,Y)=\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}-p_{X,Y}(x,y)\log_2(p_{X,Y}(x,y)),
+\end{align*}
+entropy of joint distribution $p_{X,Y}$.
+\end{frame}
+
+
+\begin{frame}{Chain rule of entropies}
+\begin{proposition}[Chain rule for entropies]
+For any two random variabls $X,Y$ on a discrete probabiltiy space $(\Omega,P)$, one has 
+\begin{align*}
+H(X,Y)=H(Y|X)+H(X).
+\end{align*}
+\end{proposition}
+\loud{Proof of chain rule:}
+\begin{align*}
+H(X,Y)=&-\sum_{x\in \mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left(p_{X,Y}(x,y)\right)\\
+=&-\sum_{x\in \mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left(\frac{p_{X,Y}(x,y)p_X(x)}{p_X(x)}\right)\\
+=&-\sum_{x\in \mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left(p_{Y|X}(y|x)\right)-\sum_{x\in \mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2(p_X(x)).
+\end{align*}
+\smallskip
+\bit 
+\item First summand equals $H(Y|X)$.
+\item Second summand equals $H(X)$ by \eqref{MarginalJoint}. \qed
+\eit 
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{Conditioning does not increase entropy}
+\begin{proposition}
+For any two random variabls $X,Y$ on a discrete probabiltiy space $(\Omega,P)$, one has 
+\[
+H(Y)\geq H(Y|X)
+\]
+with equality if and only if $X$ and $Y$ are independent. 
+\end{proposition}
+%Proof: 
+%
+\loud{Proof:} Define a probability mass function $q:\mathcal{A}_X\times\mathcal{A}_Y\to\mathbb{R}$ by $q(x,y):=p_X(x)p_Y(y)$. 
+Then 
+\begin{align*}
+H(Y|X)=&-\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left(\frac{p_{X,Y}(x,y)}{p_X(x)}\cdot \frac{p_Y(y)}{p_Y(y)}\right)\\
+=&-\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\left(\log_2\left(\frac{p_{X,Y}(x,y)}{q(x,y)}\right)+\log_2(p_Y(y))\right)\\
+=&-D(p_{X,Y}||q)+H(Y). 
+\end{align*}
+\loud{Divergence inequality: }$D(p_{X,Y}||q)\geq 0$, equality only if $p_{X,Y}=q$, i.e. $X$ and $Y$ independent. \qed
+\end{frame}
+
+
+\begin{frame}{Conditional entropy for $N$ random variables}
+Let $X_1,\dots,X_N$ be random variables on discrete probabilty space $\Omega$.  
+\bit
+\item \loud{Conditional entropy} $H(X_N|X_{N-1},\dots,X_1)$ of $X_N$ given  $X_1,\dots,X_{N-1}$:  
+
+Defined as for two random variables $X, Y$. 
+\item Properties from two variables extend to $N$ variables by induction: 
+\eit
+\begin{proposition}[Properties of conditional entropy for random process]
+\bit
+\item \loud{Chain rule of entropies}: One has
+\[
+H(X_1,\dots,X_N)=\sum_{i=1}^NH(X_i|X_1,\dots,X_{i-1})
+\]
+\item \loud{Conditioning does not increase entropy:} One has
+\[
+H(X_N|X_1,\dots,X_{N-1})\leq H(X_N),
+\]
+equality if and only if $X_N$ is independent from $(X_1,\dots,X_{N-1})$. 
+\eit
+\end{proposition}
+\end{frame}
+
+
+
+
+\subsection{Entropy rate}
+\begin{frame}{Entropy rate and conditional entropy rate}
+Let $\mathcal{X}=\left(X_i\right)_{i=1}^\infty$ be a discrete random process.
+\bit
+\item The \loud{entropy-rate}  of $\mathcal{X}$ is 
+defined as 
+\begin{align}\label{LimEntrRate}
+H(\mathcal{X}):=\lim_{N\to\infty}\frac{H\left(X_1,\dots,X_N\right)}{N}
+\end{align}
+if the limit exists.
+\item The \loud{conditional entropy-rate} of $\mathcal{X}$ is 
+defined as 
+\begin{align}\label{LimCondEntrRate}
+H'(\mathcal{X}):=\lim_{N\to\infty}H\left(X_N|X_1,\dots,X_{N-1}\right),
+\end{align}
+if the limit exists.
+\eit
+\end{frame}
+
+\begin{frame}{Entropy rate exists for stationary process}
+\begin{theorem}[Entropy rate and conditional rate exist and are equal for stationary process]
+If the process $\mathcal{X}$ is stationary, the limits \eqref{LimEntrRate} and \eqref{LimCondEntrRate} exist. Moreover, one has
+\begin{align*}
+H(\mathcal{X})=H'(\mathcal{X}),
+\end{align*}
+i.e. the entropy rate is equal to the conditional entropy rate.
+\end{theorem}
+\loud{Proof that conditional entropy rate exists:}
+\bit
+\item Using divergence inequality and \eqref{MarginalJoint}, one can show that: 
+\begin{align*}
+H(X_{n+1}|X_1,\dots,X_n)\leq &H(X_{n+1}|X_2,\dots,X_{n}).\\
+\end{align*}
+\item Process is stationary: 
+\begin{align*}
+H(X_{n+1}|X_2,\dots,X_{n-1})=H(X_{n}|X_1,\dots,X_{n-1}).
+\end{align*}
+\item [\iarrow] Sequence \eqref{LimCondEntrRate} is monotonically decreasing. Since it is non-negative: Conditional entropy rate exists. 
+\eit
+\end{frame}
+
+
+\begin{frame}
+\loud{Proof that entropy rate exists and equals conditional entropy rate:}
+\bit
+\item \loud{Chain rule for entropies}: Sequence of averaged joint entropies is sequence of averages of conditional entropies.
+\begin{align*}
+\frac{1}{N}H(X_1,\dots,X_N)=\frac{1}{N}\sum_{i=1}^NH(X_i|X_{1},\dots,X_{i-1}).
+\end{align*}
+\item \loud{Already proved:} Sequence $H(X_i|X_{i-1},\dots,X_1)$ converges to $H'(\mathsf{X})$.  
+\item \loud{Cauchy limit theorem}: If a sequence of complex number converges to a value, the sequence of averages converges to the same value. See next slide.
+\item [\iarrow] Sequence of averaged joint entropies converges to conditional entropy rate. 
+\qed
+\eit
+\end{frame}
+
+
+
+\begin{frame}{Cauchy limit theorem}
+\begin{lemma}[Cauchy limit theorem]
+Let $(a_n)_{n=1}^{\infty}$ be a sequence of complex numbers that converges to $a$. Then, also the sequence of averages 
+\[
+b_n=\frac{1}{n}\sum_{i=1}^na_i
+\]
+converges to a. 
+\end{lemma}
+\loud{Proof:} Let $\epsilon>0$. There exists an $n_0\in\mathbb{N}$ such that $|a_n-a|<\epsilon/2$ for all $n\geq n_0$.
+\bit
+%\item Let $\epsilon>0$. There exists an $n_0\in\mathbb{N}$ such that $|a_n-a|<\epsilon/2$ for all $n\geq n_0$.
+\item Let $c:=\max\{|a_n-a|\colon n\in\mathbb{N}\}$. There exists and $n_1\in\mathbb{N}$ such that $cn_0/n<\epsilon/2$ for all $n\geq n_1$.
+ \item[\iarrow] For all $n\geq \max\{n_0,n_1\}$, one has 
+\begin{align*}
+|b_n-a|=\left|\sum_{i=1}^n\frac{a_i-a}{n}\right|&\leq \sum_{i=1}^n\frac{|a_i-a|}{n}=
+\sum_{i=1}^{n_0}\frac{|a_i-a|}{n}+\sum_{i=n_0}^n\frac{|a_i-a|}{n}
+ \\ &\leq c\frac{n_0}{n}+\frac{n-n_0}{n}\epsilon/2 \leq \epsilon/2+\epsilon/2=\epsilon. \qed
+\end{align*}
+\eit 
+\end{frame}
+
+
+\subsection{Block codes}
+
+\begin{frame}{Block codes}
+Let $\mathcal{X}=(X_n)_{n=1}^\infty$ be a \loud{stationary random process} with alphabet $\mathcal{A}_X$.  
+\bit
+\item \loud{Block code of order $N$:} Uniquely decodable code for coding $N$ successive symbols $(x_i,x_{i+1},\dots,x_{i+N})$ of $\mathcal{A}_X$ jointly. 
+\eit
+\bit
+\item \loud{Optimal average codeword length $\overline{\ell}_N$:} Average codeword length for optimal block-code of order $N$. Independent of $i$ because 
+process stationary. 
+\eit
+\bit
+\item \loud{Optimal average codeword length per symbol:}
+\begin{align*}
+\overline{\ell}:=\lim_{N\to\infty}\frac{\overline{\ell}_N}{N},
+\end{align*} 
+if the limit exists. 
+\eit
+\bit
+\item \loud{Block entropy $H_N(\mathcal{X})$:} Joint entropy $H(X_{i},\dots,X_{i+N})$. Independent of $i$ because process stationary. 
+\eit
+\end{frame}
+
+\subsection{Main result}
+\begin{frame}{Summary: Fundamental theorem of lossless source coding}
+\begin{theorem}[Fundamental theorem of lossless source coding]
+Let $\mathcal{X}=(X_n)_{n=1}^\infty$ be a \loud{stationary random process}. 
+\bit
+\item For every $N$, optimal average codeword length and block entropy satisfy:
+\begin{align*}
+H_N(\mathcal{X})\leq\overline{\ell}_N\leq H_N(\mathcal{X})+1
+\end{align*}
+\item The limit 
+\begin{align*}
+\overline{\ell}:=\lim_{N\to\infty}\frac{\overline{\ell}_N}{N},
+\end{align*} 
+defining the optimal average codeword length per smybol exists. 
+\item Optimal average codeword length $\overline{\ell}$ per symbol asymptotically achieves entropy rate:
+\begin{align*}
+\lim_{N\to\infty}\frac{\overline{\ell}_N}{N}=H(\mathcal{X}).
+\end{align*}
+\eit
+\end{theorem}
+
+\end{frame}
+
+
+
+\end{document}

@@ -1,0 +1,34 @@
+\begin{frame}{High-Rate Approximation: Distortion-Rate Function}
+\bit
+\item<+-> Operational Rate-Distortion Function
+\beqn
+  R(D)
+  =
+    \frac{1}{2N}\sum_{k=0}^{N-1}\log_2\!\left(\frac{\varepsilon_k^2\,\sigma_k^2}{D}\right)
+  =
+    \frac{1}{2}\log_2\!\left(
+      \frac{1}{D}
+      \left(\prod_{k=0}^{N-1}\varepsilon_k^2\right)^{\!\!\frac{1}{N}}
+      \left(\prod_{k=0}^{N-1}\sigma_k^2\right)^{\!\!\frac{1}{N}}
+    \right)
+\eeqn
+\item<+-> Define geometric means
+\beqn
+ \tilde{\sigma}^2 = 
+   \left( \prod_{k=0}^{N-1} \sigma_k^2 \right)^{\!\!\frac{1}{N}}
+ \qquad\text{and}\qquad
+ \tilde{\varepsilon}^2 = 
+ \left( \prod_{k=0}^{N-1} \varepsilon_k^2 \right)^{\!\!\frac{1}{N}}
+\eeqn
+\item<+->[\iarrow]\medskip \STRUC{High-rate rate-distortion / distortion-rate function} (for optimal bit allocation)
+  \beqn
+  \boxed{
+    R(D)=\frac{1}{2}\log_2\!\left(\frac{\tilde{\varepsilon}^2\cdot\tilde{\sigma}^2}{D}\right)
+  }
+  \qquad\quad\text{and}\quad\qquad
+  \boxed{
+    D(R) = \tilde{\varepsilon}^2\cdot\tilde{\sigma}^2\cdot 2^{-2R}
+    }
+ \eeqn
+\eit\vspace{-5ex}
+\end{frame}

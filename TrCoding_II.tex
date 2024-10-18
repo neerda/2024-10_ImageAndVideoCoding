@@ -1,0 +1,275 @@
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\dimension}{dim}
+\DeclareMathOperator{\gradient}{grad}
+\begin{document}
+\section{Transform Coding II} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\section{Introduction}
+\begin{frame}\frametitle{Review of last lecture: Transform coding}
+\begin{definition}[Transform coding]
+Let $S$ be an $N$-dimensional source. Invertible $N\times N$-matrices $A, B$ and scalar quantizers $Q_1,\dots,Q_N$ 
+define the transform coding of $s\in\mathbb{R}^N$ , realization of $S$, as the following ordered steps:
+\begin{enumerate}
+\item Compute $u=As$. The components $u_1,\dots,u_N$ of $y$ are called transform coeffients. 
+\item Code each $u_i$ with $Q_i$ to obtain the reconstructed transform coefficients $u_i'$ which comprise the reconstructed transformed vector $u'$. 
+\item Compute the reconstructed vector $s'$ as $s'=Bu'$.   
+\end{enumerate}
+\end{definition}
+\bit
+\item The matrix $A$ is called \loud{analysis transform}.
+\item The matrix $B$ is called \loud{synthesis transform}. 
+\item In most cases, one has $B=A^{-1}$. 
+\eit
+\end{frame}
+
+
+\begin{frame}{The Karhuenen Loeve Transform}
+\bit
+\item Let $X$ be an $\mathbb{R}^N$-valued source.
+\item Assume mean $\mu_X$ of $X$ is zero; otherwise, replace $X$ by $X-\mu_X$. 
+\item The matrix 
+\begin{align*}
+R_X:=\mathbb{E}(XX^t)
+\end{align*} 
+is calle \loud{autocorrelation matrix} of $X$. 
+\item The matrix $R_X$ is symmetric, positive semidefinite.
+\item[\iarrow] There exists \loud{orthogonal matrix} $T$ with $TR_XT^{t}$ a digaonal matrix.
+\item Matrix $T$ is called \loud{Karhuenen Loeve transform KLT}.
+\item If $R_X$ has distinct eigenvalues, KLT is unique up to permutation and scaling by $\pm 1$ of its rows. 
+\eit
+\end{frame}
+
+\begin{frame}{KLT and energy compaction} 
+\bit
+\item Let $\lambda_1,\dots,\lambda_N$ denote the eigenvalues of $R_X$, ordered such that 
+\begin{align*}
+\lambda_1\geq \lambda_2\geq\dots\geq \lambda_N\geq 0.
+\end{align*}
+\item Let $\{v_1,\dots,v_N\}$ be an associated orthonormal basis of eigenvectors, i.e. 
+\begin{align*}
+R_Xv_i=\lambda_i v_i, \quad \forall i\in\{1,\dots,N\}. 
+\end{align*}
+\item[\iarrow] If $T$ is a KLT for $X$, then can assume that $i$-th row of $T$ is given by $v_i^t$. 
+\eit
+
+\loud{Best subspace approximation/Energy compaction: }
+\bit
+\item For each $k\in\mathbb{N}$ with $1\leq k\leq N$, best $k$-dimensional approximation of $X$ is given by space
+\begin{align*}
+V_k:=\mathbb{R}v_1\oplus\dots\oplus\mathbb{R}v_k. 
+\end{align*}
+\item[\iarrow] Projection to $V_k$ minimizes the expected distance of $X$ to all 
+$k$-dimensional subsapces of $\mathbb{R}^N$. 
+\item[\iarrow] Projection to $V_k$ maximes the expected energy contained in the first $k$-components for realizations $x\in\mathbb{R}^N$ of $X$. 
+\eit
+\end{frame}
+
+\section{The KLT as an optimal transform} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\begin{frame}\frametitle{KLT and transform coding of $X$}
+\loud{Heuristic idea:}
+\begin{itemize} 
+\item Let $T$ be a KLT of $X$, ordered with respect to magnitue of eigenvalues of $R_X$. 
+\item If $x\in\mathbb{R}^N$ is transformed to $y=(y_1,\dots,y_N)^t=Tx$, one can expect:
+\bit 
+\item For some $k<N$,  
+most of the information about $y$ is concentrated in the first components $y_1,\dots,y_k$ 
+\item Values of $y_{k+1},\dots,y_N$ are close to zero.
+\eit
+\item[\iarrow] Coding the components $y_i$ with scalar quantizers  $Q_i$,  where  
+$Q_k,\dots,Q_N$  code the value $0$ with a low rate  may give a better rate-distortion tradeoff 
+than applying source codes $\tilde{Q}_1,\dots,\tilde{Q}_N$ to each component $x_i$ of $x$ directly. 
+\end{itemize}
+\loud{It will be shown:}
+\begin{itemize}
+\item The above heuristics is theoretically justified if $X$ is Gaussian distributed. 
+\item Here: A KLT is an optimal orthogonal transform and its benefit can be quantified  
+if one operates at high bit-rates. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{KLT as an optimal transform under suitable assumptions} 
+The following theorem gives a sufficient condition for the KLT to be the optimal transform.
+\begin{theorem}[Optimality of the KLT]
+Assume that there exists a single non-increasing function $f$ such that for any transform $T$, the i-th transform coefficient is coded 
+with a family of source codes that have an operational distortion-rate function $D_i$ which satsifies
+\begin{align}\label{FormelDistortion}
+D_i(R_i)=\sigma_i^2\cdot f(R_i),
+\end{align}
+where $\sigma_i$ is the variance of $Y_i=TX_i$. Then, for given rates $R_1,\dots,R_N$ per component, the 
+distortion is minimized among all orthogonal transforms by a KLT. 
+\end{theorem}
+\begin{itemize}
+\item Assumption \eqref{FormelDistortion} is natural for \loud{Gaussian sources} $X$.
+\item If $X$ is an $\mathbb{R}^N$-valued Gaussian source, for \textit{any} transform $T$ and for $Y=TX$, each component 
+$Y_i$ of $Y$ is a scalar valued Gaussian source. 
+\item Thus, for Gaussian source, can take $f$ to be operational rate distortion function of Gaussian source with zero mean and unit 
+variance.  
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Remarks on Theorem about KLT}
+\begin{itemize}
+\item Theorem on optimality of KLT is due to Goyal, Zhuang, Vetterli, 2000.
+\item Earlier versions of optimality reults for Gaussian sources are due to Huang and Schultheiss, 1963.
+\item Assumption \eqref{FormelDistortion} does not always hold and the KLT is not always optimal, Effros, Feng, Zeger, 2004.
+\item For further results, see also Akyol, Rose, 2012.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Proof of Theorem on KLT I}
+\begin{itemize}
+\item Assume that an orthogonal transform $T$ is given and let $R_{TX}=TR_XT^{t}$ be the autocorrelation matrix of $TX$.  
+\item Jacobi method: Explicit method to approximately compute eigenvalues of $R_{TX}$. 
+\item There exists an explict sequence $(J_n)_{n=0}^\infty$ with $J_n$ being a rotation matrix such that 
+\begin{align*}
+\lim_{k\to\infty}(J_k\cdots J_ 1 R_{TX} J_1^t\cdots J_k^t)=D,
+\end{align*}
+where $D$ is a diagonal-matrix. 
+\item  Let $J_1$ be the identity matrix. Let 
+\begin{align*}
+M_k:=J_k\cdots J_1 R_{TX}J_1^t\cdots J_k^t 
+\end{align*}
+and assume that $M_k$ is not diagonal.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Proof of Theorem on KLT II}
+\begin{itemize}
+\item Let $(p,q)$, $p\neq q$ be the position of the non-diagonal entry $M_k(p,q)$ of $M_k$ with largest absolute value. 
+\item $J_{k+1}$ 
+is defined as a rotation matrix  in the $(p,q)$-plane with angle $\alpha$ chosen such that 
+\begin{align*}
+J_{k+1}MJ_{k+1}^t
+\end{align*}
+is zero at position $(p,q)$. 
+\item Explicitly, one puts
+\begin{align*}
+\tau=\frac{M(p,p)-M(q,q)}{M(p,q)},\: t=\begin{cases} \frac{1}{\tau+\sqrt{1+\tau^2}}, &\text{if $\tau\geq 0$}\\ \frac{1}{\tau-\sqrt{1+\tau^2}} , &\text{else.} \end{cases}
+\end{align*}
+and
+\begin{align*}
+\cos(\alpha):=\frac{1}{1+t^2},\:\sin(\alpha):=t\cos(\alpha).
+\end{align*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Proof of Theorem on KLT III}
+\begin{itemize}
+\item The set of orthogonal matrices is compact. Thus, if 
+\begin{align*}
+O_m=\prod_{k=1}^mJ_k,
+\end{align*}
+then, after passing to a subsequence, one can assume that the sequence of matrices $O_m$ converges to an orthogonal matrix $O$,  i.e. that 
+\begin{align*}
+\lim_{m\to\infty}O_m=O. 
+\end{align*} 
+\item One has 
+\begin{align*}
+R_{OTX}=OR_{TX}O^t=D 
+\end{align*}
+and it suffices to show that for the given bit-allocation, the distortion for $OT$ is not larger than the distortion for $T$. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Proof of Theorem on KLT IV}
+\begin{itemize}
+\item Since the variances  of each component depend continuously on the transform, 
+by \eqref{FormelDistortion}, the distortions  of each component depend continuously on the transform. Thus, 
+if 
+\begin{align*}
+T_k=\prod_{j=1}^kJ_kT,
+\end{align*}
+it suffices to show that for each $k$, the distortion for 
+$T_{k+1}:=J_{k+1}T_k$ is not larger than the distortion for $T_k$.  
+\item Without loss of generality, one can assume that for the $p$-th and $q$-th variances $\sigma_p(k), \: \sigma_q(k)$ 
+and rates $R_p(k),\: R_q(k)$ of $T_kX$ 
+one has 
+\begin{align*}
+\sigma_p^2>\sigma_q^2, \quad R_p(k)>R_q(k). 
+\end{align*}
+\item Otherwise, if $\sigma_p(k)^2>\sigma_q(k)^2$ but $R_p(k)<R_q(k)$, then, interchanging $R_p(k)$ and $R_q(k)$ decreases the distortion.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Proof of Theorem on KLT V}
+\begin{itemize}
+%\item Otherwise, if $\sigma_p(k)^2>\sigma_q(k)^2$ but $R_p(k)<R_q(k)$, then, interchanging $R_p(k)$ and $R_q(k)$ decreases the distortion: 
+%\begin{align*}
+%&(\sigma_p(k)^2f(R_q(k))+\sigma_q(k)^2f(R_p(k))-\left(\sigma_p(k)^2f(R_p(k))+\sigma_q(k)^2f(R_q(k)\right)
+%\\=&(\sigma_p(k)^2+\sigma_q(k)^2)f(R_q(k))-f(R_p(k))<0,
+%\end{align*}
+%since $f$ is monotonically decreasing. 
+\item 
+If $t$ is as above, one can compute that 
+\begin{align*}
+\sigma_p^2(k+1)=M_{k+1}(p,p)=J_{k+1}M_kJ_{k+1}^t(p,p)=M_k(p,p)-tM_k(p,q),\\
+\sigma_q^2(k+1)=M_{k+1}(q,q)=J_{k+1}M_kJ_{k+1}^t(q,q)=M_k(q,q)+tM_k(p,q).
+\end{align*}
+\item It follows from the definition of $t$ that $-tM_k(p,q)\geq 0$. Thus, one has
+\begin{align*}
+\sigma_p^2(k+1)=\sigma_p^2(k)+\kappa,\:
+\sigma_q^2(k+1)=\sigma_q^2(k)+\kappa,
+\end{align*}
+with $\kappa\geq 0$.
+\item It follows that
+\begin{align*}
+&\sigma_p^2(k+1)f(R_p)+\sigma_q^2(k+1)f(R_q)-\sigma_p^2(k)f(R_p)-\sigma_q^2(k)f(R_q)\\
+=&\kappa(f(R_p)-f(R_q))\leq 0.
+\end{align*}
+\item For all $s$ with $s\neq p$, $s\neq q$, one has $M_{k+1}(s,s)=M_{k}(s,s)$, i.e. the distortions of $T_{k+1}X$ and $T_kX$ are equal for these components. 
+\end{itemize}
+\qed
+\end{frame}
+
+
+\section{Bit Allocation for Transform Coefficients}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\input{TrCoding/BitAllocation_New}  % (2 slides)
+\input{TrCoding/Pareto_New}
+
+
+\section{Bit Allocation for Transform Coefficients - High Rate Approximation}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\input{TrCoding/HRBitAllocation_New.tex}
+
+\input{TrCoding/HRDistortionRateFunc_New.tex}
+
+
+\end{document}

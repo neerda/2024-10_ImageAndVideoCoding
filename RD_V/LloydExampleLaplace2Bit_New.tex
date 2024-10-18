@@ -1,0 +1,96 @@
+
+
+\begin{frame}{Example: Lloyd Algorithm for Laplacian Source}
+  \begin{minipage}{0.5\linewidth}
+    Laplacian Source
+    \bit
+  \item Zero mean $\mu=0$
+    \item Unit variance $\sigma^2=1$
+      \eit
+
+      \bigskip\bigskip
+\STRUC{Lloyd Quantizer of size $K=4$}
+\bit\TabPositions{10em}
+\item Decision thresholds:\tab\hspace{-.35ex}%
+  \begin{tabular}[t]{r@{$\;=\;$}r}
+  $u_1$ & $-1.127$\\[.5ex]
+  $u_2$ & $ 0.000$\\[.5ex]
+  $u_3$ & $ 1.127$\\
+  \end{tabular}
+\item\medskip Reconstruction levels:\tab
+  \begin{tabular}[t]{r@{$\;=\;$}r}
+  $s'_0$ & $-1.834$\\[.5ex]
+  $s'_1$ & $-0.420$\\[.5ex]
+  $s'_2$ & $ 0.420$\\[.5ex]
+  $s'_3$ & $ 1.834$\\
+  \end{tabular}
+  \eit
+  \end{minipage}%
+  \begin{minipage}{0.5\linewidth}
+    \begin{center}
+    \hfitbox{\linewidth}{%
+  \begin{tikzpicture}
+     \begin{axis}[
+        compat=newest,
+        width=9cm,height=6cm,
+        axis lines=none,
+        xmin=-3.5,xmax=3.5,ymin=-0.15,ymax=0.75,
+        clip mode=individual, % ensures curves are plot one after another
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+               (axis cs: -3.5,0) -- (axis cs: 3.5,0);
+          %\node[black, anchor=north east] at (axis cs: 5,-0.01) {$s$};
+        }
+     ]
+       \addplot[name path=func,black,samples=100,domain=-3.5:3.3,line width=0.5pt,mark=none]
+               {1/sqrt(2)*exp(-sqrt(2)*abs(x))};
+       \path[name path=axis] (axis cs: -3.5,0) -- (axis cs: 3.2,0);
+       \node[anchor=north west,yshift=-.5ex] at (axis cs:  3.4,0) {$s$};
+       \addplot[myviolet!20]    fill between[of=func and axis,soft clip={domain=-4.000:-1.127}];
+       \addplot[green!20]       fill between[of=func and axis,soft clip={domain=-1.127: 0.000}];
+       \addplot[red!20]         fill between[of=func and axis,soft clip={domain= 0.000: 1.127}];
+       \addplot[blue!20]        fill between[of=func and axis,soft clip={domain= 1.127: 3.300}];
+
+       \pgfmathsetmacro{\su}{0.75}
+       \pgfmathsetmacro{\ou}{-0.10}
+       \begin{scope}
+         \addplot[line width=0.5pt,dashed] coordinates { ( 0.000,{\ou}) ( 0.000,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-1.127,{\ou}) (-1.127,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 1.127,{\ou}) ( 1.127,{\su}) };
+       \end{scope}
+     
+       \begin{scope}
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -1.127,{\ou}) {$u_{1}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  0.000,{\ou}) {$u_{2}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  1.127,{\ou}) {$u_{3}$};
+       \end{scope}
+       
+       \pgfmathsetmacro{\ss}{0.25}
+       \pgfmathsetmacro{\os}{0.00}
+       \begin{scope}
+         \addplot[line width=1.0pt,myviolet] coordinates { ( -1.834,{\os}) (-1.834,{\ss}) };
+         \addplot[line width=1.0pt,mygreen]  coordinates { ( -0.420,{\os}) (-0.420,{\ss}) };
+         \addplot[line width=1.0pt,myred]    coordinates { (  0.420,{\os}) ( 0.420,{\ss}) };
+         \addplot[line width=1.0pt,myblue]   coordinates { (  1.834,{\os}) ( 1.834,{\ss}) };
+
+         \draw[fill,myviolet] (axis cs: -1.834,{\ss}) circle [radius=2.5pt];
+         \draw[fill,mygreen]  (axis cs: -0.420,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myred]    (axis cs:  0.420,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myblue]   (axis cs:  1.834,{\ss}) circle [radius=2.5pt];
+         
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs: -1.834,{\os}) {$s'_{0}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs: -0.420,{\os}) {$s'_{1}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  0.420,{\os}) {$s'_{2}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  1.834,{\os}) {$s'_{3}$};
+       \end{scope}
+  \end{axis}
+    \end{tikzpicture}}\\[2ex]
+    \begin{align*}
+      R&\;=\;2.0\qquad(\text{fixed-length coding})\\[.2ex]
+      D&\;=\;0.176\\[.2ex]
+      \text{SNR} &\;=\; 7.54\;\text{dB}
+  \end{align*}
+    \end{center}
+  \end{minipage}%
+\end{frame}
+

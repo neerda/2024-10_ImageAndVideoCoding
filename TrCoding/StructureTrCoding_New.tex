@@ -1,0 +1,81 @@
+
+
+\begin{frame}{Structure of Transform Coding Systems}
+  \vspace{-2ex}
+\begin{center}
+  \hfitbox{0.70\linewidth}{%
+  \begin{tikzpicture}
+     [
+      pstep/.style={
+        draw=black,
+        fill=white,
+        line width=0.75pt,
+        minimum width=1.2cm,
+        minimum height=0.7cm,
+        inner sep=0,
+        align=center
+      },
+      nbox/.style={pstep,
+        rectangle
+      },
+      tbox/.style={nbox,
+        draw=blue,text=blue,fill=blue!10,
+        line width=1.0pt,
+        minimum width=1.8cm,
+        minimum height=5.0cm
+      },
+      narrow/.style={
+        line width=0.75pt,
+        -{Latex[length=2.5mm,width=1.4mm]}
+        },
+    ]
+    \node[nbox] (q0) at ( 0.00, 0.00) {\relsize{2}$Q_0$};
+    \node[nbox] (q1) at ( 0.00,-1.00) {\relsize{2}$Q_1$};
+    \node[nbox] (q2) at ( 0.00,-2.00) {\relsize{2}$Q_2$};
+    \node[]          at ( 0.00,-2.90) {\relsize{2}$\vdots$};
+    \node[nbox] (qx) at ( 0.00,-4.00) {\relsize{2}$Q_{N-1}$};
+    \node[tbox] (a)  at (-3.30,-2.00) {\relsize{3}$\ve{A}$};
+    \node[tbox] (b)  at ( 3.30,-2.00) {\relsize{3}$\ve{B}$};
+    \draw[narrow] (a.east |- q0.east) -- (q0) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u_0$};
+    \draw[narrow] (a.east |- q1.east) -- (q1) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u_1$};
+    \draw[narrow] (a.east |- q2.east) -- (q2) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u_2$};
+    \draw[narrow] (a.east |- qx.east) -- (qx) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u_{N-1}$};
+    \draw[narrow] (q0) -- (q0.west -| b.west) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u'_0$};
+    \draw[narrow] (q1) -- (q1.west -| b.west) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u'_1$};
+    \draw[narrow] (q2) -- (q2.west -| b.west) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u'_2$};
+    \draw[narrow] (qx) -- (qx.west -| b.west) 
+          node[pos=0.50,anchor=base,yshift=1.3ex] {\relsize{2}$u'_{N-1}$};
+    \node[] (in) at (-6.5,-2.0) 
+         {\relsize{2}$\displaystyle\left[\!\!\begin{array}{c}
+           s_0\\[.2ex]s_1\\[.2ex]s_2\\[.2ex]\vdots\\[.2ex]s_{N-1}\\[.5ex]
+          \end{array}\!\!\right]$};
+    \node[] (out) at (6.5,-2.0) 
+         {\relsize{2}$\displaystyle\left[\!\!\begin{array}{c}
+           s'_0\\[.2ex]s'_1\\[.2ex]s'_2\\[.2ex]\vdots\\[.2ex]s'_{N-1}\\[.5ex]
+          \end{array}\!\!\right]$};
+    \draw[narrow] (in) -- (a);
+    \draw[narrow] (b)  -- (out);
+    \node[anchor=north east,align=right,text=blue,yshift=-0.5ex] 
+          at (a.south east) {\relsize{2}analysis\\[.2ex]\relsize{2}transform};
+    \node[anchor=north west,align=left,text=blue,yshift=-0.5ex] 
+          at (b.south west) {\relsize{2}synthesis\\[.2ex]\relsize{2}transform};
+    \node[anchor=north,align=center,yshift=-1.8ex] 
+          at (qx.south) {\relsize{2}scalar\\[.2ex]\relsize{2}quantizers};
+  \end{tikzpicture}
+  }
+\end{center}
+
+\bold{Effect of transform coding}:
+\bit
+\item Remove/reduce dependencies before scalar quantization
+\item Simple alternative to vector quantization
+\item Simple and most relevant case: Linear transforms
+\eit
+\end{frame}

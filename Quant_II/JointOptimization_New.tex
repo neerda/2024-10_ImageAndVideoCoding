@@ -1,0 +1,28 @@
+
+
+\begin{frame}{Joint Minimization of Distortion and Bit Rate}
+  \STRUC{Constrained Optimization Problem}
+  \bit
+\item Optimization problem can be formulated as 
+  \vspace{-0.5ex}$$\min\;D\qquad\text{subject to}\qquad R\leq R_{\text{target}}$$
+  \vspace{-2.75ex}or, equivalently,
+  $$\min\;R\qquad\text{subject to}\qquad D\leq D_{\text{target}}$$
+  \eit
+  \bigskip
+  \uncover<2->{%
+    \STRUC{Reformulation as Unconstrained Problem}
+    \bit
+    \item Typically, constrained optimization problems cannot be solved directly
+    \item Use technique of Lagrange multipliers for reformulation as unconstrained problem
+      $$
+      \min\;D+\lambda\cdot R
+      $$
+      \bit\relsize{1}\itemMode{arrow}
+    \item<3->\vspace{-3ex} The parameter $\lambda>0$ is called \loud{Lagrange multiplier}
+    \item<3-> Each value of $\lambda$ corresponds to a rate constraint $R_{\text{target}}$ (or distortion constraint $D_{\text{target}}$)
+      \eit
+    \eit
+    }
+\end{frame}
+
+

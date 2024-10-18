@@ -1,0 +1,25 @@
+
+
+\begin{frame}{High Rate Approximation}
+\ALERT{High rates approximation:}
+\bit
+\item[] Quantization intervals are so small that Pdf $f(s)$ is nearly constant inside each quantization interval
+  $$
+  f(s)\approx\frac{p_k}{\Delta_k}=\frac{p_k}{u_{k+1}-u_{k}}
+  $$
+\eit
+\loud{High rate approximation. Reconstruction values:}
+\bit
+\item[]Each reconstruction value $s'_k$ lies in center of quantization interval $\set{I}_k$:
+  \begin{align*}
+  s'_k
+  &\;=\;\frac{1}{p_k}\int_{u_k}^{u_{k+1}}s\,f(s)\;\d s
+  \;=\;\frac{1}{p_k}\cdot\frac{p_k}{u_{k+1}-u_k}\int_{u_k}^{u_{k+1}}s\;\d s\\[2ex]
+  &\;=\;\frac{1}{2}\cdot\frac{1}{u_{k+1}-u_k}\cdot\Big(u^2_{k+1}-u^2_k\Big)
+  \;=\;\frac{1}{2}\cdot\frac{(u_{k+1}+u_k)\cdot(u_{k+1}-u_k)}{u_{k+1}-u_k}\\[2ex]
+  &\;=\;\frac{1}{2}\Big(u_k+u_{k+1}\Big)
+  =u_k+\frac{\Delta_k}{2}.
+  \end{align*}
+  \eit
+\end{frame}
+

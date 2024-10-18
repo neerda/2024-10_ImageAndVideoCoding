@@ -1,0 +1,28 @@
+
+
+\begin{frame}{Optimal Bit Allocation: Pareto Condition}
+  \vspace{-1ex}
+  \bit
+\item<+-> Minimize Lagrangian cost function $D+\lambda R$
+\beqan
+\frac{\partial}{\partial R_k} 
+  \left(
+   \frac{1}{N}\sum_{i=0}^{N-1} D_i(R_i)
+   + 
+   \frac{\lambda}{N}\sum_{i=0}^{N-1} R_i
+  \right)
+  &\!\!\!\stackrel{!}{=}\!\!\!& 0\nonl[1ex]
+\frac{1}{N}\cdot\frac{\partial}{\partial R_k} D_k(R_k)+\frac{\lambda}{N}
+  &\!\!\!\stackrel{!}{=}\!\!\!& 0
+\eeqan
+\item<+->[\iarrow]\smallskip Solution: \STRUC{Pareto condition}
+\beqn
+\boxed{\frac{\partial D_k(R_k)}{\partial R_k} = -\lambda = \text{const}}
+\eeqn
+\item<+->[\iarrow]\smallskip All component quantizers have to be operated at the same slope\\
+      of their operational distortion-rate function
+\item<+->[\iarrow]\smallskip
+Interpretation: Move bits from coefficients with small distortion reduction per bit to
+coefficients with larger distortion reduction per bit 
+\eit\vspace{-2ex}
+\end{frame}

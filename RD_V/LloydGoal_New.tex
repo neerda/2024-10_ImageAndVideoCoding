@@ -1,0 +1,25 @@
+
+
+\begin{frame}{Optimal Scalar Quantizer for Fixed-Length Coding}
+\STRUC{Goal: Minimize MSE Distortion for Quantizer with $K$ Quantization Intervals}
+\bit
+\item Neglect impact of entropy coding\quad\loud{\iarrow}\quad Consider fixed-length coding
+\item[\iarrow]\smallskip Rate $R$ and MSE distortion $D$ are given by
+  \begin{align*}
+    R&\;=\; \big\lceil\log_2K\big\rceil\qquad\qquad(\,\text{typically $K=2^B$, with $B$ being the bits per codeword}\,)\\[1ex]
+    D&\;=\;
+    \sum_{\forall k}\int_{u_k}^{u_{k+1}}(s-s'_k)^2\,f(s)\;\d s
+  \end{align*}
+  \eit
+
+  \uncover<2->{\STRUC{Optimize Quantizer of size $K$}
+  \bit
+\item Bit rate $R$ is independent on decision thresholds and reconstruction levels ($R$ is given by $K$)
+\item<3-> Distortion (MSE) depends on
+  \bit\relsize{1}\itemMode{arrow}
+\item $K$ reconstruction levels $s'_k$
+\item $K-1$ decision thresholds $u_k$
+  \eit
+  \eit}
+\end{frame}
+

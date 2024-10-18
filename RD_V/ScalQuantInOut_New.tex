@@ -1,0 +1,75 @@
+
+
+\begin{frame}{Scalar Quantization: Input-Output Function}
+\vspace{-2.5ex}
+\begin{center}
+  \hfitbox{0.8\linewidth}{%
+  \begin{tikzpicture}
+    \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] 
+         (-3,0) -- (3,0);
+    \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] 
+         (0,-2.5) -- (0,2.5);
+    \node[black, anchor=north] at (3,-0.05) {$s$};
+    \node[black, anchor=west] at (0.05,2.5) {$s'=Q(s)$};
+
+    \draw[blue,line width=1.5pt] (-0.7,0) -- (0.7,0);
+    \draw[blue,line width=1.5pt] ( 0.7,1) -- (1.7,1);
+    \draw[blue,line width=1.5pt] ( 1.7,2) -- (3.0,2);
+    \draw[blue,line width=1.5pt] (-0.7,-1) -- (-1.7,-1);
+    \draw[blue,line width=1.5pt] (-1.7,-2) -- (-3.0,-2);
+
+    \draw[blue,line width=0.3pt] (0.7,0) -- (0.7,1);
+    \draw[blue,line width=0.3pt] (1.7,1) -- (1.7,2);
+    \draw[blue,line width=0.3pt] (-0.7,0) -- (-0.7,-1);
+    \draw[blue,line width=0.3pt] (-1.7,-1) -- (-1.7,-2);
+
+  \begin{scope}[visible on=<2->]
+    \draw[dashed,line width=0.3pt] (-1.7,-2) -- (  0,-2);
+    \draw[dashed,line width=0.3pt] (-0.7,-1) -- (  0,-1);
+    \draw[dashed,line width=0.3pt] ( 0.7, 1) -- (  0, 1);
+    \draw[dashed,line width=0.3pt] ( 1.7, 2) -- (  0, 2);
+    
+    \node[anchor=east ] (ska) at ( 0.0, 1.00) {$s'_{k}$};
+    \node[anchor=east ] (skb) at ( 0.0, 2.00) {$s'_{k+1}$};
+    \node[anchor=east ] at (-3.0,0.00) {$s'_{k-1}$};
+    \node[anchor=west ] at ( 0.0,-1.00) {$s'_{k-2}$};
+    \node[anchor=west ] at ( 0.0,-2.00) {$s'_{k-3}$};
+
+    \node[anchor=east,text=myred] (lev) at (-2.5,1.5) {$K$ reconstruction levels};
+    \draw[myred,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] (lev) -- (ska);
+    \draw[myred,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] (lev) -- (skb);
+  \end{scope}
+
+  \begin{scope}[visible on=<3->]
+    \draw[dashed,line width=0.3pt] (-1.7,-2) -- (-1.7,0);
+    \draw[dashed,line width=0.3pt] ( 1.7, 2) -- ( 1.7,0);
+
+    \node[anchor=south] at (-1.7,-0.02) {$u_{k-2}$};
+    \node[anchor=south] at (-0.7,-0.02) {$u_{k-1}$};
+    \node[anchor=north] (uka) at ( 0.7,-0.05) {$u_k$};
+    \node[anchor=north] (ukb) at ( 1.7,-0.05) {$u_{k+1}$};
+
+    \node[anchor=west,text=myred] (dec) at (2.5,-1.5) {$K-1$ decision thresholds};
+    \draw[myred,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] (dec.north west) -- (uka);
+    \draw[myred,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] (dec.north west) -- (ukb);
+  \end{scope}
+
+  \begin{scope}[visible on=<4->]
+    \draw[officegreen,<->,style={{Latex[length=2.5mm,width=1.2mm]}-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] 
+         (0.7,0.3) -- (1.7,0.3)
+         node (delta) [pos=0.5,anchor=base,yshift=1.0ex,align=center] {$\Delta_k$};
+    \node[anchor=west,text=officegreen,align=left] (qstep) at (2.5,1.0) {quantization\\step sizes};
+    \draw[officegreen,->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.3pt}] (qstep) -- (delta);
+  \end{scope}
+  \end{tikzpicture}}
+\end{center}
+\vspace{-1.5ex}
+\bit\TabPositions{13em}
+\item<2-> Scalar quantizer mapping:     \tab$Q:\;\,\mathbb{R}\mapsto\{\,\cdots,\,s'_{k-1},\,s'_k,\,s'_{k+1},\,\cdots\,\}$
+\item<3-> Quantization intervals: \tab$\set{I}_k=[u_k,u_{k+1})$
+\item<4-> Quantization step sizes:      \tab$\Delta_k=u_{k+1}-u_k$
+\eit
+\vspace{-5ex}
+\end{frame}
+
+

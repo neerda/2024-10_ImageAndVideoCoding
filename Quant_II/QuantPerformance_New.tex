@@ -1,0 +1,32 @@
+
+
+\begin{frame}{Rate-Distortion Efficiency of Scalar Quantizers}
+  \vspace{-1.0ex}
+  \STRUC{Distortion}
+  \bit
+\item Quantifies deviation between original and reconstructed samples
+\item Typically: Additive distortion measures with $d(s,s')$ being the single-sample distortion
+  \vspace{-1.0ex}$$
+  D=\EV{d(S,S')}=\sum_{\forall k}\int_{u_k}^{u_{k+1}}d(s,s'_k)\,f(s)\;\d s
+  $$
+  \eit
+  \vspace{-1.0ex}%
+  \uncover<2->{\STRUC{Bit Rate}
+  \bit
+\item Average number of bits for coding quantization indexes $q$ (or reconstructed values $s'$)
+  \vspace{-.5ex}$$
+  R
+  =\EV{\ell(S')}
+  =\sum_{\forall k}p_k\cdot\ell_k
+  =\sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+  $$
+  \eit}
+  \vspace{-0.5ex}%
+  \uncover<3->{\STRUC{Design of Scalar Quantizers}
+  \bit
+\item Lloyd quantizer minimizes distortion, but ignores impact on bit rate (assumes fixed-length coding)
+  \item<4->[\iarrow] Improved performance: \loud{Consider bit rate in quantizer design}
+  \eit}\vspace{1.0ex}
+\end{frame}
+
+

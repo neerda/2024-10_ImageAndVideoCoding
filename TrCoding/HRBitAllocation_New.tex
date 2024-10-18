@@ -1,0 +1,58 @@
+
+
+\begin{frame}{High-Rate Approximation: Bit Allocation}
+\STRUC{High Rates}
+\bit
+\item<+-> All component quantizers are operated at high component rates $R_k$
+\item<+-> High-rate approximation of distortion-rate function for component quantizers
+\beqn
+  D_k(R_k) = \varepsilon_k^2\cdot\sigma_k^2\cdot2^{-2R_k}
+\eeqn
+  where $\varepsilon_k^2$ depends on transform coefficient distribution and quantizer
+\eit
+\bigskip
+\uncover<+->{\STRUC{Optimal Bit Allocation at High Rates}
+\bit
+\item<.->
+Pareto condition
+\beqn
+\frac{\partial}{\partial R_k}D_k(R_k) 
+=
+-2\,\ln2\,\varepsilon_k^2\,\sigma_k^2\,2^{-2R_k}
+=-2\,\ln2\,D_k(R_k) = -\lambda = \text{const}
+\eeqn
+\item<+->[\iarrow]\smallskip \loud{All component quantizers are operated at the same distortion}
+\beqn
+ D_k(R_k)=D
+\eeqn
+\eit}\vspace{-2ex}
+\end{frame}
+
+
+
+\begin{frame}{High-Rate Approximation: Bit Allocation}
+\STRUC{Optimal Bit Allocation}
+\bit
+\item<+-> All component quantizers are operated at the same distortion
+  \beqn
+    D_k(R_k)=\varepsilon_k^2\cdot\sigma_k^2\cdot2^{-2R_k}=D
+  \eeqn
+\item<+->[\iarrow] Bit allocation rule
+  \beqn
+    R_k(D)=\frac{1}{2}\,\log_2\!\left(\frac{\varepsilon_k^2\,\sigma_k^2}{D}\right)
+  \eeqn
+\eit
+\medskip
+\uncover<+->{\STRUC{Overall Operational Rate-Distortion Function}
+\bit
+\item Use result of optimal bit allocation
+\beqn
+  R(D) 
+  =
+  \frac{1}{N}\sum_{k=0}^{N-1}R_k(D)
+  =
+  \frac{1}{2N}\sum_{k=0}^{N-1}\log_2\left(\frac{\varepsilon_k^2\,\sigma_k^2}{D}\right)
+\eeqn
+\eit}
+\end{frame}
+

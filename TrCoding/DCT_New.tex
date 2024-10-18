@@ -1,0 +1,35 @@
+
+
+\begin{frame}{The Discrete Cosine Transform (DCT)}
+  \vspace{-1ex}
+  \STRUC{Transform Matrix of the Discrete Cosine Transform (DCT)}
+  \bit
+\item The DCT is an orthogonal transform
+\item<+-> The transform matrix $\ve{A}_{DCT}=\{a_{kn}\}$ has the elements
+  $$
+  a_{kn}=\alpha_{k}\cdot\cos\left(\frac{\pi}{N}\,k\left(n+\frac{1}{2}\right)\right)
+  \qquad\text{with}\qquad
+  \alpha_k=\left\{\begin{array}{rcl}
+  \sqrt{1/N} &:& k=0\\[.5ex]
+  \sqrt{2/N} &:& k\neq0\\
+  \end{array}\right.
+  $$
+\item<+-> The basis vectors $\ve{b}_k=\{a_{kn}\}$ represent sampled cosine functions of different frequencies
+  \eit
+%  \onslide<+->
+%  \medskip
+%  \STRUC{Relation to KLT}
+%  \bit
+%  \item Unit-norm eigenvectors of $\ve{C}_{\!SS}$ approach DCT basis vectors for $\varrho\rightarrow1$
+%  \eit
+
+  \onslide<+->
+  \medskip
+  \STRUC{Advantages of DCT}
+  \bit
+\item Transform matrix does not depends on the input signal
+\item Fast algorithms for computing the forward and inverse transforms
+  \eit
+  \onslide
+\end{frame}
+

@@ -1,0 +1,29 @@
+
+
+\begin{frame}{Optimal Lossless Mapping: ~Entropy Condition}
+  \vspace{-1.0ex}
+  $$
+  J\,=\,\sum_{\forall k}\int_{u_k}^{u_{k+1}}(s-s'_k)^2\,f(s)\;\d s
+  \;+\;\lambda\cdot\sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+  $$
+  \medskip
+  \ben\setcounter{enumi}{1}
+\item<+-> \STRUC{Optimize codeword lengths $\ell_k$} for given decision thresholds $u_k$
+  \bit\relsize{1}
+\item<+->Note: Distortion term does not depend on codeword lengths $\ell_k$
+\item<+->[\iarrow] Remember: Lossless coding theorem: $R\geq H(S')$
+  \vspace{-.0ex}$$
+  \sum_{\forall k}p_k\cdot\ell_k \geq -\sum_{\forall k}p_k\cdot\log_2p_k
+  \quad\qquad(\text{equality if and only if $\ell_k=-\log_2p_k$})
+  $$
+  \eit
+  \een
+  \vspace{-3ex}
+  \bit
+\item<+->[\iarrow] \STRUC{Entropy condition} (neglecting inefficiency of actual entropy coding)
+ \vspace{-0.5ex}$$
+    \boxed{\;\ell_k=-\log_2p_k
+    =-\log_2\!\left(\int_{u_k}^{u_{k+1}}f(s)\;\d s\right)\;}
+  $$
+\eit\vspace{-10ex}
+\end{frame}

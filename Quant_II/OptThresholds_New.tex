@@ -1,0 +1,92 @@
+
+
+\begin{frame}{Optimal Encoder Mapping:~ Condition for Decision Thresholds}
+
+
+  \vspace{-1.0ex}
+  $$
+  J\,=\,\sum_{\forall k}\int_{u_k}^{u_{k+1}}(s-s'_k)^2\,f(s)\;\d s
+  \;+\;\lambda\cdot\sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+  $$
+  \medskip
+
+\bit
+\item
+Taking derivative with respect to $u_k$: 
+\begin{align*}
+0\stackrel{!}{=}&\frac{\partial}{\partial u_k}J\\
+=&(u_k-s'_{k-1})^2f(u_k)+\lambda\ell_{k-1}f(u_k)-(u_k-s'_k)^2f(u_k)-\lambda\ell_{k}f(u_k).
+\end{align*}
+\item[\iarrow]Thus, necessary condition for optimal decistion thresholds is: 
+\begin{align*}
+(u_k-s'_{k-1})^2+\lambda\ell_{k-1}=(u_k-s'_k)^2+\lambda\ell_{k}.
+\end{align*}
+
+\eit
+
+%  \vspace{-1.0ex}
+%  $$
+%  J\,=\,\sum_{\forall k}\int_{u_k}^{u_{k+1}}(s-s'_k)^2\,f(s)\;\d s
+%  \;+\;\lambda\cdot\sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+%  $$
+%  \medskip
+%  \ben\setcounter{enumi}{2}
+%\item<+-> \STRUC{Optimize decision thresholds $u_k$} for given reconstruction levels $s'_k$ and codeword lengths $\ell_k$
+%  \begin{minipage}[t]{0.5\linewidth}
+%    \vspace{-1.0ex}
+%    \bit\relsize{1}
+%    \item<+-> Note: Each threshold $u_k$ impacts only neighbouring intervals $\set{I}_{k-1}$ and $\set{I}_k$
+%    \item[\iarrow]<+-> Map each input value $s$ to interval $\set{I}_k$ that minimizes
+%      contribution to Lagrangian cost
+%      \vspace{-.5ex}$$J(s\cond\set{I}_k)=(s-s'_k)^2+\lambda\cdot\ell_k$$
+%    \item[\iarrow]<+->\vspace{-.5ex} At decision threshold $u_k$, we require
+%      \vspace{-.5ex}$$J(u_k\cond\set{I}_{k-1})=J(u_k\cond\set{I}_k)$$
+%  \eit
+%  \end{minipage}%
+%  \begin{minipage}[t]{0.5\linewidth}
+%    \vskip0pt%
+%    \begin{flushright}
+%      \uncover<3->{\hfitbox{0.88\textwidth}{%
+%        \begin{tikzpicture}
+%          \begin{axis}[
+%              compat=newest,
+%              width=8cm,height=7cm,
+%              axis lines=none,
+%              xmin=-0.5,xmax=1.1,ymin=-0.3,ymax=1.0,
+%              clip mode=individual, % ensures curves are plot one after another
+%              after end axis/.code={
+%                \draw[->,style={-{Latex[length=2.5mm,width=1.5mm]},line width=0.75pt}] 
+%                (axis cs: -0.5,0) -- (axis cs: 1.2,0);
+%                \draw[->,style={-{Latex[length=2.5mm,width=1.5mm]},line width=0.75pt}] 
+%                (axis cs: -0.45,-0.05) -- (axis cs: -0.45,1.1);
+%                \node[black, anchor=north east] at (axis cs: -0.45,1.1) {$J\,$};
+%                \node[black, anchor=north west] at (axis cs: 1.2,0) {$\!\!s$};
+%              }
+%            ]
+%            \pgfmathsetmacro{\uk}{0.298}
+%            \addplot[myblue,samples=101,domain=-0.5:1.1,line width=1.0pt,mark=none] 
+%                    {3*(x+0.1)^2+0.2};
+%            \draw[myblue,line width=1.0pt] (-0.1,0) -- (-0.1,0.2);
+%            \node[myblue,anchor=north] at (-0.1,0) {$s'_{k-1}$};
+%            \node[myblue,anchor=east] at (-0.1,0.1) {$\lambda\cdot\ell_{k-1}$};
+%            \node[myblue,anchor=west] at (-0.4,0.5) {$J(s\cond\set{I}_{k-1})$};
+%            \addplot[mygreen,samples=101,domain=-0.5:1.1,line width=1.0pt,mark=none] 
+%                    {3*(x-0.6)^2+0.4};
+%            \draw[mygreen,line width=1.0pt] (0.6,0) -- (0.6,0.4);
+%            \node[mygreen,anchor=north] at (0.6,0) {$s'_{k}$};
+%            \node[mygreen,anchor=west] at (0.6,0.175) {$\lambda\cdot\ell_{k}$};
+%            \node[mygreen,anchor=east] at (1.0,0.93) {$J(s\cond\set{I}_k)$};
+%            \begin{scope}[visible on=<4->]
+%            \draw[myred,line width=1.0pt] 
+%                    (axis cs: {\uk},-0.025) -- (axis cs: {\uk},1.0);
+%            \node[myred,anchor=north] at (axis cs: {\uk},-0.025) {$u_k$};
+%            \end{scope}
+%          \end{axis}
+%        \end{tikzpicture}%
+%      }}
+%    \end{flushright}
+%  \end{minipage}
+%  \een\vspace{-3ex}
+\end{frame}
+
+

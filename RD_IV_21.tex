@@ -1,0 +1,1214 @@
+%\documentclass{beamer}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{tikz}
+%\usetikzlibrary{trees}
+%\usepackage{lipsum}
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\begin{document}
+
+\section{RD-theory III} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+
+\subsection{Motivation: Rate distortion functions in current video coding standardization} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Rate distortion theory and practical video compression} 
+\loud{Setting of this lecture:}
+\bit
+\item One always assumes that probability distribution of source to be coded is known. 
+\item Study optimal rate-distortion performance achievable at all.
+\item Up to now: Restrict to iid-processes.
+\item Asymptotic achievability of optimal rate distortion bound can only be 
+shown in the limit for coding longer and longer sequecens of iid-realizations of a random variable or more general 
+\textit{idealized} random processes. 
+\eit
+
+\loud{Practical setting of video coding:}
+\bit
+\item Probability distribution of underlying source is \loud{not} known. 
+\item Important focus of research in video compression is on exploring statistical dependencies in the underlying signals and make them useful for compression.
+\item Example: Find good models for complicated motion scenarios. 
+\item Thus:  Research on practical video compression systems tries \loud{ 
+to model the underlying distribution}.
+\eit 
+\end{frame}
+
+\begin{frame}{Importance of rate distortion theory for practical video compression}
+\loud{Besides above remarks,  RD theory plays an 
+important role for understanding and designing practical video compression systems. }
+
+\loud{Example: Transform coding}
+\bit
+\item Basically all image and video codecs perform transform coding. 
+\item Using methods from RD-theory, compression performance of transforms 
+can be assessed. 
+\item Low complexity approach to RD-optimal transform is manifested in DCT-II transforms, JPEG, H.264|AVC. H.265|HEVC, H.266|VVC. 
+%\item More complex approach  that comes closer to RD-optimal transforms is also 
+%reflected in transform-coding design of H.266|VVC. 
+\item Whether and in which sense \textit{non-linear} transfomrs can further increase compression efficiency is active topic of current research.
+\eit
+\loud{Example: Vector quantization}
+\bit
+\item Invoking rate-distortion theory, one knows that vector quantization yields a compression advantage over scalar quantization. \textit{This advantage will 
+be computed explicitly for a Gaussian example in this or next lecture}. 
+%\item This will be verified for Gaussian soures using results of present  lecture. 
+\item JPEG-2000 and H.266|VVC invoke low-complexity version of vector-quantization, \textit{trellis coded quantization}. 
+\eit 
+\end{frame}
+
+\begin{frame}{Example for rate-distortion functions from practical codec}
+\loud{Setup for the examples} 
+\bit
+\item Video coding standard H.266|VVC was finalized in 2020.
+\item Rate-distortion performance of codec and of predecessor H.265|HEVC was measured on \textit{individual video sequences}.
+\item Distortion is both measured \textit{objectively} by squared Euclidean distance and \textit{subjectively} using scores reported by human viewers. 
+\item In practical scenarios, one displays quality-rate curves: For a given rate, quality, measured either in terms of peak signal to noise ratio or of subjective scoring is displayed.
+\item Thus: Quality-rate curves can be re-converted into rate-distortion curve by a 90 degree rotation in counter-clockwise direction. For PSNR, distortion 
+is then logarithmically scaled. 
+\eit
+%\loud{Observation: } 
+%\bit
+%\item The quality-rate curves for both codecs share some properties that hold for the rate distortion function as discussed in present lectue.
+%\item Example: Convexity was established for invormational rate distorition function $R^{(I)}$ in last lecture. 
+% \item Pictures below also show convex curves, if these curves are re-converted from quality-rate curves to rate-distortion curves, i.e., rotated 
+% by 90 degrees in counter-clockwise direction.  
+%\eit
+\end{frame}
+
+
+\begin{frame}{An example for a quality-rate curve for two video codecs. Objective quality.}
+\begin{figure}
+\centering
+\includegraphics[width=0.50\textwidth]{RD_IV/Neptun_Obj_Ausschnitt.png}
+\captionsetup{labelformat=empty}
+\caption{Example of quality-rate curves for two codecs. Objective quality. Test-video sequence `Neptun fountain'.
+\\
+Reference: Standardization document  JVET-S0246, Baroncini, Wien, June 2020. 
+}
+\end{figure}
+\end{frame}
+
+
+
+
+\begin{frame}{An example for a quality-rate curve for two video codecs. Objective quality.}
+\begin{figure}
+\centering
+\includegraphics[width=0.50\textwidth]{RD_IV/Marathon_Obj_Ausschnitt.png}
+\captionsetup{labelformat=empty}
+\caption{Example of quality-rate curves for two codecs. Objective quality. Test-video sequence `Marathon'.
+\\
+Reference: Standardization document  JVET-S0246, Baroncini, Wien, June 2020. 
+}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}{An example for a quality-rate curve for two video codecs. Subjective quality.}
+\begin{figure}
+\centering
+\includegraphics[width=0.35\textwidth]{RD_IV/MarathonSubj_Ausschnitt.png}
+\captionsetup{labelformat=empty}
+\caption{Example of quality-rate curves for two codecs. Subjective quality. Test-video sequence `Marathon'. `Distortion function' 
+is mean-opinion score,  rating by human viewers.  \textit{No} obvious mathematical descriptiton for this distortion function, finding 
+approximations for it is subject of active research. %In particular, \textit{not} clear if this is a distortion function in the sense of this lecture.
+\\
+Reference: Standardization document  JVET-S0246, Baroncini, Wien, June 2020. 
+ }
+\end{figure}
+\end{frame}
+
+
+
+\subsection{Rate distortion function of a binary source} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\begin{frame}{Rate distortion function of a binary source. Setup.}
+\bit
+\item For $x,y$ in $\mathbb{R}$, define \loud{Hamming distortion} by
+\begin{align*}
+d(x,y)=\begin{cases} 1, & \text{if $x\neq y$}\\ 0, \text{else.}\end{cases}
+\end{align*}
+\item For $p\in (0,1)$, define \loud{binary entropy} $H(p)$ by
+\begin{align*}
+H(p):=-p\log_2(p)-(1-p)\log_2(1-p),
+\end{align*}
+entropy of distribution on alphabet $\{0,1\}$ with probabilities $(1-p), p$.
+\item A \loud{binary source} is a random-variable $X: \Omega\to\{0, 1\}$, where $\Omega$ discrete probability space.
+
+\item \loud{Goal:} Compute rate distortion function of binary source. 
+\item This is done by invoking \loud{fundamental theorem of lossy source coding}.
+\item [\iarrow]  Compute \loud{informational rate distortion function of a binary source}.  
+\item Let $\mathcal{A}:=\{0,1\}$. 
+\eit
+\end{frame}
+
+\begin{frame}{Rate distortion function of a binary source. Lower bound on mutual information.}
+\begin{lemma}
+Let $X,\hat{X}$ be binary random variables. Let $D$ be the expected Hamming distortion between $X$ and $\hat{X}$. Then one has
+$I(X;\hat{X})\geq H(p)-H(D)$.
+\end{lemma}
+ \bit
+ \item Let $\oplus:\{0,1\}\times\{0,1\}\to\{0,1\}$ be mod 2 addition, i.e. $x\oplus y=1$ if $x\neq y$ and $x\oplus y=0$, else. 
+\item For all $x,\:\hat{x}\in\mathcal{A}$, one has $p_{X|\hat{X}}(x\oplus\hat{x}|\hat{x})=p_{X\oplus\hat{X}|\hat{X}}(x|\hat{x})$. 
+\item [\iarrow] Thus one has
+\begin{align*}
+H(X|\hat{X})=&-\sum_{\hat{x}\in\mathcal{A}}p_{\hat{X}}(\hat{x})\sum_{x\in\mathcal{A}}p_{X|\hat{X}}(x|\hat{x})\log_2(p_{X|\hat{X}}(x|\hat{x}))\\
+=&-\sum_{\hat{x}\in\mathcal{A}}\sum_{x\in\mathcal{A}}p_{\hat{X}}(\hat{x})p_{X|\hat{X}}(x\oplus\hat{x}|\hat{x})\log_2(p_{X|\hat{X}}(x\oplus\hat{x}|\hat{x})),\quad\text{use that $\mathcal{A}=\mathcal{A}\oplus \hat{x}$ for each $\hat{x}$}\\
+=&-\sum_{\hat{x}\in\mathcal{A}}\sum_{x\in\mathcal{A}}p_{\hat{X}}(\hat{x})p_{X\oplus\hat{X}|\hat{X}}(x|\hat{x})\log_2(p_{X\oplus\hat{X}|\hat{X}}(x|\hat{x}))\\ =&H(X\oplus\hat{X}|\hat{X}).
+\end{align*}
+\eit
+\end{frame}
+
+\begin{frame}{Rate distortion function of a binary source. Lower bound on mutual information II.}
+\bit
+\item Expected Hamming distortion $D$ between $X$ and $\hat{X}$ is given by $P(X\oplus\hat{X}=1)$. 
+\item [\iarrow] By previous equality and \loud{conditioning does not increase entropy}, one has 
+\begin{align*}
+I(X;\hat{X})=&H(X)-H(X|\hat{X})\\ =&H(X)-H(X\oplus\hat{X}|\hat{X})\\ \geq &H(X)-H(X\oplus\hat{X})\\ =&H(p)-H(D). 
+\end{align*}
+\eit
+\qed
+\end{frame}
+
+\begin{frame}{Rate distortion function of a binary source}
+\begin{theorem}[Rate distortion funciont of a binary source]
+Let $X$ be a binary source. Let $p:=p_X(1)$. Then for the rate-distortion function $R(D)$ of the Hamming-distortion measure, one has
+\begin{align*}
+R(D)=\begin{cases}H(p)-H(D),&\text{if $D\leq min(p,1-p)$} \\ 0, &\text{else.}\end{cases}
+\end{align*}
+\end{theorem}
+\bit
+\item If $D>min(p,1-p)$, always code more probable $x\in\{0,1\}$ with zero bits. Hamming distortion is $min(p,1-p)$.
+\item Assume  $D\leq min(p,1-p)$. By \loud{fundamental theorem of lossy source coding} and previous lemma, remains to show:  
+
+There exists binary source $\hat{X}$ with 
+$\mathbb{E}(d(X,\hat{X}))\leq D$ and $I(X;\hat{X})=H(p)-H(D)$. 
+\eit
+\end{frame}
+
+\begin{frame}{Rate distortion function of a binary source} 
+Use \loud{binary symmetric channel}: Construct $\hat{X}$ that has the following conditional distributions
+\bit
+\item 
+$p(X=1|\hat{X}=0)=p(X=0|\hat{X}=1)=D$.
+\eit 
+This implies that:
+\bit
+\item 
+$p(X=1|\hat{X}=1)=p(X=0|\hat{X}=0)=1-D$ 
+\item $d(X,\hat{X})=D$.
+\item $H(X|\hat{X})=H(D)$.
+\eit 
+
+To meet distribution $p_X$ as marginal of $p_{X,\hat{X}}$, need
+\[
+p=p_X(1)=p_{\hat{X}}(1)\cdot p(X=1|\hat{X}=1) + (1-p_{\hat{X}}(1))\cdot p(X=1|\hat{X}=0).
+\] 
+\bit 
+\item [\iarrow] Need: 
+\[
+p_{\hat{X}}(1)=\frac{p-D}{p-2D}.
+\]
+\qed  
+\eit
+
+\end{frame}
+
+
+\begin{frame}{Plan for next lectures}
+\ALERT{Extend methods and results from RD-theory obtained in previous lectures to continuous sources.}
+%\vspace{-0.1cm}
+
+\loud{Motivation of that goal:} 
+\bit
+\item All video signals that are \textit{actually compressed} by a codec are given as discrete, finite-alphabet 
+signals. Here:
+\bit
+\item Alphabet is very large, i.e. `impractically' large. All sample-value combinations of all natural 
+videos.  
+\item Thus: Do not consider full alphabet, only consider random-variables that give partial informations about 
+the underlying probability space. Model these random-variables by some simpler stationary random processes. 
+\eit
+\item \loud{However: The underlying `real world signals' represented by video signals to compress are continuous signals.} Continuous 
+in time and space.
+%\item[\iarrow] Thus: Studying RD-theory directly for continuous signals seems natural.
+\item Moreover: RD-theory for continuous signals is often \loud{computationally easier}. Model sources like Gaussian or 
+Laplacian distribution can be invoked. 
+\item Can argue that by \textit{central limit theorem} continuous model sources like Gaussian give some reasonable approximation even if the acutal distribution is not known. 
+\eit 
+\end{frame}
+
+
+
+\subsection{Basic setup for general sources.} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+
+
+\begin{frame}{Measurable spaces}
+Let $\Omega$ be a set and $\mathfrak{P}(\Omega)$ denotes its power-set, i.e. set of all subsets of $\Omega$. 
+
+\loud{$\sigma$-algebras and measurable spaces. Definitions.}
+\bit
+\item A set $\Sigma\subset\mathfrak{P}(\Omega)$ is called a $\sigma$-algebra, if
+\bit
+\item $\Omega\in\Sigma$ and $\emptyset\in\Sigma$.
+\item $\Sigma$ is closed under complements: If $A\in\Sigma$, then its complement $A^c$ satisfies $A^c\in\Sigma$. 
+\item $\Sigma$ is closed under countable unions: If $A_i\in\Sigma$ for each $i\in\mathbb{N}$, then $\cup_{i\in\mathbb{N}}A_i\in\Sigma$.  
+\eit
+\item The pair $(\Omega,\Sigma)$ is called measurable space.
+\eit 
+\loud{$\sigma$-algebras and measurable spaces. Remarks.}
+\bit 
+\item For finite probability spaces $\Omega$, take $\Sigma=\mathfrak{P}(\Omega)$. 
+\item But: This is not always feasible, $\mathfrak{P}(\Omega)$ in general too large.  
+\item \textbf{Example:} Lebesgue measure on $\mathbb{R}^n$, natural 
+description of volume, \textbf{not} a measure on $\mathfrak{P}(\mathbb{R}^n)$. 
+\item Sets of Lebesgue measurable sets is smaller than $\mathfrak{P}(\Omega)$, notation of sigma-algebras is needed. 
+\eit
+\end{frame}
+
+\begin{frame}{Measures and probability measures}
+Let $(\Omega,\Sigma)$ be a measurable space. 
+\bit
+\item A \loud{measure} $\mu$ is a function 
+\begin{align*}
+\mu:\Sigma\longrightarrow [0,\infty)\sqcup\{\infty\}
+\end{align*}
+such that
+\bit
+\item $\mu(\emptyset)=0$
+\item $\mu$ is $\sigma$-additive: If $A_i\in\Sigma$, $i\in\mathbb{N}$ with $A_i\cap A_j=\emptyset$ for $i\neq j$, then
+\begin{align*}
+\mu(\cup_{i\in\mathbb{N}}A_i)=\sum_{i=1}^\infty \mu(A_i). 
+\end{align*}
+ \eit
+\item The triple $(\Omega,\Sigma,\mu)$ is called a \loud{measure space}. 
+\item Always assume that measures are $\sigma$-finite: There exists $A_i\in\Sigma$ with $\mu(A_i)<\infty$ and $\Omega=\cup_iA_i$.  
+\item If $\mu(\Omega)=1$, then $(\Omega,\Sigma,\mu)$ is called a \loud{probability space}.
+\eit
+\end{frame}
+
+\begin{frame}{Borel-algebra}
+\loud{Sigma algebra generated by a set of subsets}
+\bit
+\item Let $\Omega$ be a set and $\mathfrak{Q}\subset\mathfrak{P}(\Omega)$ a set of subsets of $\Omega$. 
+\item Let $\Sigma_{\mathfrak{Q}}\subseteq\mathfrak{P}(\Omega)$ be the intersection of all sigma-algebras that contain $\mathfrak{Q}$. 
+\item $\Sigma_{\mathfrak{Q}}$ is a sigma-algebra, called sigma-algebra generated by $\mathfrak{Q}$. 
+\eit 
+
+
+\bit
+\item[\iarrow] The \loud{Borel-algebra} $\mathfrak{B}(\mathbb{R}^n)$ is the sigma-algebra generated by all open set $O\subseteq\mathbb{R}^n$. 
+\eit
+\vspace{-0.4cm}
+\loud{Generating sets for the Borel-algebra}
+\bit
+\item $\mathfrak{B}(\mathbb{R}^n)$ is the sigma-algebra generated by all cubes
+\begin{align*}
+[a_1,b_1)\times\dots\times[a_n,b_n),\qquad a_1,\dots,a_n,b_1,\dots,b_n\in\mathbb{R}.
+\end{align*}
+\item $\mathfrak{B}(\mathbb{R}^n)$ is the sigma-algebra generated by all \loud{uniform quantization cells} 
+$\mathcal{C}_i(\Delta)$, $i=(i_1,\dots,i_n)\in\mathbb{Z}^n$ with \loud{stepsize} $\Delta\in\mathbb{R}$ of the form
+\begin{align}\label{UniQuantCells}
+\mathcal{C}_i^{\Delta}= [i_1\Delta,(i_1+1)\Delta)\times\dots\times[i_n\Delta,(i_n+1)\Delta). 
+\end{align}
+\item $\mathfrak{B}(\mathbb{R}^n)$ is the sigma-algebra generated by all \loud{quantization cells} $C_i^{\Delta}$ 
+with  stepsizes $\Delta=2^{-k}$, $k\in\mathbb{N}$ or any other countable set of stepsizes converging to zero.  
+\eit
+\end{frame}
+
+
+
+\begin{frame}{Lebesgue measure $\lambda_n$ on $\mathfrak{B}(\mathbb{R}^n)$}
+\loud{Geometric motivation. Unique definition.} 
+\bit
+\item For a `natural volume measure' on $\mathfrak{B}(\mathbb{R}^n)$,  
+measure of a cube should be product of its side-lengths. 
+\item This requirement is sufficient to uniquely characterize the Lebesgue measure on $\left(\mathbb{R}^n, \mathfrak{B}(\mathbb{R}^n)\right)$. 
+\item[\iarrow] The Lebesgue measure $\lambda_n$ on $\mathfrak{B}(\mathbb{R}^n)$ is the unique measure that 
+satisifes
+\begin{align*}
+\lambda_n\left([a_1,b_1)\times\dots\times[a_n,b_n)\right)=\prod_{i=1}^n(b_i-a_i), \quad\text{for all cubes}. 
+\end{align*}
+\eit
+\vspace{-0.2cm}
+\loud{Lebesgue measure. Explicit construction.}
+\bit
+\item For $A\in\mathfrak{B}(\mathbb{R}^n)$, $\lambda_n(A)$ is the infimum of 
+sums of volumina of cubes that cover $A$: 
+\begin{align}\label{EqLebM}
+\lambda_n(A)=\inf\left\{\sum_{k=1}^\infty \prod_{i=1}^n[a^k_i-b^k_i)\colon\quad A\subseteq\bigcup_{k=1}^\infty [a_1^k,b_1^k)\times\dots\times [a_n^k,b_n^k)\right\}.
+\end{align}
+\item Equation \eqref{EqLebM} can be used to define a measure $\lambda_n$ on a strictly larger $\sigma$-algebra than $\mathfrak{B}(\mathbb{R}^n)$.
+\item $\sigma$-algebra of Lebesuge measurable sets. However, not every subset of $\mathbb{R}^n$ is Lebesgue measurable. 
+\eit
+
+
+\end{frame}
+
+
+
+
+\begin{frame}{Measuarble functions and simple functions} 
+Let $(\Omega,\Sigma,\mu)$ be a $\sigma$-finite measure space. 
+
+\loud{Measurable functions and simple functions:}
+\bit
+\item A function $f:\Omega\to\mathbb{R}$ is called \loud{measurable} if 
+$f^{-1}(A)\in\Sigma$ for all $A\in\mathfrak{B}(\mathbb{R})$. 
+\item A measurable function $f: \Omega\to\mathbb{R}$ is called \loud{simple function} if 
+its image is a finite set $\{c_1,\dots,c_K\}$.  
+\item  If $f$ is a simple function, one has a disjoint partition
+\[
+\Omega=\sqcup_{i=1}^KA_i,\quad f(x)=c_i\; \forall x \in A_i. 
+\]
+\item [\iarrow] Obvious definition of \loud{integral for simple functions $f$}:
+\begin{align*}
+\int_{\Omega}f(x)d\mu(x):=\sum_{i=1}^K\mu(A_i)c_i. 
+\end{align*}
+\eit
+\end{frame}
+
+\begin{frame}{Integration}
+
+\loud{Integral for non-negative measurable functions} 
+\bit
+\item For any measurable function $f:\Omega\to[0,\infty)$, there exists a sequence $(f_n)_{n=1}^\infty$ of 
+simple functions that is monotonically increasing and converges pointwise to $f$. 
+\item Thus: Also sequence of integrals of the $f_n$ is monotonically increasing. 
+\item[\iarrow] Define integral of $f$ as
+\begin{align}\label{SeqInt}
+\int_\Omega f(x)d\mu(x)=\lim_{n\to\infty}\int_{\Omega}f_n(x)d\mu(x). 
+\end{align}
+\item Limit is independent of specific sequence $f_n$ of simple functions. 
+\item $f$ iscalled integrable if limit \eqref{SeqInt} is finite. 
+\eit
+
+\loud{Integrabitility for general measurable functions $f$} 
+\bit 
+\item One has $f=f^{+}-f^{-}$, where  $f^+(x):=\max(0,f(x))$, $f^{-}(x):=\max(0,-f(x)$. 
+\item $f$ is integrable if $f^{\pm}$ are integrable. Then:
+\begin{align*}
+\int_{\Omega}f(x)d\mu(x):=\int_{\Omega}f^{+}(x)d\mu(x)-\int_{\Omega}f^{-}(x)d\mu(x).
+\end{align*}
+\eit
+
+\end{frame}
+
+\begin{frame}{Random variables. }
+Let $(\Omega,\Sigma,\mu)$ be a probability space. 
+\bit
+\item A function $X:\Omega\to\mathbb{R}^n$ is 
+called a \loud{random variable} if it is Borel-measurable, i.e. if 
+\begin{align*}
+X^{-1}(A)\in\Sigma, \quad \forall A\in\mathfrak{B}(\mathbb{R}^n). 
+\end{align*}
+\item \loud{Distribution of $X$}: The probability measure $\mu_X$ on $\mathfrak{B}(\mathbb{R}^n)$ defined as 
+\begin{align*}
+\mu_X(A):=\mu(X^{-1}(A)).
+\end{align*}
+\item \loud{Cumulative distribution $F_X$ of $X$}: The function $F_X:\mathbb{R}^d\to [0,1]$ defined as
+\begin{align*}
+F_X(x_1,\dots,x_n):=\mu_X((-\infty,x_1]\times\dots\times (-\infty,x_n]). 
+\end{align*}   
+\eit
+\loud{Setting of this lecture}
+\bit
+\item A random varible is also called \loud{source}. 
+\item True probability space $(\Omega,\Sigma,\mu)$ only in the background. Only need distribution 
+$\mu_X$ of $X$. 
+\item [\iarrow] If $X_1$ and $X_2$ are random variables on $(\Omega_1,\Sigma_1,\mu^1)$ and $(\Omega_2,\Sigma_2\mu^2)$, 
+write $X_1\stackrel{d}{=}X_2$ if $\mu^1_{X_1}=\mu^2_{X_2}$. 
+\eit 
+\end{frame}
+
+
+\begin{frame}{Absolutely continuous random variables. Densities.}
+\bit
+\item A random variable $X:\Omega\to\mathbb{R}^n$ is called \loud{absolutely continuous} if Borel sets of Lebesgue measure zero have zero probabilty 
+under its distribution:
+\begin{align*}
+\mu_X(A)=0,\quad \text{$\forall A\in\mathfrak{B}(\mathbb{R}^n)$ with $\lambda_n(A)=0$}.
+\end{align*} 
+\item By \loud{Radon-Nikodym theorem}: Random variable $X$ is absolutely continuous if and only if
+there exists Borel-measruable function 
+\[
+f_X:\mathbb{R}^n\to[0,\infty)
+\]
+such that 
+\begin{align}\label{DefEqDensity} 
+\mu_X(A)=\int_{A}f_X(x)dx,\quad \forall A\in\mathfrak{B}(\mathbb{R}^n),
+\end{align}
+where $dx$ is integration with respect to Lebesgue measrue. 
+\item Function $f_X$ from \eqref{DefEqDensity} is called the \loud{density of $X$}. Unique up to set of measure zero. 
+\item One can show: $X$ is absolutely continuous if and only if $F_X$ is an absolutely continuous function. 
+\eit
+\end{frame}
+
+
+\subsection{Some information theoretic quantities for general sources.} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsubsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\subsubsection{Differential entropy and problem of approximation by discrete entropies.}
+\begin{frame}{Differential entropy.}
+Let $X$ be an arbitrary $\mathbb{R}^d$-valued random variable.
+
+\loud{Goal:}
+\bit
+\item Want to formulate and proof analogon of fundamental theorem of lossy source coding for $X$. 
+\item Need to define mutual information for general random variables. 
+\item First idea: If $X$ is absolutely continuous, try to generalize definition of entropy by replacing sum by an integral.
+\eit 
+
+\loud{Differential entropy}
+\bit
+\item Assume that $X$ is absolutely continuous with density $f_X$. 
+\item The differential entropy 
+$h(X)$ is defined as 
+\begin{align*}
+h(X)=-\int_{\mathbb{R}}f_X(x)\log_2(f_X(x))dx,
+\end{align*} 
+if the integral exists. 
+\eit
+\end{frame}
+
+\begin{frame}{Differential entropy: Problems. Plan for the lecture.}
+\loud{Concept of differential entropy useful, but leads to the following problems.}
+\bit 
+\item Differential entropy does not satisfy all properties of entropy from discrete case. 
+\bit
+\item Can become negative.
+\item  Not invariant under scaling of the random variable. 
+\eit
+\item Differential entropy not limit of discrete entropies of distribution that approach 
+a given distribution.
+\item Differential entropy not always defined. 
+\eit
+\vspace{-0.2cm} 
+\loud{But: Rigorous formulation and proof of fundamental lossy source coding theorem is possible for general random variables $X$. Main idea:} 
+\bit
+\item Not single entropy needed, but only mutual information resp. entropy-differences. 
+\item Differences of entropies of random variables can always be defined as a limit from the discrete cases. 
+\item[\iarrow] \ALERT{Plan of lecture:}
+\begin{enumerate}
+\item Motivate these considerations on the next slides by computations for differential entropy.
+\item Introduce the rigorous concepts. 
+\end{enumerate}
+\item [\iarrow] \ALERT{Generalization of previous fundamental theorem of lossy source coding to general sources.}
+\eit
+\end{frame}
+
+
+\begin{frame}{Quantization of a random variable}
+\loud{Approximate arbitrary random variable by random variables with finite alphabet}
+\bit
+\item For each $N\in\mathbb{N}$,  $\mathbb{R}^d$ is the disjoint partition of uniform quantization cells of length $\Delta_N:=2^{-N}$
+inside $[-N,N)^d$ and the complement $C_{c}^N:=\mathbb{R}^d\backslash [-N,N)^d$ of $[-N,N)^d$.
+\item For $i=(i_1,\dots,i_n)\in\mathbb{Z}^d$ let
+\begin{align}\label{UniQuantCells}
+\mathcal{C}_i^{N}:=\mathcal{C}_i(\Delta_N)= [i_1\cdot\Delta_N,(i_1+1)\cdot\Delta_N)\times\dots\times[i_d\cdot\Delta_N,(i_d+1)\cdot\Delta_N). 
+\end{align}
+\item For $N\in\mathbb{N}$ let  
+\[
+I_N=\{i=(i_1,\dots,i_d)\in\mathbb{Z}^d\colon -N\cdot 2^N\leq i_k< N\cdot 2^N\:\forall k\}.
+\] 
+\item Fix points $c_i^N\in\mathcal{C}_i^N$, for example the centers, and fix $v_N\in C_{c}^N$. 
+\item For a $\mathbb{R}^d$ valued random variable $X$ on $\Omega$, let $Q^N(X):\Omega\to\mathbb{R}^d$ denote its quantization 
+\begin{align}\label{EqQuantization}
+Q^N(X)(\omega)=
+\begin{cases}c_i^N & \text{if $X(\omega)\in\mathcal{C}_i(\Delta_N)$ and $i\in\mathcal{I}_N$} 
+\\ v_N, &\text{else. } 
+\end{cases}
+\end{align}
+\eit
+\end{frame}
+
+\begin{frame}{Illustration of the uniform quantization cells}
+%\centering
+%\includegraphics[width=0.50\textwidth]{UniformSpecialcells.png}
+%\captionsetup{labelformat=empty}
+%\caption{Example of the cells in the 2-dimensional case. 
+%}
+\begin{figure}
+\centering
+\includegraphics[width=0.50\textwidth]{RD_IV/UniformSpecialcells.png}
+\captionsetup{labelformat=empty}
+\caption{Example of the cells $\mathcal{C}_i(\Delta_N)$ in the 2-dimensional case.  
+}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Differential entropy and entropies of quantizes versions I}
+\begin{proposition}
+Let $X$ be an absolutely continuous random variable with values in $\mathbb{R}^d$ and assume that its density $f_X$ is continous and 
+is zero outside some cube $[-T,T]^d$. Then one has 
+\begin{align}\label{EqDiffEntr}
+\lim_{N\to \infty}\left(H(Q^N(X))-dN\right)=h(X). 
+\end{align}
+\end{proposition}
+\small
+\loud{Proof}
+\vspace{-0.2cm}
+\bit 
+\item Can assume that $N\geq T$. 
+\item Since $f_X$ is continuous, by the mean-value theorem, for each $\mathcal{C}_i(\Delta_N)$ there exists $x_{i;N}\in\mathcal{C}_i(\Delta_N)$ with 
+\begin{align}\label{meanV}
+\int_{\mathcal{C}_i(\Delta_N)}f_X(x)dx=vol(\mathcal{C}_i(\Delta_N))f_X(x_{i;n})=\Delta_N^df_X(x_{i;N}).
+\end{align}
+\item Define a function $g:\mathbb{R}^d\to\mathbb{R}$ by
+\begin{align*}
+g_N(x)=f_X(x)\log_{2}(f_X(x_{i;N})), \quad\text{$i$ such that  $x\in\mathcal{C}_i(\Delta_N)$}. 
+\end{align*}
+\item By continuity of $f$, $g_N$ converges pointwise to $f\cdot\log_2(f)$.
+\eit
+\end{frame}
+
+\begin{frame}{Differential entropy and entropies of quantizes versions II}
+\small
+\bit
+\item Since $f_X$ is zero outside $[-T,T]^d$ and since $f_X\log_2(f_X)$ is bounded by the continuity of $f_X$, the dominated convergence theorem implies
+\begin{align}\label{Convg}
+\lim_{N\to\infty}\int_{\mathbb{R}^d}g_N(x)dx=\int_{\mathbb{R}^d}f_X(x)\log_2(f_X(x))dx. 
+\end{align}
+\item One has
+\begin{align*}
+H(Q^N(X))
+=&-\sum_{i\in\mathbb{Z}^d}\int_{\mathcal{C}_i(\Delta_N)}f_X(x)dx\cdot\log_2\left(\int_{\mathcal{C}_i(\Delta_N)}f_X(x)dx\right)\\
+=&-\sum_{i\in\mathbb{Z}^d}\int_{\mathcal{C}_i(\Delta_N)}f_X(x)dx\cdot\log_2\left(\Delta_N^df_X(x_{i;N})\right),\quad\text{by \eqref{meanV}}\\
+=&-d\log_2(\Delta_N)\sum_{i\in\mathbb{Z}^d}\int_{\mathcal{C}_i(\Delta_N)}f_X(x)dx-\sum_{i\in\mathbb{N}^d}\log_2\left(f_X(x_{i;N})\right)\cdot \int_{\mathcal{C}_i(\Delta_N)}f_X(x)dx\\
+=&-d\log_2(\Delta_N)\int_{\mathbb{R}}f_X(x)dx-\int_{\mathbb{R}}g_N(x)dx. 
+\end{align*}
+\item
+Applying \eqref{Convg}, the proposition follows.\qed
+\eit
+\end{frame}
+
+\begin{frame}{Differential entropy and entropies of quantizes versions. Consequences. }
+\loud{Observations: }
+\bit
+\item By previous proposition: Sequence of entropies of quantized version is \loud{divergent}. 
+\item Thus: Differential entropy is \loud{not} limit of entropies of quantized version.
+\item \loud{But:} Rate $dN$ of divergence is independent of random variable $X$, depends only 
+on the  quantizers.
+%\item In general: Rate of divergence is $-d\log_2(\Delta)$ for uniform quantizers $Q^\Delta$ with $\Delta\to 0$. Same proof. 
+\eit
+\loud{\iarrow $ $Consequences. Main idea.}
+\bit
+\item Should be possible to define \loud{differences of entropies} for the general case of two random variables $X$ and $Y$ using 
+limits of quantized versions. `Divergent terms should cancel out'. 
+\eit
+\loud{Outlook}
+\bit
+\item \loud{Mutual information} is defined by difference of entropies. Central quantity for the fundamental theorem of lossy compresion.
+\item In fact, work with closely related \loud{divergence}. 
+\item Can define divergence for \loud{any pair of random variables $(X,Y)$} as limit of the $D(Q^N(X),Q^N(Y))$. 
+\item For proofs and further details, see \textit{Gray, Entropy and Information Theory, Chapter 5}. 
+\eit
+\end{frame}
+
+
+
+
+
+
+
+
+
+%\subsubsection{Divergence and mutual information for arbitrary random variables}
+%
+%\begin{frame}{Construction of divergence}
+%\loud{Partition of a measurable space $(\Omega,\Sigma)$}
+%\bit
+%\item A \loud{finite partition} $\mathfrak{Q}$ of $\Omega$ is 
+%a finite set $\mathfrak{Q}=\{A_1,\dots,A_K\}$ of mutually disjoint measurable sets $A_i\in\Sigma$ such that 
+%\begin{align*}
+%\Omega=\sqcup_{i=1}^KA_i. 
+%\end{align*}
+%\item A probability measure $\mu$ on $\Omega$, define a pmf $\mu^{\mathfrak{Q}}$ on $\mathfrak{P}(\mathfrak{Q})$ $\iarrow$ Obtain discrete probabitiliy space as considered previously. 
+%\item Smallest partition is $\mathfrak{Q}=\{\Omega\}$. Probability space with one point of probabitily one. 
+%\eit
+%
+%\loud{Definition of divergence }
+%\bit 
+%\item Let $\mu_1$ and $\mu_2$ be two probability measures on $(\Omega,\Sigma)$. 
+%\item The divergence $D(\mu_1||\mu_2)$ is defined as 
+%\begin{align}\label{EqDivergence}
+%D(\mu_1||\mu_2):=sup_{\mathfrak{Q}}(D(\mu_1^{\mathfrak{Q}}||\mu_2^{\mathfrak{Q}}),
+%\end{align}
+%\item Supremumg in \eqref{EqDivergence} is taken over all finite partitions $\mathfrak{Q}$ of $\Omega$. 
+%\item Supermum in \eqref{EqDivergence} 
+%can be  infinite. 
+%\eit 
+%\end{frame}
+%
+%\begin{frame} {Divergence. Remarks and definition via special sequences of partitions.}
+%Definition of divergence parallel to definition of the integral: 
+%\bit 
+%\item Meaning of integral obvious for simple functions. For more general functions, defined via approximation by increasing sequence of simple functions.
+%\item Divergence defined for discrete probability spaces. For general proabitliy spaces, define divergence via approximation by increasing sequence of divergences on discrete probabitiliy spaces.   
+%\eit
+%
+%Definition \eqref{EqDivergence} very general, involves \textit{all} partitions. \loud{But:} Specific sequence 
+%of partitions always suffices:
+%
+%\begin{proposition}
+%Let $\mathfrak{Q}_n$ be \textit{any} sequence of finite parititons such that for each $A_{n+1}\in\mathfrak{Q}_{n+1}$ there exists $A_n\in\mathfrak{Q}_n$ with $A_{n+1}\subseteq A_n$ and 
+%such that $\Sigma$ is generated by $\cup_{n\in\mathbb{N}}\mathfrak{Q}_n$. Then one has 
+%\begin{align*}
+%D(\mu_1||\mu_2)=\lim_{n\to\infty} D(\mu_1^{\mathfrak{Q}_n}||\mu_2^{\mathfrak{Q}_n}).
+%\end{align*}
+%\end{proposition}
+%\loud{Proof:} See book of Gray. 
+%\end{frame}
+%
+%
+%\begin{frame}{Illustration for the construction of divergence on arbitrary measure spaces} 
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.75\textwidth]{non_uniform_all_2.png}
+%\captionsetup{labelformat=empty}
+%\caption{Schematic illustration of the refinement process of a measurable space $\Omega$ into finer and finer partitions $\mathfrak{Q}_n$.
+%Set $\Omega$ is uncountable, beige area. Partitions construt collections of finite subsets that are successively refined. Each collection is a finite 
+%measurable space. Two probability measures on $\Omega$ define two pmfs on each collection. Divergence of the two measures 
+%is obtained as limit of the divergences on the collections. }
+%\end{figure}
+%\end{frame} 
+%
+%
+%\begin{frame}{Computing divergence for random variables by quantization.} 
+%\loud{Divergence for random variables} 
+%\bit
+%\item Let $X_1$ and $X_2$ be arbitrary random variables with values in $\mathbb{R}^d$, originating from probability
+% spaces with probability measutes $\mu^1$ and $\mu^2$. 
+%\item Divergence of $X_1$ and $X_2$ is divergence of their distributions:
+%\begin{align*}
+%D(X||Y):=D(\mu^1_{X}||\mu^2_{X}). 
+%\end{align*}
+%\item For $N\in\mathbb{N}$, let $Q^N(X_1)$, $Q^N(X_2)$ denote their quantizes versions as in \eqref{EqQuantization}. 
+%\item By previous proposition:
+%\begin{align}\label{DivRV}
+%D(X_1||X_2)=\lim_{N\to\infty} D(Q^N(X_1)||Q^N(X_2)). 
+%\end{align}
+%\item Could also take other sequences of quantizers $\tilde{Q}^N$ satifying assumptions of above proposition. 
+%\item[] \ALERT{$\iarrow$ Well defined digital-to-analog conversion for divergence of two random variables via 
+%any quantization scheme  that asymptotically generates the Borel-algebra}.  
+%\eit
+%
+%
+%
+%%
+%%\loud{Sequence of partitions $\mathfrak{Q}_n$ for $\mathbb{R}^d$ }
+%%\item For $N\in\mathbb{N}$ let $\Delta_N:=2^{-N}$.  
+%%According to \eqref{UniQuantCells}, for $i=(i_1,\dots,i_n)\in\mathbb{Z}^d$ let
+%%\begin{align}\label{UniQuantCells}
+%%\mathcal{C}_i^{N}:=\mathcal{C}_i(\Delta_N)= [i_1\cdot\Delta_N,(i_1+1)\cdot\Delta_N)\times\dots\times[i_d\cdot\Delta_N,(i_d+1)\cdot\Delta_N). 
+%%\end{align}n
+%%\item For $N\in\mathbb{N}$ let  
+%%\[
+%%I_N=\{i=(i_1,\dots,i_d)\in\mathbb{Z}^d\colon -N\cdot 2^N\leq i_k< N\cdot 2^N\:\forall k\}.
+%%\] 
+%%\eit
+%\end{frame}
+%
+%
+%\begin{frame}{Mutual information}
+%\loud{Recall: Mutual information in discrete case} 
+%\bit 
+%\item For discrete random-variables $X$ and $Y$ with alphabets $\mathcal{A}_X$ and $\mathcal{A}_Y$ , marginal pmfs $p_X$ and $p_Y$ and joint 
+%pmf $p_{(X,Y)}$, the mutual information $I(X,Y)$ satisifes
+%\begin{align}\label{MutInfDisc}
+%I(X,Y)=D(p_{X,Y}||p_X\times p_Y). 
+%\end{align}
+%\item Here $p_X\times p_Y$ is the pmf on $\mathcal{A}_X\times\mathcal{A}_Y$ given as $p_X\times p_Y(x,y)=p_X(x)\cdot p_Y(y)$. 
+%\item Divergence $D$ now generally defined. \loud{Need to generalize $p_X\times p_Y$.} 
+%\eit
+%\loud{$\iarrow$ Product measure} 
+%\bit
+%\item Let $(\Omega_1,\Sigma_1)$ and $(\Omega_2,\Sigma_2)$ be measure spaces.
+%\item \loud{Product $\sigma$-algebra} $\Sigma_1\otimes\Sigma_2$: Smallest $\sigma$-algebra that contains all sets $A\times B$, $A\in\Sigma_1$, $B\in\Sigma_2$. 
+%\item Let $\mu_1$ measure on $(\Omega_1,\Sigma_1)$ and $\mu_2$ 
+%measure on $(\Omega_2,\Sigma_2)$, both $\sigma$-finite.
+%%\item Assume that $\mu_1$ and $\mu_2$ are $\sigma$-finite, i.e. one can write $\Omega_1=\cup_i=1^\infty A_i$ with $A_i\in\Sigma_1$ 
+%%and $\mu_1(\Sigma_1)<\infty$, same for $\mu_2$. 
+%%\item Example: Probability measures and Lebesgue measure are obviously $\sigma$-finite. 
+%\item \loud{Product measure:} There exists a unique measure $\mu_1\otimes \mu_2$ on $\Sigma_1\otimes\Sigma_2$ such that
+%\begin{align*}
+%\mu_1\otimes\mu_2(A\times B)=\mu_1(A)\cdot\mu_2(B),\quad \forall A\in \Sigma_1, \:\forall B\in\Sigma_2. 
+%\end{align*}
+%\eit
+%\end{frame}
+%
+%\begin{frame}{Product measures. Joint distribution. Marginal distribution. Independence.}
+%\loud{Lebesgue measure on the Borel algebra as a product measure}
+%\bit
+%\item For the Borel-algebra, one has
+%\begin{align}\label{BorelProduct}
+%\mathfrak{B}(\mathbb{R}^{k+l})=\mathfrak{B}(\mathbb{R}^{k})\otimes\mathfrak{B}(\mathbb{R}^l); \quad 
+%\lambda_{k+l}=\lambda_{k}\otimes\lambda_l.
+%\end{align}
+%%for the Lebesgue measures \textit{as measures on the Borel algebras}.
+%\item For larger $\sigma$-algebra of Lebesgue measurable set, needs to pass to completion. 
+%\eit
+%
+%\loud{Joint distribution, marginal distribution, independence:} 
+%\bit 
+%\item Let $X:\Omega\to\mathbb{R}^k$ and $Y:\Omega\to\mathbb{R}^l$ be random-variables on a probability spaces $(\Omega,\Sigma,\mu)$. 
+%\item It follows from \eqref{BorelProduct} that $(X,Y):\Omega\to\mathbb{R}^{k+l}$, $(X,Y)(\omega):=(X(\omega),Y(\omega))$ is a random variable. 
+%\item As in discrete case, distribution
+%\[
+%\mu_{X,Y}: \mathfrak{B}(\mathbb{R}^{k+l}) \to[0,1]
+%\]
+%of $(X,Y)$ is called \loud{joint distribution} of $X$ and $Y$, and  
+%$\mu_X$ and $\mu_Y$ are called \loud{marginal distributions}. 
+%\item $X$ and $Y$ are called \loud{independent} if 
+%\begin{align*}
+%\mu_{X,Y}=\mu_X\otimes\mu_Y. 
+%\end{align*}  
+%\eit
+%\end{frame}
+%
+%\begin{frame}{Mutual information in the general case} 
+%Divergence and product measure appearing in \eqref{MutInfDisc} 
+%are now generalized to the continuous case: 
+%
+%\loud{$\iarrow$ Mutual information can be defined for two variables on a general proability space $(\Omega,\Sigma,\mu)$:}
+%\bit
+%\item For random variables $X$ and $Y$ on $\Omega$ put 
+%\begin{align}\label{MutInfCont}
+%I(X;Y)=D(\mu_{X,Y}||\mu_X\otimes \mu_Y).
+%\end{align}
+%\item By \eqref{DivRV}, mutual information between random variables $X$, $Y$ is limit of mutual informations of their 
+%quantized versions $Q^N(X)$ and $Q^N(Y)$:
+%\begin{align}\label{MutContLimit}
+%I(X;Y)=\lim_{n\to\infty}I(Q^N(X); Q^N(Y)).
+%\end{align}
+%\item As for divergence: \ALERT{Any suitable family of quantizers on $\mathbb{R}^d$ gives a well established digital-to-analog conversion for mutual information.} 
+%\item Using \eqref{MutContLimit}, standard properties of mutual information like symmetry proved for discrete random variables 
+%carry over to the general case.  
+%\eit 
+%\end{frame}
+%
+%
+%
+%\begin{frame}{Mutual information via densities}
+%\loud{Recall: } Formula \eqref{EqDiffEntr} involving \loud{densities} as a motivation for considering 
+%differences beteween entropies, i.g. mutual informations. Considerations are consistent: 
+%\begin{proposition}
+%Let $(\Omega,\Sigma,\mu)$ be a probability space. Let $X, Y:\Omega\to \mathbb{R}^d$ be absolutely continuous random variables such that $(X,Y)$ is absolutely continuous. Let $f_X$ and 
+%$f_Y$ denote the densities of $X$ and $Y$ and let $f_{X,Y}$ denote the density of $(X,Y)$. Then one has 
+%\begin{align}\label{FormulaMIIntegral}
+%I(X;Y)=\int_{\mathbb{R}}\int_{\mathbb{R}}f_{X,Y}(x,y)\log_2\left(\frac{f_{X,Y}(x,y)}{f_X(x)f_Y(y)}\right)dxdy. 
+%\end{align}
+%\end{proposition}
+%\vspace{-0.2cm}
+%\loud{Proof}
+%\vspace{-0.1cm}
+%\bit    
+%\item General case: Use Radon-Nikodym theore, see book of Gray.
+%\item Here:  Assume that \eqref{EqDiffEntr} can be applied.
+%\eit
+%\end{frame}
+%
+%\begin{frame}{Mutual information via densities. Proof.}
+%\bit
+%\item One has
+%\begin{align*}
+%I(X;Y)=&\lim_{N\to\infty}I(Q^{N}(X);Q^N(Y))\\
+%=&\lim_{N\to\infty}\left(H(Q^{N}(X,Y))-H(Q^{N}(X))-H(Q^{N}(Y))\right)\\
+%=&\lim_{N\to\infty}\left(H(Q^{N}(X,Y))-2dN)-(H(q^{N}(X))-dN)-(H(q^{N}(Y))-dN)\right).
+%\end{align*}
+%\item
+%Thus by \eqref{EqDiffEntr}, one has 
+%\begin{align*}
+%I(X;Y)
+%=\int_{\mathbb{R}}\int_{\mathbb{R}}f_{X,Y}(x,y)\log_2(f_{X,Y}(x,y))dxdy-
+%\int_{\mathbb{R}}f(x)\log_2(f(x))dx-\int_{\mathbb{R}}f(y)\log_2(f(y))dy. 
+%\end{align*}
+%\item For the marignal denities $f_X$ and $f_Y$, one has
+%\begin{align*}
+%f_X(x)=\int_{\mathbb{R}}f_{X,Y}(x,y)dy;\quad f_X(y)=\int_{\mathbb{R}}f_{X,Y}(x,y)dx,\quad\text{allmost everywhere.}\qed
+%\end{align*} 
+%\eit
+%Similarly: \loud{Definition of divergences are consistent} if $X$ and $Y$ have densities. 
+%\end{frame}
+%
+%
+%\begin{frame}{Informational rate-distortion function, general case}
+%Mutual information defined $\iarrow$ Can define informational rate distortion function as before. 
+%\begin{definition}
+%Let $(\Omega,\Sigma,\mu)$ be a probability space and let $X:\Omega\to\mathbb{R}$ be a continuous 
+%random variable (r.v.). Let $d$ be a distortion function. The informational rate distortion function is defined as 
+%\begin{align*}
+%R^{(I)}(D):=\inf\bigl\{&I(X;\hat{X})\colon  \text{$\hat{X}$ is an $\mathbb{R}$-valued r. v.  and there exists an $\mathbb{R}^2$-valued r. v. $Z=(Z_1,Z_2)$}\\ &\text{on some probability space with probability measure $\nu$ such that $Z_1\stackrel{d}{=} X$ and $Z_2\stackrel{d}{=} \hat{X}$} \\ &\text{and such that
+%$\int_{\mathbb{R}^2}d(x,\hat{x})d\nu_Z(x,\hat{x})<D$. }
+%\bigr\}
+%\end{align*}
+%\end{definition}
+%\vspace{-0.2cm}
+%\bit
+%\item Recall: $X\stackrel{d}{=} Y$ for r.v. $X$ and $Y$ means that $X$ and $Y$ have the same distribution. 
+%\item Definition is consistent with previous definition of $R^{(I)}(D)$ for the discrete case.
+%\item As in discrete case, can also define $R^{(I)}(D)$ using conditional distribution instead of $Z$. 
+%\item However: (Regular versions of) conditional expectation not introduced in this lecture. 
+%%\item See standard textbooks on probability theory. 
+%%\item Suffices to work with joint distribution $Z$. 
+%\eit
+%\end{frame}
+%
+%\subsection{Source codes and rate-distortion functions for general random variables.}
+%\begin{frame}
+% \vspace{12.0ex}
+%\begin{center}
+%\begin{beamercolorbox}[sep=12pt,center]{part title}
+%\usebeamerfont{section title}\insertsubsection\par
+%\end{beamercolorbox}
+%\end{center}
+%\end{frame}
+%
+%\begin{frame}{Lossy source codes for general sources $X$} 
+%Let $X$ be a random-variable with values in $\mathbb{R}^d$ and distribution $\mu_X$. 
+%%\vspace{-0.2cm}
+%\loud{Lossy source code $Q=(\alpha,\gamma,\beta)$ for $X$}
+%\bit
+%\item Same definition as before. But: Quantization defied as mapping on the whole $\mathbb{R}^d$. 
+%\item $\alpha: \mathbb{R}^d\to \mathcal{I}_K:=\{1,\dots,K\}$, \loud{quantization}
+%\item $\gamma$: \loud{Lossless mapping}. Uniquely decodable code for $\mathcal{I}_K$. 
+%\item $\beta: \mathcal{I}_K\to\mathbb{R}^d$, \loud{inverse quantization}. 
+%\eit
+%
+%\loud{Main difference to case of finite alphabets:} 
+%\bit
+%\item One never has: $\beta(\alpha(x))\neq x$.
+%\item[\iarrow] If one assumes that $X$ does not attain only finitely many values $\mathcal{A}_X$,  there is always loss in information.
+%\item Lossless source codes do not exist for general random variables.
+%\eit
+%\vspace{-0.2cm}
+%\loud{Rate of a source code:}
+%\bit
+%\item Defined as before: $\mu_X$ and $\alpha$ induce discrete probability distribution on $\mathcal{I}_K$. 
+%\item [\iarrow] Rate is average expected codeword-length of $\gamma$. 
+%\eit
+%
+%
+%\end{frame}
+%
+%\begin{frame}\frametitle{Lossy source codes: Distortion}
+%\bit
+%\item Fix a distortion measure $d$ on $\mathbb{R}$, get additive extension $d_N$ on $\mathbb{R}^N$. 
+%\item The distortion $\delta(Q)$ of a source code $Q$ is defined as the expected mean squared Euclidean distance between original and 
+%reconstructed symbols  
+%\begin{align*}
+%\delta(Q)=\int_{\mathbb{R}^N}d_N(s,\beta(\alpha(s)))d\mu_X(s).
+%\end{align*}
+%\item Define a discrete random variable $Y$ on $\Omega$ by $Y(\omega):=\beta(\alpha(X(\omega)))$, quantization of $X$.
+%\item Let $Z:=(X,Y)$. $Z$ is a random variable; never absolutely continuous. 
+%\item Distribution $\mu_{Z}$ of $Z$ is a probability measure on $\mathbb{R}^{N}\times\mathbb{R}^N$.
+%%If $X$ is continous, $Z$ is a mixture of 
+%%a continuous and discrete random variable, does not have a density.
+%\item By definition, one has
+%\begin{align*}
+%\delta(Q)=\int_{\mathbb{R}^N\times\mathbb{R}^N}d_N(x,\hat{x})d\mu_Z(x,\hat{x}).
+%\end{align*}
+%\item For $N=1$, last equation is consistent with distortion term in informational rate distortion function. 
+%\eit 
+%\end{frame}
+%
+%
+%\begin{frame}\frametitle{Lossy source codes: Quantization cells}
+%Let $Q=(\alpha,\gamma,\beta)$ be a source code. 
+%\begin{itemize}
+%\item For $i\in\mathcal{I}_K$, the set 
+%$C_i:=\alpha^{-1}(i) $
+%is called the \loud{quantization cell} of index $i$.
+%\item The value 
+%$\hat{x}_i:=\beta(i)$ is called the reconstructed value of index $i$. 
+%\item The quantization cells $C_i$ are pairwise disjoint and their union is $\mathbb{R}^N$. 
+%\item One has 
+%\begin{align}\label{RDQuantCells}
+%\delta(Q)=\sum_{i\in\mathcal{I}_K}\int_{C_i}\left\|x-\hat{x}_i\right\|^2d\mu_X(x),\quad r(Q)=\sum_{i\in\mathcal{I}_K}|\gamma(i)|\mu_X(C_i).
+%\end{align}
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.12\textwidth]{quant_cells.png}
+%\captionsetup{labelformat=empty}
+%\caption{Example for quantization cells and reconstruction points in $\mathbb{R}^2$.}
+%\end{figure}
+%\end{itemize}
+%\end{frame}
+%
+%
+%
+%
+%\begin{frame}{Rate distortion function and fundamental source coding theorem. General case.}  
+%\loud{Rate distortion function}
+%\bit
+%\item Let $X$ be an $\mathbb{R}^N$-valued random variable and let $Q$ be a source codde for $X$. 
+%\item For $D\in [0,\infty)$, one puts
+%\begin{align*}
+%R(D)= \inf\{r(Q)\colon \text{$Q$ is a source code with $\delta_N(Q)\leq D$}\}.
+%\end{align*}
+%\item If support of $\mu_X$, i.e. $\{x\in\mathbb{R}^N\colon \mu_X(x)\neq 0$ is uncountalbe, $R(D)$ goes to infinity as $D\to 0$. 
+%\item In particular: $R(D)$ goes to inifitniy as $D\to 0$ if $X$ is an absolutely continuous random variable.
+%\eit
+%
+%\loud{Setup for fundamental lossless source coding theorem:} Analog to discrete case. 
+%\bit
+%\item Let $X$ be an $\mathbb{R}$-valued random variable. 
+%\item Consider joint coding of $N$ independent realizations of $X$, i.e. 
+%joint coding of $\mathbb{R}^N$-valued sources $X^N=(X_1,\dots,X_N)$ with 
+%proces $iid$, $X_i\stackrel{d}{=}X$ for all $i$. 
+%\item If $Q$ is a source code for $X^N$, rate $r(Q)$ is meant as rate per symbol, i. e. normalized with $1/N$.
+%\item Fix a distortion function $d$ on $\mathbb{R}$, extend $d$ to additive distortion function on $\mathbb{R}^N$.  
+%\eit 
+%\end{frame}
+%
+%\begin{frame}{Fundamental source coding theorem for general random variables.}
+%\begin{theorem} 
+%\begin{enumerate}
+%\item The informational rate distortion function $R^{(I)}$ is always a \loud{lower bound} for the rate distortion function: 
+%For every $N\in\mathbb{N}$ and every sorce code $Q_N$ for $X^N$ one has  
+%\begin{align}\label{BoundRate}
+%r(Q_N)\geq R^{(I)}(\delta(Q_N)). 
+%\end{align}
+%\item The bound \eqref{BoundRate} is \loud{asymptotically achievable}: For every $D>0$, every $\epsilon>0$ and every $R'>R^{(I)}(D)$, one can achieve 
+%\begin{align*}
+%\delta(Q_N)\leq D+\epsilon, \quad r(Q_N)\leq R'
+%\end{align*}
+%for some sequence $Q_N$  of source codes for $X^N$ where $N$ can be chosen arbitrarily large.    
+%\end{enumerate} 
+%\end{theorem}
+%\loud{Proof: Proceed exactly as in discrete case.}
+%\bit
+%\item Mutual information has same properties as in discrete case by \eqref{MutContLimit}.
+%\item Law of large number holds for $X^N$ $\iarrow$ Ensemble set and random-coding can be constructed as in the discrete setting. 
+%\eit 
+%\end{frame}
+%
+%
+%\subsection{Rate distortion function for a scalar Gaussian source}
+%
+%\begin{frame}
+% \vspace{12.0ex}
+%\begin{center}
+%\begin{beamercolorbox}[sep=12pt,center]{part title}
+%\usebeamerfont{section title}\insertsubsection\par
+%\end{beamercolorbox}
+%\end{center}
+%\end{frame}
+%
+%
+%
+%\subsubsection{Basic properties of the Gaussian Distribution}
+%
+%\begin{frame}{Review: Definition of the scalar Gaussian distribution}
+%\loud{The Gaussian function} 
+%\bit
+%\item For $\sigma\in(0,\infty)$, the \loud{Gaussian function} is defined as 
+%\begin{align*}
+%\phi_{\sigma}(x):=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{x^2}{2\sigma^2}\right).
+%\end{align*}
+%%\item For any $\mu\in\mathbb{R}$, one has 
+%%\begin{align*}
+%%\int_{\mathbb{R}}\phi_\sigma(x-\mu)dx=1;\quad \int_{\mathbb{R}}\phi_\sigma(x-\mu)xdx=\mu;\quad \int_{\mathbb{R}}\phi_\sigma(x-\mu)(x-\mu)^2dx=\sigma^2.
+%%\end{align*}
+%\item Integration of $\phi_{\sigma}(x-\mu)$ defines a probability measure on $\mathfrak{B}(\mathbb{R})$ with mean $\mu$ and variance $\sigma^2$. 
+%\eit
+%
+%\loud{Gaussian distributed random variables}
+%\bit
+%\item An $\mathbb{R}$-valued random variable $X$ is \loud{Gaussian distributed with mean $\mu$ and variance $\sigma$}, 
+%\begin{align*}
+%X\sim \mathcal{N}(\mu,\sigma^2), 
+%\end{align*}
+%if 
+%$X$ is absolutely contintuous and its density $f_X$ satisfies $f_X(x)=\phi_{\sigma}(x-\mu)$ allmost everywhere. 
+%\item Gaussian distribution arguably \loud{most important model distribution}. 
+%\item One important  reason: \loud{Central limit theorem}. 
+%\eit
+%\end{frame}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%\begin{frame}
+%\begin{proposition}[Differential entropy for the Gaussian source.]
+%\begin{enumerate}
+%\item The differential entropy of a normally distributed random varibale $X\sim N(\mu,\sigma)$ satisfies
+%\begin{align}\label{EqDiffEntrGV}
+%h(X)= \frac{1}{2}\log_2(2\pi\sigma^2 e).
+%\end{align}
+%\item All absolutely continuous sources $Y$ having a finite differential entropy and having finite variance $\sigma^2$ satisfiy
+%\begin{align}\label{IneqEntr}
+%h(Y)\leq \frac{1}{2}\log_2(2\pi\sigma^2 e).
+%\end{align}
+%The Gaussian distribution $\mathcal{N}(\mu,\sigma^2)$ maximes the differential entropy for a given variance. 
+%\end{enumerate}
+%\end{proposition}
+%\bit
+%\item Using \loud{Shannon lower bound}: Will be shown that Gaussian iid process is `most difficult to code for high rates' among 
+%all iid processes with same variance.
+%\item [\iarrow] Heuristically consistent with maximalization \eqref{IneqEntr} and meaning of entropy from discrete case.  
+%\eit
+%
+%\end{frame}
+%
+%\begin{frame}{Computation of differential entropy of scalar Gaussian source.}
+%\bit
+%\item For $X\stackrel{d}{=} N(\mu,\sigma)$ one computes 
+%\begin{align*}
+%h(X)=&-\int_{\mathbb{R}}\phi_{\sigma}(x-\mu)\log_2(\phi_{\sigma}(x-\mu))dx\\
+%=&-\int_{\mathbb{R}}\phi_{\sigma}(x)\log_2(\phi_{\sigma}(x))dx\\
+%=& \frac{1}{\ln(2)}\cdot\frac{1}{\sqrt{2\pi\sigma^2}}\int_{\mathbb{R}}\exp\left(-\frac{x^2}{2\sigma^2}\right)\left(\ln(\sqrt{2\pi\sigma^2})+\frac{x^2}{2\sigma^2}\right)dx\\
+%=&\frac{1}{\ln(2)}\cdot\left(\ln(\sqrt{2\pi\sigma^2})\int_{\mathbb{R}}\phi_\sigma(x)dx+\frac{1}{2\sigma^2}\int_{\mathbb{R}}\phi_\sigma(x)x^2dx\right)\\
+%=&\frac{1}{\ln(2)}\cdot\left(\ln(\sqrt{2\pi\sigma^2})+\frac{1}{2}\right)\\
+%=&\frac{1}{2\ln(2)}\cdot\left(\ln(2\pi\sigma^2)+1\right)\\ 
+%=&\frac{1}{2}\log_2(2\pi\sigma^2 e).
+%\end{align*}
+%\eit
+%\end{frame} 
+%
+%\begin{frame}{Scalar Gausian distribution maximes differential entropy}
+%\loud{Proof}
+%\bit
+%\item Let $Y$ be any absolutely continous distribution of variance $\sigma^2$ and probability density function $g$.
+%\item One has 
+%\begin{align*}
+%0\leq D(g||\phi_\sigma)=&\int_{\mathbb{R}}g(x)\log_2\left(g(x)/\phi_\sigma(x)\right)dx\\
+%=&\int_{\mathbb{R}}g(x)\log_2(g(x))dx-\int_{\mathbb{R}}g(x)\log_2(\phi_\sigma(x))dx\\
+%=&-h(g)+\frac{1}{\ln(2)}\int_{\mathbb{R}}g(x)\left(\ln(\sqrt{2\pi\sigma^2})+\frac{x^2}{2\sigma^2}\right)dx\\
+%=&-h(g)+\frac{1}{\ln(2)}(\ln(\sqrt{2\pi\sigma^2})\int_{\mathbb{R}}g(x)dx+\frac{1}{2\sigma^2}\int_{\mathbb{R}}x^2g(x)dx)\\
+%=&-h(g)+\frac{1}{\ln(2)}(\ln(\sqrt{2\pi\sigma^2})+1/2)\\
+%=&-h(g)+h(\mathcal{N}(0,\sigma^2)).
+%\end{align*}
+%\eit
+%\end{frame}
+%
+%\subsubsection{Rate distortion function for scalar Gaussian sources}
+%\begin{frame}{Rate-distortion function of a Gaussian source}
+%\begin{theorem}
+%Let $X$ be an $\mathbb{R}$-valued Gaussian source of mean $\mu$ and variance $\sigma^2$, i.e. $X\stackrel{d}{=} \mathcal{N}(\mu,\sigma^2)$. Then one has 
+%\begin{align}\label{RDGauss}
+%R(D)=\begin{cases} &0, \text{if $D\geq \sigma^2$} \\ &\frac{1}{2}\log_2\left(\frac{\sigma^2}{D}\right), \text{else.} \end{cases}
+%\end{align}
+%\end{theorem}
+%\bit
+%\item [\iarrow] \loud{Explicit formula for the rate-distortion function of a very important source, probably most 
+%important model source!}
+%\eit
+%\vspace{-0.2cm}
+%\loud{Many application of \eqref{RDGauss} and its extensions will be given:} 
+%\bit
+%\item Can explicitly quantify vector quantization advantage for Gaussian sources.
+%\item Can explicity compare optimal transform coding 
+%scheme with general vector quantization for Gaussian sources. 
+%\item Transform coding: Cornerstone of modern image- and video-codecs.
+% \eit
+%\end{frame}
+%
+%\begin{frame}{Rate-distortion function of a scalar Gaussian source}
+%\loud{Lower bound for $R^{(I)}(D)$: }
+%\bit
+%\item Let $\hat{X}$ be a random-variable that joint distribution of $X$ and $\hat{X}$ satisfies the distortion constraint. Then: 
+%\begin{align}
+%I(X;\hat{X})=h(X)-h(X|\hat{X})
+%= & h(X)-h(X-\hat{X}|\hat{X})\nonumber\\
+%\geq & h(X)- h(X-\hat{X})\nonumber\\
+%\geq & h(X) - \sup_{\{Y\colon var(Y)<D\}}h(Y)\nonumber\\
+%\geq & h(X) - \frac{1}{2}\log_2(2\pi\sigma^2 e)\label{GaussRDI}\\
+%=& \frac{1}{2}\log_2\left(\frac{\sigma^2}{D}\right)\label{GaussRDII}. 
+%\end{align}
+%\item Here, \eqref{GaussRDI} follows from \eqref{IneqEntr} and \eqref{GaussRDII} follows from \eqref{EqDiffEntrGV}. 
+%\item Justsification of other (in)equalities. See below. 
+%\eit
+%
+%\end{frame}
+%
+%
+%
+%
+%\begin{frame}{Rate-distortion function of a scalar Gaussian source.}
+%\loud{Proof of achievability.}
+%\bit
+%\item Let $\hat{X}$ be a Gaussian source such that
+%\bit
+%\item $\hat{X}\stackrel{d}{=} \mathcal{N}(0,\sigma^2-D)$.
+%\item $X-\hat{X}\stackrel{d}{=} \mathcal{N}(0,D)$.
+%\item $\hat{X}$ and $X-\hat{X}$ are independent.
+%\eit
+%\item \textbf{Exercise: } Show that $\hat{X}$ exists. Use that convolution of Gaussians is Gaussian, mean and variance add up. 
+%\item One has
+%\begin{align*}
+%I(X;\hat{X})=&h(X)-h(X|\hat{X})\\
+%=&h(X)-h(X-\hat{X}|\hat{X})\\
+%=&h(X)-h(X-\hat{X})\\
+%=& \frac{1}{2}\log_2\left(\frac{\sigma^2}{D}\right).
+%\end{align*}
+%\eit
+%\end{frame}
+%
+%\begin{frame}{Rate distortion function of scalar Gaussian source. Remarks on proof.}
+%\loud{Remark on the proof: }
+%\bit
+%\item  Previus (in)equalities are easily verified for \loud{discrete case}. 
+%\item Using \eqref{MutContLimit},  they extend easily to present case. 
+%\item One does not even need to define conditional entropy for continuous case.
+%\item  Argue exactly as in the proof of \eqref{FormulaMIIntegral}, using that \eqref{EqDiffEntr} also holds for the Gaussian distribution. 
+%\eit
+%\end{frame}
+
+\end{document}

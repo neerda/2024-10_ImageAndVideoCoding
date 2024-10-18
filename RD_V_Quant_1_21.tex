@@ -1,0 +1,347 @@
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\begin{document}
+
+\section{RD-theory V} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+\subsection{The Shannon lower bound}
+\begin{frame}{Fundamental source coding theorem for general sources}
+Let $X$ be an arbitrary $\mathbb{R}$-valued source. 
+\bit
+\item Informational rate distortion function: 
+\begin{align*}
+R^{(I)}(D):=\inf\bigl\{&I(X;\hat{X})\colon  \text{$\hat{X}$ is an $\mathbb{R}$-valued r. v.  and there exists an $\mathbb{R}^2$-valued r. v. $Z=(Z_1,Z_2)$}\\ &\text{on some probability space with probability measure $\nu$ such that $Z_1\stackrel{d}{=} X$ and $Z_2\stackrel{d}{=} \hat{X}$} \\ &\text{and such that
+$\int_{\mathbb{R}^2}d(x,\hat{x})d\nu_Z(x,\hat{x})<D$. }
+\bigr\}
+\end{align*} 
+\item Informational rate distortion function is lower bound for rate-distortion function: One has
+\begin{align*}
+r(Q_N)\geq R^{(I)}(\delta(Q_N))
+\end{align*}
+for every source code $Q_N$ for $X^N$.  
+\item Lower bound is asymptotically achievable: For every $D>0$, every $\epsilon>0$ and every $R'>R^{(I)}(D)$ one can achieve
+\begin{align*}
+r(Q_N)\leq R',\quad \delta(Q_N)\leq D+\epsilon 
+\end{align*}
+for some sequence $Q_N$ of source codes for $X_N$. 
+\eit
+\end{frame}
+
+\begin{frame}{The Shannon Lower Bound}
+\bit
+%\item Explicit computation of (informational) rate distortion function not possible in general (but possible for Gaussian sources). 
+\item Use MSE-distortion measure, i.e. $d(x,x')=(x-x')^2$ on $\mathbb{R}$, additive extension to $\mathbb{R}^N$.   
+\item If $X$ has finite differential entropy, let
+\[
+R_{SLB}(D):=h(X)-\frac{1}{2}\log_2(\pi e D).
+\]
+\item $R_{SLB}(D)$ often used as approximation for rate-distortion performance: 
+\eit
+\begin{theorem}[Shannon Lower Bound]
+\bit
+\item If $X$ has finite idfferential entropy, then  
+\begin{align*}
+R(D)\geq R_{SLB}(D). 
+\end{align*}
+\item If additionally $X$ has a density and $\mathbb{E}(|X|^\alpha)<\infty$ for some $\alpha>0$, then Shannon lower bound is \loud{asymtptotically tight for small distortion}:
+\[
+\lim_{D\to 0}(R(D)-R_{SLB}(D))=0. 
+\]
+\eit
+\end{theorem}
+
+\end{frame}
+
+\begin{frame}{Proof of Shannon lower bound}
+\loud{Proof of Shannon lower bound:} 
+\bit
+\item Argue similar as for computation of RD-function for a Gaussian source. 
+\item Let $\hat{X}$ be any random variable such that $X, \hat{X}$ satifsy the distortion constraint 
+as in the fundamental source coding theorem.
+\item One has 
+\begin{align*}
+I(X;\hat{X})=h(X)-h(X|\hat{X})
+= h(X)-h(X|\hat{X})
+= & h(X)-h(X-\hat{X}|\hat{X})\\
+\geq & h(X)-h(X-\hat{X})\\
+\geq & h(X)-\sup_{Z\colon var(Z)\leq D} h(Z). 
+\end{align*}
+\item Last lecture: Gaussian distribution maximes differential entropy for a given variance, i.e. 
+\begin{align}
+\sup_{Z\colon var(Z)\leq D} h(Z)= \frac{1}{2}\log_2\left(\pi D e\right). \qed
+\end{align}
+\eit
+\loud{Proof of asmpytotic achievability:} Not done here, see Linder, Zamier 1994, also Koch 2015.
+\end{frame}
+
+
+\subsection{Fundamental source coding theorem for $M$ independent Gaussian sources}
+\begin{frame}{Fundamental source coding theorem for vector valued sources}
+Straight-forward extension to $\mathbb{R}^M$-valued sources: 
+\bit
+\item Let $X=(X_1,\dots,X_M)$ be an $\mathbb{R}^M$-valued source.
+\item Let $d$ be a distortion function on $\mathbb{R}$
+\item Additive extension $d$ to $\mathbb{R}^M$ by averaging over the componentes.
+\item Let $Q$ be a source code for $X$.
+\item Distortion $\delta(Q)$ of $Q$ taken with respect to $d$.
+\item Rate $r(Q)$ of $Q$: Average expected code-length, divided by $M$. 
+\item Informational rate-distortion function $R^{(I)}(D)$ for $X$ defined analogous to case of $\mathbb{R}$-valued $X$. 
+\eit
+Fundamental source coding for $X$:
+\bit
+\item Let $X^N=(X^1,\dots,X^N)$ be sequence of $N$ independent realizations $X^i=(X_1^i,\dots,X_M^i)$ of $X$.
+\item Informational rate-distortion function is lower bound for rate-distortion function for each $X^N$.
+\item Lower bound is asymptotically achievable for large $N$. 
+\eit
+\end{frame}
+
+\begin{frame}{Mutual information for independent components}
+\begin{lemma}
+Let $X=(X_1,\dots,X_M)$ and $\hat{X}=(\hat{X}_1,\dots,\hat{X}_M)$ be $\mathbb{R}^M$-valued source. Assume that the $X_i$ are independent. 
+Then one has 
+\begin{align*}
+I(X;\hat{X})\geq \sum_{i=1}^MI(X_i;\hat{X}_i). 
+\end{align*}
+\end{lemma} 
+\bit
+\item Suffices to assume that $X$ and $\hat{X}$ are discrete.
+\item General case: Follows from the discrete case by passing to the limit. 
+\eit
+\end{frame}
+\begin{frame}{Mutual information for independent components. Proof.}
+Using the chain rule and that conditioning does not increase entropy, it follows that: 
+\begin{align*}
+I(X;{\hat{X}})=&H(X)-H(X|\hat{X})\\
+=&\sum_{i=1}^MH(X_i)-\sum_{i=1}^MH(X_i|X_1,\dots,X_{i-1},\hat{X})\\
+\geq & \sum_{i=1}^MH(X_i)-\sum_{i=1}^MH(X_i|{\hat{X}}_i)\\
+=&\sum_{i=1}^M I(X_i;\hat{X}_i).\qed 
+\end{align*}
+\end{frame}
+
+\begin{frame}{Gaussian sources}
+\bit
+\item Gaussian kernel: 
+\begin{align*}
+\phi_{\sigma}(x):=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{x^2}{2\sigma^2}\right).
+\end{align*}
+\item Gaussian source: $X$ is Gaussian of mean $\mu$ and variance $\sigma$, $X\stackrel{d}{=} \mathcal{N}(\mu,\sigma^2)$, if 
+for every Borel-set $A\subseteq \mathbb{R}$ one has
+\begin{align*}
+\mu_X(A)=\int_A\phi_\sigma(x-\mu)dx,
+\end{align*}
+\item Rate-distortion function for Gaussian source: If $X\stackrel{d}{=} \mathcal{N}(\mu,\sigma^2)$ one has 
+\begin{align}\label{RDGauss}
+R^{(I)}(D)=\begin{cases} &0, \text{if $D\geq \sigma^2$} \\ &\frac{1}{2}\log_2\left(\frac{\sigma^2}{D}\right), \text{else.} \end{cases}
+\end{align}
+\eit
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Rate distortion function for independent Gaussian sources}
+\begin{proposition}[Rate distortion function for $M$ independent Gaussian sources]
+Let $X=(X_1,\dots,X_M)$ be an $\mathbb{R}^M$-valued source such that the $X_i$ are independent 
+and such that 
+\begin{align*}
+X_i\sim \mathcal{N}(\mu_i,\sigma_i^2). 
+\end{align*}
+For $\theta>0$ let 
+\begin{align*}
+R_i(\theta):=&\max(0,\frac{1}{2}\log_2(\sigma_i^2/\theta)), \\ 
+\quad D_i(\theta):= &\min(\theta,\sigma_i^2).
+\end{align*}
+Then the rate-distortion function for $X$ is comprised by the points
+\begin{align*}
+R(\theta)=\frac{1}{M}\sum_{i=1}^MR_i(\theta),\quad D(\theta)=\frac{1}{M}\sum_{i=1}^MD_i(\theta). 
+\end{align*}
+\end{proposition}
+
+Previous proposition often reffered to as \loud{reverse water filling}.
+Parameter $\theta$ then called \loud{water level}.
+\end{frame}
+
+
+
+\begin{frame}{Rate distortion function for independent Gaussian sources. Proof I}
+%\loud{Case 1: }
+\bit
+\item By previous lemma and fundamental source coding theorem, one has
+\begin{align*}
+R(D)=\inf_{\frac{1}{M}(D_1+\dots+D_M)\leq D}\:\:\frac{1}{M}\sum_{i=1}^MR_i(D_i),
+\end{align*}
+where $R_i$ is the rate distortion function of $X_i$. 
+%\eit
+%Assume first that $R_i(D_i)>0$ for all $i$. 
+%\bit
+\item For convenience, use \textit{distortion-rate function} $D(R)$ of $X$ and $D_i(R_i)$ of $X_i$, i.e. 
+\[
+D_i(R_i)=\sigma_i^22^{-2R_i}. 
+\]
+\item One has 
+\begin{align*}
+D(R)=\inf_{\frac{1}{M}(R_1+\dots+R_M)\leq R}\:\frac{1}{M}\sum_{i=1}^MD_i(R_i). 
+\end{align*}
+\eit
+\end{frame}
+
+\begin{frame}{Rate distortion function for independent Gaussian sources. Proof II}
+\bit
+\item If $R_{i_1}=\cdots=R_{i_k}=0$, then
+$D_{i_1}=\sigma_{i_1}^2,\dots, D_{i_K}=\sigma_{i_K}^2$ and
+variances $\sigma_{i_1}^2,\dots,\sigma_{i_K}^2$ have to be the $K$ smallest variances of the $X_1,\dots,X_M$.
+\item Thus: Suffices to treat the case where $R_i>0$ for all $i$. 
+\item By \loud{inequality between arithmetic and geometric means}:  
+\begin{align}\label{InEqArGeo}
+\frac{1}{M}\sum_{i=1}^MD_i(R_i) =  \frac{1}{M} \sum_{i=1}	^M\sigma_i^22^{-2R_i} 
+&\geq (\prod_{i=1}^M\sigma_i^22^{-2R_i})^{1/M}\nonumber
+\\&=(\prod_{i=1}^M\sigma_i^2)^{1/M}2^{-2R}.
+\end{align}
+\item In \eqref{InEqArGeo}, equality can be achieved if  
+\begin{align}\label{CondEq}
+\sigma_i^22^{-2R_i}=(\prod_{j=1}^M\sigma_j^2)^{1/M}2^{-2R}.
+\end{align}
+\eit
+\end{frame}
+
+\begin{frame}{Rate distortion function for independent Gaussian sources. Proof III}
+\bit
+\item Equation \eqref{CondEq} is attained if 
+\begin{align*}
+\log_2(\sigma_i^2)-2R_i=\frac{1}{M}\sum_{j=1}^M\log_2(\sigma_j^2)-2R,
+\end{align*}
+i.e. if 
+\begin{align}\label{rateGauss}
+R_i=\frac{1}{2}\left(\log_2(\sigma_i^2)-\frac{1}{M}\sum_{j=1}^M\log_2(\sigma_j^2)\right)+R
+\end{align}
+\item If $R_i$ are chosen as in \eqref{rateGauss}, then all $D_i(R_i)$ are equal, and 
+\begin{align*}
+\frac{1}{M}\sum_{i=1}^MR_i=R.
+\end{align*}
+ \qed
+\eit
+\end{frame}
+
+
+\section{Quantization I} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\subsection{Setup}
+\input{RD_V/QuantIntro_New.tex}
+\input{RD_V/FuncMapping_New.tex}
+\input{RD_V/EncDecMapping_New.tex}
+\input{RD_V/ScalQuantEntropyCoding_New.tex}
+\subsection{Scalar Quantization}
+\input{RD_V/ScalQuantIllu_New.tex}
+\input{RD_V/ScalQuantInOut_New.tex}
+\input{RD_V/DiscretePdf_New.tex}
+\input{RD_V/PerformanceBitrate_New.tex}
+\input{RD_V/PerformanceMSE_New.tex}
+\input{RD_V/LloydGoal_New.tex}
+\subsection{Centroid condition and nearest neighbor condition}
+\begin{frame}{Centroid condition and nearest neighbor condition}
+Necessary conditions for optimal $u_k$ if $s_k'$ are given 
+or for optimal $s_k'$ if $u_k$ are given: 
+\begin{proposition}[Centroid condition and nearest neighbor condition] 
+\bit
+\item For fixed $u_k$, reconstruction points $s_k'$ that minimize \eqref{QuantMSE} %have to 
+satisfy the \loud{centroid condition}
+\begin{align}\label{CentrCond}
+s_k'=\frac{\int_{u_k}^{u_{k+1}}sf(s)ds}{\int_{u_k}^{u_k+1}f(s)ds}.
+\end{align}
+\item For fixed $s_k'$, decision thresholds $u_k$ that minimize \eqref{QuantMSE} %have to 
+satifsy the \loud{nearest neighbor condition}
+\begin{align}\label{NearestNB}
+u_k=\frac{1}{2}\left(s_{k-1}'+s_k'\right)
+\end{align}
+\eit
+\end{proposition}
+\bit
+\item Above two necessary conditions are basis of the \loud{Lloyd algorithm}, see below. 
+\item Centroids $s_k'$ of \eqref{CentrCond} are the expexctation values given the event $S\in[u_k,u_{k+1})$ ..  
+\eit
+%
+%
+%Minimization with respect to $s_k'$: Set derivative to zero:
+%\begin{align*}
+%0=\frac{\partial}{\partial s_k'}D=-\int_{u_k}^{u_{k+1}}2(s-s'_k)f(s)ds
+%\end{align*}
+%Centroid condition: 
+%\begin{align*}
+%s_k'=\frac{\int_{u_k}^{u_{k+1}}sf(s)ds}{\int_{u_k}^{u_k+1}f(s)ds}
+%\end{align*}
+\end{frame}
+
+\begin{frame}{Proof of centroid condition}
+\loud{Set derivatives with respect to $s_k'$ to zero:}
+%\bit
+%\item
+\begin{align*}
+0\stackrel{!}{=}&\frac{\partial}{\partial s_k'}D\\=&\frac{\partial}{\partial s_k'}\int_{u_k}^{u_{k+1}}(s-s'_k)^2f(s)ds\\
+=&-\int_{u_k}^{u_{k+1}}2(s-s'_k)f(s)ds.
+\end{align*}
+This implies
+\begin{align*}
+\int_{u_k}^{u_{k+1}}sf(s)ds=s'_k\int_{u_k}^{u_{k+1}}f(s)ds. \qed
+\end{align*} 
+%\item[\iarrow] adf
+%\eit
+\end{frame}
+\begin{frame}{Proof of nearest neighbor condition} 
+\loud{Set derivatives with respect to $u_k$ to zero:} 
+
+By fundamental theorem of calculus, one has 
+\begin{align*}
+0 \stackrel{!}{=}  &\frac{\partial}{\partial u_k}D\\=&\frac{\partial}{\partial u_k}\left(\int_{u_{k-1}}^{u_{k}}(s-s'_{k-1})^2f(s)ds+\int_{u_k}^{u_{k+1}}(s-s'_k)^2f(s)ds\right)\\
+=&(u_k-s'_{k-1})^2f(u_k)-(u_k-s'_{k})^2f(u_k).
+\end{align*}
+This implies that
+\begin{align*}
+(u_k-s'_{k-1})^2=(u_k-s'_{k})^2.
+\end{align*}
+Since $s'_{k-1}\leq u_k\leq s'_k$, it follows that
+\begin{align*}
+u_k-s'_{k-1}=s'_k-u_k. \qed
+\end{align*}
+\end{frame}
+
+\subsection{Lloyd Algorithm}
+
+\input{RD_V/LloydQuantizer_New.tex}
+
+\input{RD_V/LloydPdf_New.tex}
+
+\input{RD_V/LloydTrainingSet_New.tex}
+
+\input{RD_V/LloydExampleGauss2Bit_New.tex}
+
+\input{RD_V/LloydExampleConvergenceGauss2Bit_New.tex}
+
+\input{RD_V/LloydExampleLaplace2Bit_New.tex}
+
+\input{RD_V/LloydExampleConvergenceLaplace2Bit_New.tex}
+
+
+\end{document}

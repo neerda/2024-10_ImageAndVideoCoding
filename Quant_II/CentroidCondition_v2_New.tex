@@ -1,0 +1,33 @@
+
+
+\begin{frame}{Optimal Decoder Mapping:~ Centroid Condition}
+  \vspace{-1.0ex}
+  $$
+  J\,=\,\sum_{\forall k}\int_{u_k}^{u_{k+1}}(s-s'_k)^2\,f(s)\;\d s
+  \;+\;\lambda\cdot\sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+  $$
+  \medskip
+  \ben
+\item<+-> \STRUC{Optimize reconstruction levels $s'_k$} for given decision thresholds $u_k$
+  \bit\relsize{1}
+\item<+->Note: Rate term does not depend on reconstruction levels $s'_k$
+\item<+->[\iarrow] Same condition as for Lloyd quantizer
+  \eit
+  \een
+  \vspace{-1ex}
+  \bit
+\item<+->[\iarrow]\smallskip \STRUC{Centroid condition for MSE distortion}
+  \bit\relsize{1}
+\item<.-> Optimal reconstruction level $s'_k$ is given by conditional mean
+  \eit
+  \vspace{.5ex}$$
+  \boxed{\;s'_k
+    = \EV{S\,\cond\,S\in\set{I}_k} 
+    =  \int\limits_{u_k}^{u_{k+1}}s\, f(s\cond s\in\set{I}_k)\;\d s
+    =  \frac{1}{p_k}\int\limits_{u_k}^{u_{k+1}}s\, f(s)\;\d s
+    =
+    \frac{\displaystyle\int_{u_k}^{u_{k+1}}s\, f(s)\;\d s}
+ 	 {\displaystyle\int_{u_k}^{u_{k+1}}f(s)\;\d s}\;}
+  $$
+  \eit\vspace{-10ex}
+\end{frame}

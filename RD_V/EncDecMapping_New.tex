@@ -1,0 +1,53 @@
+
+
+\begin{frame}{Structure of Quantizers: Encoder and Decoder Mapping}
+\begin{center}
+   \hfitbox{0.6\linewidth}{%
+    \begin{tikzpicture}
+    [
+      pstep/.style={
+        draw=black,
+        fill=white,
+        line width=0.5pt,
+        minimum width=2.0cm,
+        minimum height=1.2cm,
+        inner sep=0,
+        align=center
+      },
+      nbox/.style={pstep,
+        rectangle
+      },
+      narrow/.style={
+        -{Latex[length=2.5mm,width=1.3mm]},
+        line width=0.5pt
+        },
+    ]
+    \draw[fill=gray!20] (-3.5,-0.85) rectangle (3.5,1.3);
+    \node[anchor=north west] at (-3.5,1.3) {quantizer $Q$};
+    \node[] (enc) [nbox,align=center]    at (-1.8,0) {encoder\\mapping $\alpha$};
+    \node[] (dec) [nbox,align=center]    at ( 1.8,0) {decoder\\mapping $\beta$};
+    \draw[] [narrow] (-5,0)  -- (enc)
+            node (rpo) [pos=0.3,anchor=base,yshift=1ex,align=center] {${s}$};
+    \draw[] [narrow] (enc)  -- (dec)
+            node [pos=0.5,anchor=base,yshift=1ex,align=center] {${q}$};
+    \draw[] [narrow] (dec)  -- (5,0)
+            node (rpr) [pos=0.7,anchor=base,yshift=1ex,align=center] {${s'}$};
+    \node[] (rate) [text=blue,align=center]    at (0,-1.5) {quantization indexes};
+    \draw[] [narrow,blue] (rate.north)  -- (0,-0.1);
+    \end{tikzpicture}
+   }
+\end{center}
+\bit
+\item<+-> Split quantizer $Q$ into \loud{encoder mapping $\alpha$} and \loud{decoder mapping $\beta$}
+\item<+->\medskip
+    Encoder mapping $\alpha$: Maps input sample ${s}$ to a quantizer index $q$ ~(integer)
+      $$
+      q=\alpha(\,{s}\,)
+      $$
+\item<+->\medskip
+    Decoder mapping $\beta$: Maps quantizer index $q$ to reconstructed samples ${s'}$
+      $$
+      {s'}=\beta(\,q\,)=\beta(\,\alpha(\,{s}\,)\,)=Q(\,{s}\,)
+      $$
+\eit\vspace{-5ex}
+\end{frame}

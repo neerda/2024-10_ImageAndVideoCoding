@@ -1,0 +1,69 @@
+
+
+\begin{frame}{Summary: High-Rate Approximations for MSE Distortion}
+  \bit
+\item<+->\vspace{-1.0ex} General form of high-rate approximations for MSE distortion
+  \vspace{-.5ex}$$
+  \boxed{D_X(R)\;=\;\varepsilon_X^2\cdot\sigma^2\cdot2^{-2R}\rule[-2.0ex]{0pt}{5.0ex}}
+  \quad\qquad\text{and}\qquad\quad
+  \boxed{R_X(D)\;=\;\frac{1}{2}\log_2\!\left(\frac{\varepsilon_X^2\cdot\sigma^2}{D}\right)}
+  $$
+  \eit
+  \vspace{-5.5ex}
+  \begin{center}
+  \uncover<+->{\small%
+  \colorbox{myvvgray}{\begin{tabular}{@{}r@{\qquad\quad}r@{$\;=\;$}lr@{$\;=\;$}lr@{$\;=\;$}l@{}}
+    \toprule
+    &
+    \multicolumn{2}{@{}l}{\rule{10em}{0pt}}
+    &
+    \multicolumn{2}{l}{\rule{10em}{0pt}}
+    &
+    \multicolumn{2}{l@{}}{\rule{10em}{0pt}}
+    \\[-2.5ex]
+    &
+    \multicolumn{2}{@{}l}{Shannon lower bound}
+    &
+    \multicolumn{2}{l}{EC Lloyd + VLC}
+    &
+    \multicolumn{2}{l@{}}{Lloyd + FLC}
+    \\
+    \midrule\\[-2.0ex]
+    general\,:
+    &
+    $\varepsilon_L^2$&$\displaystyle\frac{1}{2\pi e}\,2^{2h(S/\sigma)}$
+    &
+    $\varepsilon_V^2$&$\displaystyle\frac{1}{12}\,2^{2h(S/\sigma)}$
+    &
+    $\varepsilon_F^2$&$\displaystyle\frac{1}{12}\int_{-\infty}^{\infty}\!\!\!\!\!\sqrt[3]{f(s/\sigma)}\;\d s$
+    \onslide<+->\\[3ex]
+    uniform\,:
+    &
+    $\varepsilon_L^2$&$\displaystyle\frac{6}{\pi e}\approx0.70$
+    &
+    $\varepsilon_V^2$&$\displaystyle1$
+    &
+    $\varepsilon_F^2$&$\displaystyle1$
+    \onslide<+->\\[2ex]
+    Laplace\,:
+    &
+    $\varepsilon_L^2$&$\displaystyle\frac{e}{\pi}\approx0.86$
+    &
+    $\varepsilon_V^2$&$\displaystyle\frac{e^2}{6}\approx1.23$
+    &
+    $\varepsilon_F^2$&$\displaystyle\frac{9}{2}=4.5$
+    \onslide<+->\\[2ex]
+    Gauss\,:
+    &
+    $\varepsilon_L^2$&$\displaystyle1$
+    &
+    $\varepsilon_V^2$&$\displaystyle\frac{\pi\,e}{6}\approx1.42$
+    &
+    $\varepsilon_F^2$&$\displaystyle\frac{\sqrt{3}\,\pi}{2}\approx2.72$
+    \onslide\\[1.5ex]
+    \bottomrule
+  \end{tabular}\vspace{-2ex}}}
+  \end{center}\vspace{-10ex}
+\end{frame}
+
+

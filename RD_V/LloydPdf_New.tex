@@ -1,0 +1,31 @@
+
+
+\begin{frame}{Lloyd Algorithm for Given Pdf ~(MSE Distortion)}
+  \vspace{-1ex}Given is:
+  \begin{minipage}[t]{0.8\linewidth}
+    \vskip-1.5ex%
+\bit\itemMode{circle}
+\item<+-> the size $K$ of the quantizer (i.e., the number of quantization intervals)
+\item<.-> the marginal probability density function $f(s)$ of the source
+  \eit
+  \end{minipage}
+  
+\medskip
+\uncover<+->{\STRUC{Iterative quantizer design}}
+\ben
+\item<.-> Choose an initial set of $K$ reconstruction levels~$\{s'_k\}$
+\item<+->\smallskip Update the $K-1$ decision thresholds~$\{u_k\}$ according to
+	{\[
+           u_k=\frac{s'_k+s'_{k-1}}{2}
+	\qquad\text{(nearest neighbor condition)}
+	\]}
+\item<+-> Update the $K$ reconstruction levels~$\{s'_k\}$ according to
+	{\[
+	s'_k=\frac{\int_{u_k}^{u_{k+1}}s\,f(s)\;\d s}
+              {\int_{u_k}^{u_{k+1}}f(s)\;\d s}
+	\qquad
+	\text{(centroid condition)}
+	\]}
+\item<+-> Repeat the previous two steps until convergence
+\een
+\end{frame}

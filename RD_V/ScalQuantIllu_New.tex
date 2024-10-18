@@ -1,0 +1,117 @@
+
+\begin{frame}{Principle of Scalar Quantization}
+  \begin{center}
+    \vspace{-2.5ex}
+  \hfitbox{0.8\linewidth}{%
+  \begin{tikzpicture}
+     \begin{axis}[
+        compat=newest,
+        width=14cm,height=5.0cm,
+        axis lines=none,
+        xmin=-4.5,xmax=4.5,ymin=-0.15,ymax=0.7,
+        clip mode=individual, % ensures curves are plot one after another
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+               (axis cs: -5,0) -- (axis cs: 5,0);
+          %\node[black, anchor=north east] at (axis cs: 5,-0.01) {$s$};
+        }
+     ]
+       \addplot[name path=func,black,samples=101,domain=-4.5:4.5,line width=0.5pt,mark=none] {0.5*exp(-abs(x))};
+       \path[name path=axis] (axis cs: -4.5,0) -- (axis cs: 4.5,0);
+       \node[anchor=north west,yshift=-.5ex] at (axis cs:  4.5,0) {$s$};
+       \addplot[blue!20,visible on=<1>]        fill between[of=func and axis,soft clip={domain=-4.5: 4.5}];
+       \addplot[visible on=<2->,red!20]         fill between[of=func and axis,soft clip={domain=-0.5: 0.5}];
+       \addplot[visible on=<2->,green!20]       fill between[of=func and axis,soft clip={domain=-1.5:-0.5}];
+       \addplot[visible on=<2->,green!20]       fill between[of=func and axis,soft clip={domain= 0.5: 1.5}];
+       \addplot[visible on=<2->,blue!20]        fill between[of=func and axis,soft clip={domain=-2.5:-1.5}];
+       \addplot[visible on=<2->,blue!20]        fill between[of=func and axis,soft clip={domain= 1.5: 2.5}];
+       \addplot[visible on=<2->,vividviolet!20] fill between[of=func and axis,soft clip={domain=-3.5:-2.5}];
+       \addplot[visible on=<2->,vividviolet!20] fill between[of=func and axis,soft clip={domain= 2.5: 3.5}];
+       \addplot[visible on=<2->,cyan!20]        fill between[of=func and axis,soft clip={domain=-4.5:-3.5}];
+       \addplot[visible on=<2->,cyan!20]        fill between[of=func and axis,soft clip={domain= 3.5: 4.5}];
+
+       \pgfmathsetmacro{\su}{0.7}
+       \pgfmathsetmacro{\ou}{-0.15}
+       \begin{scope}[visible on=<2->]
+         \addplot[line width=0.5pt,dashed] coordinates { ( 0.5,{\ou}) ( 0.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-0.5,{\ou}) (-0.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 1.5,{\ou}) ( 1.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-1.5,{\ou}) (-1.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 2.5,{\ou}) ( 2.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-2.5,{\ou}) (-2.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 3.5,{\ou}) ( 3.5,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-3.5,{\ou}) (-3.5,{\su}) };
+       \end{scope}
+     
+       \begin{scope}[visible on=<3->]
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -3.5,{\ou}) {$u_{-3}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -2.5,{\ou}) {$u_{-2}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -1.5,{\ou}) {$u_{-1}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -0.5,{\ou}) {$u_{0}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  0.5,{\ou}) {$u_{1}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  1.5,{\ou}) {$u_{2}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  2.5,{\ou}) {$u_{3}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  3.5,{\ou}) {$u_{4}$};
+       \end{scope}
+
+       \begin{scope}[visible on=<4->]
+         \node[anchor=north,black]    at (axis cs: -4.8,{\su}) {$q=\ldots$\phantom{4}};
+         \node[anchor=north,cyan]     at (axis cs: -4.0,{\su}) {$\phantom{q}{-4}\phantom{q}$};
+         \node[anchor=north,myviolet] at (axis cs: -3.0,{\su}) {$\phantom{q}{-3}\phantom{q}$};
+         \node[anchor=north,myblue]   at (axis cs: -2.0,{\su}) {$\phantom{q}{-2}\phantom{q}$};
+         \node[anchor=north,mygreen]  at (axis cs: -1.0,{\su}) {$\phantom{q}{-1}\phantom{q}$};
+         \node[anchor=north,myred]    at (axis cs: -0.0,{\su}) {$\phantom{q}{0}\phantom{q}$};
+         \node[anchor=north,mygreen]  at (axis cs:  1.0,{\su}) {$\phantom{q}{1}\phantom{q}$};
+         \node[anchor=north,myblue]   at (axis cs:  2.0,{\su}) {$\phantom{q}{2}\phantom{q}$};
+         \node[anchor=north,myviolet] at (axis cs:  3.0,{\su}) {$\phantom{q}{3}\phantom{q}$};
+         \node[anchor=north,cyan]     at (axis cs:  4.0,{\su}) {$\phantom{q}{4}\phantom{q}$};
+       \end{scope}
+       
+       \pgfmathsetmacro{\ss}{0.33}
+       \pgfmathsetmacro{\os}{0.00}
+       \begin{scope}[visible on=<6->]
+         \addplot[line width=1.0pt,myred]    coordinates { ( 0.0,{\os}) ( 0.0,{\ss}) };
+         \addplot[line width=1.0pt,mygreen]  coordinates { ( 0.9,{\os}) ( 0.9,{\ss}) };
+         \addplot[line width=1.0pt,mygreen]  coordinates { (-0.9,{\os}) (-0.9,{\ss}) };
+         \addplot[line width=1.0pt,myblue]   coordinates { ( 1.9,{\os}) ( 1.9,{\ss}) };
+         \addplot[line width=1.0pt,myblue]   coordinates { (-1.9,{\os}) (-1.9,{\ss}) };
+         \addplot[line width=1.0pt,myviolet] coordinates { ( 2.9,{\os}) ( 2.9,{\ss}) };
+         \addplot[line width=1.0pt,myviolet] coordinates { (-2.9,{\os}) (-2.9,{\ss}) };
+         \addplot[line width=1.0pt,cyan]     coordinates { ( 3.9,{\os}) ( 3.9,{\ss}) };
+         \addplot[line width=1.0pt,cyan]     coordinates { (-3.9,{\os}) (-3.9,{\ss}) };
+
+         \draw[fill,myred]    (axis cs:  0.0,{\ss}) circle [radius=2.5pt];
+         \draw[fill,mygreen]  (axis cs:  0.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,mygreen]  (axis cs: -0.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myblue]   (axis cs:  1.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myblue]   (axis cs: -1.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myviolet] (axis cs:  2.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myviolet] (axis cs: -2.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,cyan]     (axis cs:  3.9,{\ss}) circle [radius=2.5pt];
+         \draw[fill,cyan]     (axis cs: -3.9,{\ss}) circle [radius=2.5pt];
+         
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs: -3.9,{\os}) {$s'_{-4}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs: -2.9,{\os}) {$s'_{-3}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs: -1.9,{\os}) {$s'_{-2}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs: -0.9,{\os}) {$s'_{-1}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  0.0,{\os}) {$s'_{0}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  0.9,{\os}) {$s'_{1}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  1.9,{\os}) {$s'_{2}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  2.9,{\os}) {$s'_{3}$};
+         \node[blue,anchor=north,yshift=-.0ex] at (axis cs:  3.9,{\os}) {$s'_{4}$};
+       \end{scope}
+  \end{axis}
+  \end{tikzpicture}}
+  \end{center}
+  \vspace{-2.0ex}
+\bit
+\item<2-> Partition real line into a countable (typically finite) number of quantization intervals $\set{I}_k$
+  \bit
+\item<3-> Partitioning is given by decision thresholds $\{u_k\}$
+\item<4-> Quantization intervals are labeled by quantization index $q$
+\item<5-> A quantization interval is the given by $\set{I}_k=[u_k,u_{k+1})$
+  \eit
+\item<6->\smallskip Each quantization interval $\set{I}_k$ is associated with a reconstruction level $s'_k\in\set{I}_k$
+\item<7->[\iarrow]\medskip\loud{Scalar quantization}: Replace input value $s$ that falls inside $\set{I}_k$ with reconstruction value $s'_k$
+\eit\vspace{-10ex}
+\end{frame}

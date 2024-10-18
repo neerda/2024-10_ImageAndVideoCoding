@@ -1,0 +1,73 @@
+
+
+\begin{frame}{Quantization and Entropy Coding}
+  \begin{center}
+   \hfitbox{0.8\linewidth}{%
+    \begin{tikzpicture}
+    [
+      pstep/.style={
+        draw=black,
+        fill=white,
+        line width=0.5pt,
+        minimum width=1.0cm,
+        minimum height=1.0cm,
+        inner sep=0.2cm,
+        align=center
+      },
+      ncloud/.style={pstep,
+        cloud,
+        cloud puffs=9,
+        cloud puff arc=170,
+        minimum width=1.0cm,
+        minimum height=0.5cm,
+        inner sep=0.0cm,
+        aspect=2
+      },
+      nbox/.style={pstep,
+        rectangle
+      },
+      narrow/.style={
+        -{Latex[length=2.5mm,width=1.3mm]},
+        line width=0.5pt
+        },
+    ]
+    \draw[fill=gray!20] (-3.0,-0.8) rectangle (3.0,1.15);
+    \node[anchor=north west] at (-3.0,1.15) {transmission};
+    \node[] (ch)   [ncloud]               at ( 0,0) {channel};
+    \node[] (lenc) [nbox,align=center]    at (-2,0) {\relsize{1}$\gamma$};
+    \node[] (ldec) [nbox,align=center]    at ( 2,0) {\relsize{1}$\gamma^{-1}$};
+    \node[] (enc) [nbox,align=center]    at (-4.5,0) {\relsize{1}$\alpha$};
+    \node[] (dec) [nbox,align=center]    at ( 4.5,0) {\relsize{1}$\beta$};
+    \draw[] [narrow] (-6.2,0)  -- (enc)
+            node [pos=0.5,anchor=base,yshift=1ex,align=center] {${s}$};
+    \draw[] [narrow] (enc) -- (lenc)
+            node [pos=0.4,anchor=base,yshift=1ex,align=center] {${q}$};
+    \draw[] [narrow] (lenc)  -- (ch)
+            node [pos=0.5,anchor=base,yshift=1ex,align=center] {$\ve{b}$};
+    \draw[] [narrow] (ch)  -- (ldec)
+            node [pos=0.5,anchor=base,yshift=1ex,align=center] {$\ve{b}$};
+    \draw[] [narrow] (ldec) -- (dec)
+            node [pos=0.6,anchor=base,yshift=1ex,align=center] {${q}$};
+    \draw[] [narrow] (dec)  -- (6.2,0)
+            node [pos=0.5,anchor=base,yshift=1ex,align=center] {${s'}$};
+    \end{tikzpicture}
+   }
+\end{center}
+\bit
+\item<+-> Add \loud{lossless coding $\gamma$} of quantization indexes (e.g., Huffman or arithmetic coding)
+\item<+->\bigskip
+    Encoding/decoding process:
+    \ben\TabPositions{10em}
+    \item<+->\smallskip Encoder mapping $\alpha$:
+         \tab Input samples ${s}$ $\mapsto$ quantization indexes ${q}$
+    \item<+->\smallskip Lossless mapping $\gamma$:
+         \tab Quantization indexes ${q}$ $\mapsto$ bitstream $\ve{b}$
+    \item<+->\smallskip Transmission channel: 
+         \tab Transmission of bitstream (assume: error-free)
+    \item<+->\smallskip Lossless mapping $\gamma^{-1}$:
+         \tab Bitstream $\ve{b}$ $\mapsto$ quantization indexes ${q}$
+    \item<+->\smallskip Decoder mapping $\beta$:
+         \tab Quantization indexes ${q}$ $\mapsto$ reconstructed samples ${s'}$
+    \een
+\eit
+\end{frame}

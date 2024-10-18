@@ -1,0 +1,995 @@
+%\documentclass{beamer}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{tikz}
+%\usetikzlibrary{trees}
+%\usepackage{lipsum}
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\begin{document}
+
+
+
+
+
+\section{Lossles coding: Elias coding and arithmetic coding}
+
+
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Motivation for Elias coding}
+Let $\mathcal{A}$ be a finite alphabet with probability mass function (pmf) $p$. 
+Write probability masses as $p_a$. 
+%
+%We know for any uniquely decodable code $\gamma$, 
+%average codeword length satisfies
+%\[
+%H(p)\leq \overline {\ell}(\gamma). 
+%\]
+%Shannon code: Explicit construction of a prefix code $\gamma_{Sh}$ with $\ell(\gamma_{Sh}(a))\leq \lceil-\log_2(p(a)\rceil$ for all $a\in\mathcal{A}$. 
+%Than 
+%\[
+%\overline{\ell}(\gamma_{Sh}(a)
+%\]
+
+\loud{Huffman coding:} 
+\bit
+\item Explicit construction of a prefix code $\gamma$ that realizes the minimal average codeword length achievable by any uniquely decodable 
+code for $\mathcal{A}$. 
+\item For the average codeword length, one always has
+\[
+H(p)\leq \overline{\ell}(\gamma)\leq H(p)+1.
+\]
+\eit
+\loud{Practical problem of Huffman coding for large alphabets:} 
+\bit
+%\item Huffman code is constructed by an explicit algorithm that produces the binary tree for the prefix codes.
+%\item Codewords correspond to leafs of binary tree.  
+\item Set of codeword needs to be stored explicitly. Can be problematic for very large alphabets $\mathcal{A}$. 
+\item Example: As in last lecture, given stationary random process $\mathsf{X}=(X_i)_{i=1}^\infty$. 
+\item For joint coding of $(X_{i},\dots,X_{i+N})$, number of codewords of block Huffman code grows exponentially in $N$.
+\eit  
+\end{frame}
+
+\begin{frame}{Elias coding: Basic idea}
+\loud{Elias coding:}
+\bit 
+\item Method to construct a uniquely decodable code \loud{without} needing to store set of codewords.
+\item Only access to the pmf is required. 
+\item Instead: On the fly encoding and decoding possible.
+\item \loud{Central idea:} Use partitioning of interval $[0,1]$ into disjoint subintervals. Each subinterval corresponds 
+uniquely to a symbol $x\in\mathcal{A}$. 
+\item [\iarrow] Thus: To transmit single symbol, suffices to transmit \textit{any} point from the interval associated to it.  
+\item To minimize average codeword length: Choose interval corresponding to $x\in\mathcal{A}$ to have length $p(x)$. 
+\eit
+\vspace{-0.1cm}
+\loud{Choice of the intervals for Elias coding}
+\bit
+\item Fix an orderding of the symbols, $\mathcal{A}=\{x_0,\dots,x_K\}$.
+\item For the probability masses, write $p_i=p(x_i)$. Assume that all $p_i>0$.   
+\item Associate the interval
+\[
+[L_i,R_i), \qquad L_i=\sum_{k=0}^{i-1}p_i,\qquad R_i=\sum_{k=0}^{i}p_i
+\] 
+to the $i$-th symbol. 
+\eit
+\end{frame}
+
+
+\begin{frame}{Elias coding: Definition of the codewords for non-singular case}
+First: Require Elias code only to be \loud{non singular}: 
+\bit %\small
+\item Different symbols $a\in\mathcal{A}$ are to be mapped to different codewords. 
+\item Application: Only coding of single smybols, e.g. joint alphabets of sequence of random variables.
+\eit
+\vspace{-0.1cm}
+\loud{Construction of the codewords } 
+\bit
+\item Intervals $[L_i,R_i)$ are pairwise disjoint and have length $p_i$. .
+\item Thus: If  ${l}_i:=\lceil-\log_2(p_i)\rceil$,
+there exists $m_i\in [L_i,R_i)$ such that 
+\begin{align}\label{Propm}
+m_i=N_i\cdot 2^{-l_i},\: \text{for an $N_i\in\mathbb{N}$}.
+\end{align}  
+\item In 2-adic representation, $m_i$ can be represented using ${l}_i$ many bits.
+\item[\iarrow]\loud{ Choose 2-adic representation of $m_i$ as codeword for the i-th symbol. }
+\item Since intervals $[L_i,R_i)$ are disjoint: Code is non-singular.
+\item By construction: Lenght of codeword for $i$-th symbol is $l_i$. 
+\item[\iarrow] \loud{Average codeword-length of non-singular Elias code is not larger than $H(p)+1$}. 
+\eit 
+
+\end{frame}
+
+\begin{frame}{Elias coding: Illustration of the codeword generation}
+Illustration of the codeword construction for Elias coding with three probabilites $p_0=1/9$, $p_1=1/9$, $p_2=1/9$, $p_3=1/9$, $p_4=5/9$.  
+\begin{center}
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{Elias_Coding.png}
+\end{figure}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Elias coding: Codewords for prefix code}
+
+\loud{Modification required for prefix code}
+\bit
+\item Code defined on last slides is \loud{not} always a prefix code.
+\item For construction prefix code: 
+\bit
+\item Choose $l_i:=\lceil-\log_2(p_i)\rceil\mathbf{+1}$.
+\item Choose $m_i$ as in \eqref{Propm},  but additionally require $m_i$ to be close to the midpoint of interval,  $|m_i-(L_i+(R_i-L_i)/2)|<2^{-l_i}$. 
+\item Define uniquely decodable code as before.
+\eit
+\item Can be shown: Resulting code is a prefix code.
+\item Average codeword length $\overline{\ell}$ of this prefix code satisfies $H(p)+1\leq \overline{\ell}\leq H(p)+2$. 
+\eit
+\end{frame}
+
+\begin{frame}{Elias coding: Incremental encoding and decoding}
+\loud{Main advantage of idea of Elias coding:}
+\bit
+\item Idea of Elias coding very useful if combined alphabet of a source $(X_1,\dots,X_N)$ is 
+to be coded.
+\item  Elias coding can enable \ALERT{incremental coding}: Need only \loud{conditional 
+probabilites} $p_{X_i|X_{i-1},\dots,X_1}$.
+\item\loud {Basic idea: } Choose symbol ordering on the combined alphabet so that intervals are nested.
+\eit
+\vspace{-0.2cm}
+\loud{Interval nesting:}
+\bit
+\item Main idea can be explained using two random variables. General case analogous. 
+\item Given two random variables $Y$ and $Z$ with alphabets $\mathcal{A}_Y=\{y_0,\dots,y_K\}$, $\mathcal{A}_Z=\{z_0,\dots,z_M\}$.
+\item Define ordering on $\mathcal{A}_Y\times\mathcal{A}_Z$ by $(y_0,z_0)\leq (y_0,z_1)\leq\cdots\leq (y_0,z_M)\leq (y_1,z_0)\leq\cdots\leq (y_K,z_M)$.
+\item Interval partitioning in Elias coding for this ordering: 
+\bit
+\item First define interval partitioning for $p_{Y}$. Get intervals $[L_i,R_i)$ of length $p_Y(y_i)$ as above. 
+\item Then partition each interval $[L_i,R_i)$ into intervals $[L_{i,j},R_{i,j})$ of length  $p_{Y,Z}(y_i, z_j)=p_{Z|Y}(z_j|y_i)p_Y(y_i)$.
+\item One has $[L_{i,j},R_{i,j})\subseteq [L_i,R_i)$ for all $i$ and $j$. 
+\eit
+\item \textit{If} one has $[L_i,R_i)\subset [0,1/2)$, then first bit of codewords for $(y_i,z_j)$
+is zero for \textit{all} j. If $[L_i,R_i) \subseteq [1/2,1]$, first bit is always one. 
+\item[\iarrow ] First bit of codewords for $(y_i,z_j)$ depends only on $y_i$ in such a case. 
+\eit
+
+\end{frame}
+
+\begin{frame}{Elias coding: Incremental coding. Arithmetic coding. }
+\loud{Incremental coding versus conditional coding as defined in last lecture}
+\bit
+\item Incremental (Elias) coding does \textit{not} mean that for a symbol sequence $(x_1,\dots,x_N)$, a codeword is 
+produced after every $x_i$. 
+\item Thus: Incremental coding \textit{not} the same as conditional (Huffman) coding defined in last lecture.
+\item Example: Incremental Elias coding yields compression close to joint entropy also if each source $X_i$ is binary. Conditional Huffman coding can not compress a binary source. 
+%\item In fact: In many applications, idea of Elias coding is applied to binary sources $X_i$. 
+\item\loud{But:} Only conditional probabilities are used in incremental coding.
+\item\loud{And:} For long sequences, first bits of a codeword for $(x_1,\dots,x_N)$ depend only on the first individual symbols $(x_1,\dots,x_M)$ where typically $M\ll N$.  
+\eit
+\ALERT{Arithmetic coding: } 
+\bit
+\item Finite precision realization of Elias coding. 
+\item Core engine for the lossless coding component of modern video coding standards. 
+\item Conditional probabilities of underlying complicated sources are approximated using simple  
+models.
+\item Although mathematically equivalent, using only modelled conditional probabilities is \textit{practially much easier} than using a modelled joint probability of underlying source.
+%\item Incremental encoding and decoding is exploited in the underlying standard.   
+\eit
+
+\end{frame}
+
+
+\section{Outlook: Arithmetic coding in modern video coding standards}
+
+
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+ \input{../../..//SS2020/slides/CoeffCoding/CABAC/BasicDesign/BasicDesign.tex}                  
+
+
+\begin{frame}{Binary probabilities by exponentially moving averages}
+\loud{Setup:} 
+\bit
+\item Consider discrete binary random variable $X(t)$, $t\in\mathbb{N}\cup\{0\}$. 
+\item Let $P(t)$ be the probability of $1$ at time $t+1$. 
+\eit
+\loud{Definition of probability based on previous outcomes:}
+\bit
+\item Fix $P(-1)$ and for $t\geq 0$ set
+\begin{align}\label{SlideWindowProb}
+P(t)=(1-\sigma) P(t-1)+\sigma X(t), \qquad 0\leq \sigma\leq 1. 
+\end{align}
+\item Parameter $\sigma$ is called \loud{adaptation rate}.
+\eit
+\bit
+\item By induction: Can write
+\[
+P(t)=\sum_{i=0}^{t}\sigma(1-\sigma)^iX(t-i)+(1-\sigma)^{t+1}P(-1). 
+\] 
+Second summand approaches $0$ as $t\to\infty$.
+\item[\iarrow] $P(t)$ is a \loud{weighted sum} of the $X(t-i)$, $0\leq i\leq t$, weights \loud{decrease exponentially} in $i$ and sum of weights approaches one as $t\to\infty$.
+\eit
+\end{frame}
+
+\begin{frame}{Representation of exponentially moving averages by state machine}
+Represent probability $P(t)$ in terms of 
+\bit
+\item $P_{LPS}(t)\in (0,0.5]$, probability of \loud{least probable sympbol} at time $t+1$.
+\item $\nu_{MPS}(t)\in\{0,1\}$, value of \loud{most probable symbol} at time $t$. 
+\eit
+Equation \eqref{SlideWindowProb} can then be rewritten as
+\begin{align}\label{SlideWindowProbLPS}
+P_{LPS}(t)=\begin{cases}\alpha\cdot P_{LPS}(t-1) & \text{, if $X(t)=\nu_{MPS}$} \\ 1-\alpha(1-P_{LPS}(t-1)) & \text{, if $X(t)\neq \nu_{MPS}$,}\end{cases}
+\end{align}
+where
+$\alpha=1-\sigma$. 
+
+In \loud{video coding standards H.264|AVC and H.265|HEVC}: 
+\bit
+\item Choose $\alpha \approx 0.95$. 
+\item \loud{Logarithmic quantization} 
+\begin{align}\label{Logquant}
+P_{LPS}(t)=0.5\cdot \alpha^{S(t)},
+\end{align}
+$S(t)$ integral, $0\leq S(t)\leq 62$. 
+\eit
+\end{frame}
+
+\begin{frame}{State transition rules for binary probability used in video codecs}
+\begin{figure}
+\includegraphics[width=.49\textwidth]{CabacStateTransition.png}
+\captionsetup{labelformat=empty}
+\caption{State transition rules that implement \eqref{SlideWindowProbLPS} and \eqref{Logquant}, taken from Marpe et al., 2003.}
+\end{figure}
+
+\end{frame}
+
+
+
+\section{Rate-Distortion Theory I}
+
+
+\begin{frame}
+ \vspace{8.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\subsection{Introduction}
+
+\begin{frame}{Introduction}
+Notation: Let $X$ be a discrete random variable with alphabet $\mathcal{A}:=\mathcal{A}_X$ and distribution $p:=p_X$.
+
+\loud{Up to now: Lossless coding} 
+\bit
+\item Transmission that enables exact reconstruction of coded messages at the decoder.  
+\item Rate, i.e. average expected codeword length, measures the quality of a lossless compression system. 
+\eit
+\loud{Now: Lossy source coding} 
+\bit 
+\item  To decrease the rate, allow that transmitted $x\in\mathcal{A}$ may not 
+be exactly recoverd by a decoder. 
+\item Allow \loud{distortion} between encoded and decoded $x$. 
+%\item Dviation is described by a \loud{distortion} function, i.g.  squared Euclidean or Hamming distance. 
+\item Only lossless transmission of quantization indices by a uniquely decodable code yielding a \loud{rate}. 
+\item[\iarrow] \loud{Lossy source code:} Rigorous definition of such an encoding-decoding procedure. 
+\eit
+\ALERT{Rate-Distortion Theory: } Theoretical analysis of \textit{all} lossy source codes. Established by \loud{Shannon}.  
+\bit
+\item \loud{Goal of next lectures:} Explain and proof \loud{Fundamental Theorem of Lossy Source Coding}. Description 
+of best rate-distortion tradeoffs possible.    
+\item Treat discrete iid. case first. Extension to sources with memory and continuous sources later. 
+\eit
+\end{frame}
+
+\subsection{Lossy source codes}
+\begin{frame}{Lossy source codes: Definition}
+\begin{definition}
+A lossy source code $Q=(\alpha,\gamma,\beta)$ for $\mathcal{A}$ is given by
+\bit
+\item An \loud{encoder mapping} 
+\[
+\alpha: \mathcal{A}\to \mathcal{I}_K:=\{1,2,\cdots,K\}. 
+\]
+Mapping $\alpha$ is also called quantization and $\mathcal{I}_K$ is called set of quantization indices. 
+\item A \loud{uniquely decodable code} 
+\begin{align*}
+\gamma: \mathcal{I}_K\to \mathcal{B}^{<\infty}, 
+\end{align*}
+where $\mathcal{B}^{<\infty}$ is the 
+set of finite bit-sequecens. 
+\item A \loud{decoder mapping}
+\[
+\beta: \mathcal{I}_K\to\widehat{\mathcal{A}},
+\]
+also called inverse quantization into a finite alphabet $\widehat{\mathcal{A}}$, called reproduction alphabet.
+\eit
+\end{definition}
+Lossy source codes are the common setup for all compression systems studied in this lecture. 
+\end{frame}
+
+\begin{frame}{Lossy source codes: Basic properties}
+\loud{Transmission of a symbols $x\in\mathcal{A}$ by a lossy source code}
+\bit
+\item Encoder computes  $\mathsf{i}=\alpha(x)$ and converts it to a bit sequence $\mathsf{b}=\gamma(\mathsf(i))$. 
+\item Bit sequence $\mathsf{b}$ is transmitted to the decoder. 
+\item Decoder recovers $\mathsf{i}=\gamma^{-1}(\mathsf{b})$ and computes the reconstructed value 
+$\hat{x}\in\mathbb{R}^N$ as 
+\begin{align*}
+\hat{x}=\beta(\mathsf{i})=\beta(\alpha(x)).
+\end{align*} 
+\item In general one has $\hat{x}\neq x$, i.e. the source code is lossy.  
+\item Deviation of $\hat{x}$ from $x$ is quantified by a distortion function. 
+\eit
+\begin{center}
+\tikzstyle{encdec} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, align=center, text width=1.9cm, draw=black]
+\tikzstyle{iomsg} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, text width=1.5cm, draw=black, fill=red!30]
+\tikzstyle{iomsgN} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, text width=1.5cm, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\begin{tikzpicture}[node distance=2cm]
+\node (inmsg) [iomsg] {Input\\ x};
+\node (quant) [encdec, right of = inmsg, xshift=0.5cm ] {Quantization:\\ $\mathsf{i}=\alpha(x)$};
+\node (enc) [encdec, right of = quant, xshift=0.5cm ] {Lossless:\\ $\mathsf{b}=\gamma(\mathsf{i})$};
+\node (dec) [encdec, right of = enc, xshift=2.0cm ] {Lossless:\\ $\mathsf{i}=\gamma^{-1}(\mathsf{b})$};
+\node (outmsg) [iomsgN, right of = dec, xshift=0.5cm ] {Output\\ $\hat{x}=\beta(i)$};
+\draw [arrow] (enc) -- node[anchor=south] {bit-stream $\mathbf{b}$} (dec);
+\draw [arrow] (enc) -- node[anchor=north] {$\mathbf{b}=00101$} (dec);
+\draw [arrow] (inmsg) -- (quant);
+\draw [arrow] (quant) -- (enc);
+\draw [arrow] (dec) -- (outmsg);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\subsection{Rate distortion function}
+\begin{frame}{Distortion function}
+\bit
+\item A distortion function $d$ is a mapping
+\begin{align*}
+d: \mathbb{R}\times\mathbb{R}\to [0,\infty), \qquad \text {with $d(x,x')=0$ if and only if $x=x'$}.
+\end{align*}
+%meant to measure the distance from $x$ to $x'$. 
+\item \loud{Squared Euclidean distance} 
+\begin{align*}
+d(x,x')=(x-x')^2.
+\end{align*}
+\item \loud{Hamming distance}
+\begin{align*}
+d(x,x')=\begin{cases} 0 & \text{if $x\neq x'$} \\ 1 & \text{else.}  \end{cases}
+\end{align*}
+\item \loud{Additive extension:} of $d$ to a distortion function $d_N$ on $\mathbb{R}^N$ by   
+\[
+d_N:\mathbb{R}^N\times\mathbb{R}^N\to [0,\infty),\quad d_N((x_1,\dots,x_N),(x_1',\dots,x_N')):=\frac{1}{N}\sum_{i=1}^Nd(x_i,x_i'). 
+\]
+\eit 
+\end{frame}
+
+\begin{frame}{Rate and distortion of a source code}
+\begin{definition}
+Let $Q=(\alpha,\gamma,\beta)$ be a source code for $\mathcal{A}$ 
+and fix a distortion function $d$. 
+\bit
+\item Rate $r(Q)$: Expected number of bits for transmitting 
+quantized source symbols $\alpha(x)$ 
+by $\gamma$:  
+\begin{align*}
+r(Q)=\sum_{x\in\mathcal{A}}p(x)\ell(\gamma(\alpha(x))),
+\end{align*}
+where $\ell(\gamma(x))$ denotes the lenght of the codeword $\gamma(x)$. 
+\item Distortion $\delta(Q)$: Expected distortion between reconstructed and original symbols:
+\[
+\delta(Q)=\sum_{x\in\mathcal{A}}p(x)d(x,\beta(\alpha(x))). 
+\]
+\eit 
+\end{definition}
+\loud{Relation to previous lectures:}
+\bit
+\item Rate is the \loud{average codeword-length} of $\gamma$, where $\mathcal{I}_K$ is equipped with pmf induced by $\alpha$ and $p$. 
+%\[
+%r(Q)=\sum_{i\in\mathcal{I}_K}\bigl(\sum_{x\in\mathcal{A}\colon \gamma(x)=i}p(x)\bigr)\ell(\gamma(i)). 
+%\]
+\item Distortion was not present in previous lectures.
+\eit  
+\end{frame}
+
+
+\begin{frame}{Rate distortion function}
+\ALERT{Goal of designing source codes:} 
+\bit
+\item[]For a given maximum distortion $D$, find a source code $Q$ of distortion $\delta(Q)\leq D$ that minimizes the rate $r(Q)$ among 
+all source codes whose distortion does not exceed $D$.
+\eit 
+
+\ALERT{\iarrow $ $ Rate-distortion function: } 
+\bit
+\item[] Describe optimal performance that can be achieved at all up to an arbitrary small deviation for the above task.
+More formally: For $D\in[0,\infty)$, one defines
+\begin{equation*}
+\boxed{R(D):= \inf\{r(Q)\colon \text{Q is a source code with } \delta(Q)\leq D \}.} 
+\end{equation*}
+\eit 
+
+\ALERT{Rate-distortion theory: } 
+\bit
+\item[] Study rate distortion function of a given source. Derive theoretical performance limits for all lossy compression systems one wants to build. 
+\eit 
+
+  
+
+\end{frame}
+
+
+\begin{frame}{Rate distortion function: Elementary properties}
+\bit
+\item R(D) is a monotonically decreasing function of $D$.  Reason: If $D_1\geq D_2$, then $R(D_1)$ is infimum over a larger 
+set than $R(D_2)$.
+
+\item Since $\mathcal{A}$ is finite: $D=0$ is possible. $R(D)$ coincides with the optimal average codeword length for coding $\mathcal{A}$. 
+%\item[\iarrow] Huffmann coding: Explicit method to construct source code that realizes $R(0)$. %In particular: Explicit computation of $R(0)$.
+\item There exists a $D_{max}\in (0,\infty)$ such that $R(D)=0$ for all $D\geq D_{max}$ and such that $R(D)>0$ for all $D<D_{max}$. 
+\item Case of squared Euclidean distance: $D_{max}$ is equal to the variance of the source. 
+\eit
+
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.25\textwidth]{RD_Plot_Final.png}
+\captionsetup{labelformat=empty}
+\caption{Example of a rate distortion function.}
+\end{figure}
+\end{center}
+
+\end{frame}
+
+
+
+
+
+%\begin{frame}{Passing to discrete iid. random processes} 
+%Let $X$ be a random variable. \loud{Setup:} Not study source coding of $X$ alone, but joint coding of $N$ independent versions of $X$.
+%
+%\loud{Discrete iid process:}
+%\bit
+%\item A discrete random process $\mathcal{X}=(X_i)_{i=1}^{\infty}$ is called independent identically distributed (iid) with distribution $p_X$ if 
+%\bit 
+%\item All marginal distributions $p_{X_i}$ satisfy $p_{X_i}=p_X$.
+%\item For each $i$ and each $T$, all random variables $X_{i},\dots,X_{i+T}$ are independent.
+%\eit 
+%\item Notations: Write 
+%\begin{align*}
+%X^N:=(X_1,\dots,X_N); \quad p^{\times N}:=p_{X^N},\quad  p^{\times N}(x_1,\dots,x_N)=p_X(x_1)\cdots p_X(x_N)
+%\end{align*}    
+%\item For the joint entropies, one has 
+%\begin{align*}
+%H(X^N)=\sum_{i=1}^NH(X). 
+%\end{align*}
+%\eit
+%\end{frame}
+\subsection{Extension to random processes}
+\begin{frame}{Source code for $N$ realizations of a random variable} 
+\loud{Setup:} Study joint coding of $N$ independent realizations of a random variable. .
+\bit
+\item For a random variable $X$, write 
+\begin{align*}
+X^N:=(X,\dots,X); \quad p^{\times N}:=p_{X^N},\quad  p^{\times N}(x_1,\dots,x_N)=p_X(x_1)\cdots p_X(x_N)
+\end{align*}
+\item $X^N$ is an $\mathbb{R}^N$-valued random-variable.  
+\item Definition of source code $Q_N=(\alpha_N,\gamma,\beta_N)$  for $X^N$ is as before.
+\bit
+\item Encoder mapping $\alpha_N:\mathcal{A}^N\to \mathcal{I}_{K'}$.
+\item Uniquely decodable code $\gamma_N$ on $\mathcal{I}_{K'}'$.
+\item Decoder mapping $\beta_N:\mathcal{I}_{K'}'\to\mathcal{A}^N$. 
+\eit
+\item Rate $r(Q_N)$  and distortion $\delta(Q_N)$ of $Q_N$ are measured per symbol: 
+\begin{align*}
+r(Q_N)=1/N\sum_{x\in\mathcal{A}^N}p^{\times N}(x)\ell(\gamma_N(\alpha_N(x))), \quad \delta(Q_N)= 1/N\sum_{x\in\mathcal{A}^N}p^{\times N}(x)d(x,\beta_N(\alpha_N(x))).
+\end{align*} 
+\item[\iarrow] Rate distortion function for $X^N$ defined as above. 
+\eit
+\end{frame}
+
+
+\begin{frame}{Joint coding needed even for iid souces} 
+\loud{Joint coding important for optimality} 
+\bit
+\item A typical source code for $X^N$ is \loud{not} necessarily comprised by the concatenation of $N$ 
+source codes for the indiviudal $X_i$, i.e. $N$ source codes of $X$, \loud{although} the $X_i$ are indpendent.
+\item In fact:  For optimal source codes, one cannot expect this to be true. 
+\eit
+\vspace{-3.5mm}
+\loud{Example from lossless case:}
+\bit
+\item  Assume that $X$ is any random variable such that $p_X(a)\neq 2^{-m}$, $m\in\mathbb{N}$, for an $a\in\mathcal{A}$. 
+\item We know: Huffman code $\gamma$ for $X$ is optimal, \loud{but}
+$\overline{\ell}(\gamma)=H(X)+\epsilon$ with an $\epsilon>0$.
+\item Thus: Coding $X^N$ by coding each $X_i$ with $\gamma$  gives average codeword length $H(X)+\epsilon$ per symbol..    
+\item On the other hand: Average codeword length per symbol of a joint  Huffman code for $X^N$
+can be bounded by $1/N(H(X^N)+1)=H(X)+1/N$. 
+\item[\iarrow] Thus: Joint coding is better than marginal coding even for iid sources. 
+\eit
+\vspace{-2.5mm}
+\loud{Joint coding even much more important and helpful in lossy case:}
+\bit
+\item Only joint coding, i.e. \loud{vector quantization} exploits the \loud{space filling advantage}
+\item Will be treated later. 
+\eit
+\end{frame}
+
+\subsection{Mutual information and informational rate distortion function}
+
+\begin{frame}{Mutual information for two random variables}
+Let $X$ and $Y$ be discrete random variables with alphabets $\mathcal{A}_X$ and $\mathcal{A}_Y$.
+
+\loud{Mutual information $I(X;Y)$:} 
+\bit
+\item Reduction of uncertainty of $X$ after observing $Y$: 
+\item[\iarrow] Entropy as measure for uncertainty: 
+\begin{align}\label{DefMutInf}
+I(X;Y):=H(X)-H(X|Y). 
+\end{align}  
+\item In terms of the probability mass functions, one has 
+\begin{align*}
+I(X;Y)=\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left(\frac{p_{X,Y}(x,y)}{p_{X}(x)p_{Y}(y)}\right). 
+\end{align*}
+\item[\iarrow] Mutual information is symmetric:
+\[
+I(X;Y)=I(Y;X).
+\]
+\item[\iarrow]  Applying Divergence Inequality: Mutual information is zero if and only if $X$ and $Y$ are independent. 
+\eit
+\end{frame}
+\begin{frame}{Mutual information for conditional probability mass functions:} 
+\loud{Mutual information can be defined given a marginal and a conditional distribution} 
+\bit
+\item Let $p$ be a pmf with finite alphabet $\mathcal{A}$. 
+\item For some finite alphabet $\mathcal{B}$, let a conditional probabibility mass function $q(\cdot|x)$ on $\mathcal{A}$ be given. 
+\item This means: $q(\cdot|x)$ is a probability mass function on $\mathcal{B}$ for 
+each $x\in\mathcal{A}$. 
+\item The pmf $p$ and the conditonal pmf $q$ define the probability masses $p(x)q(\hat{x}|x)$ of a joint distribution on $\mathcal{A}\times\mathcal{B}$.
+\item[\iarrow] Thus: According to \eqref{DefMutInf}, one defines
+\begin{align*}
+I(p;q)=H(p)-H(q|p)=\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}p(x)q(\hat{x}|x)\log_2\left(\frac{q(\hat{x}|x)}{p(x)}\right).
+\end{align*}
+\item Definitions are consistent: For two random variables $X$ and $Y$, one has
+\begin{align*}
+I(X;Y)=I(p_X;p_Y). 
+\end{align*}
+\eit 
+\end{frame}
+
+\begin{frame}{The informational rate distortion function}
+\begin{definition}
+Let $\mathcal{A}$ be a finite source with pmf $p$. 
+The informational rate-distortion function is defined as 
+\begin{align}\label{DefInfRDRProb}
+R^{(I)}(D):=\inf\{I(p;q)\colon \sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}q(\hat{x}|x)p(x)d(x,\hat{x})\leq D\}
+\end{align}
+where $q$ is taken over the set of all conditional probabilities $q(\cdot|x)$ with finite alphabet $\mathcal{B}$.
+\end{definition}
+\ALERT{Main result: Informational rate distortion function can be used to describe rate distortion function of source coding.} 
+
+\loud{\iarrow$ $ Advantage: } Function $R^{(I)}$ and analog for continuous sources is easier to study than rate distortion function.
+%\begin{itemize}
+%\item \loud{Main result: } Informational rate distortion function can be used to compute rate distortion function. 
+%\item \loud{\iarrow Advantage: } Function $R^{(I)}$ and continuous analog is easier to study than rate distortion function. 
+%\item Example: It can be shown that $R^{(I)}$ is convex. Important property even of R-D functions ``appearing in practise''. 
+%\item Function $R^{I}$ can even be computed explicity for Gaussian sources.
+%\item Algorithm  
+%\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Conditional probabilities in the informational rate distortion function} 
+
+\loud{Conditional probabilities q appearing in $R^{(I)}$: }
+\bit 
+\item A finite alphabet $\mathcal{B}$ of size $m=|\mathcal{B}|$ is given. 
+\item For each $x\in\mathcal{A}$ a probability mass function $q(\cdot|x)$  on $\mathcal{B}$ is given. 
+\item If  $n:=|\mathcal{A}|$, for the given $\mathcal{B}$, conditional probabilites  $q$ correspond to all real $n\times m$-matrices $Q=(q_{i,j})$ such that 
+\bit
+\item $0 \leq q_{i,j} \leq 1$, for all $i,j$. 
+\item $\sum_{j=1}^mq_{i,j}=1$ for all $i\in\{1,\dots,n\}$. 
+\eit
+\item[\iarrow] Minimization of \eqref{DefInfRDRProb} for all $\mathcal{B}$ and all such $Q$ that additionally satisfy the distortion constraint.
+\item Alphabet $\mathcal{B}$ can be chosen freely, i.e. infimum over all possible $\mathcal{B}$ and $q$. 
+\item Accordingly: Reproduction alphabets $\widehat{\mathcal{A}}$ of source codes can also be chosen freely.  
+\item One can also fix a reproduction alphabet $\mathcal{B}$ both for the definition of all source codes and of informational rate-distortion function.  
+\item Then: Infimum in \eqref{DefInfRDRProb}  is attained by some $q$, minimization of \eqref{DefInfRDRProb} is a convex optimization problem.
+\item[\iarrow] \loud{Blahut-Arimoto algorithm: } Minimizing of \eqref{DefInfRDRProb} for fixed $\mathcal{B}$.  
+\eit 
+\end{frame}
+
+\subsection{Fundamental theorem of lossy source coding}
+\begin{frame}{Fundamental theorem of lossy source coding for discrete iid processes}
+Main theorem of lossy source coding due to Shannon: 
+\begin{theorem}[Fundamental theorem of lossy source coding]
+Let $X$ be a discrete random variable. Fix an additive distortion measure. 
+\begin{enumerate}
+\item The informational rate distortion function $R^{I}$ is always a \loud{lower bound} for the rate distortion function: 
+For every $N\in\mathbb{N}$ and every sorce code $Q_N$ for $X^N$ one has  
+\begin{align}\label{BoundRate}
+r(Q_N)\geq R^{(I)}(\delta(Q_N)). 
+\end{align}
+\item The bound \eqref{BoundRate} is \loud{asymptotically achievable}. For every $D\in[0,\infty)$ and every $\epsilon>0$, there exits an $N_0\in\mathbb{N}$ such that for each $N\geq N_0$, there 
+exists a source code $Q_N$ for $X^N$ such that 
+\begin{align*}
+\delta(Q_N)\leq D+\epsilon
+\end{align*}
+and such that
+\begin{align*}
+r(Q_{N})\leq R^{(I)}(D). 
+\end{align*}
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+%\begin{frame}{Fundamental theorem of lossy source coding: Outlook on the proof.}
+%\loud{Outlook: Idea of proof of lower bound in fundamental lossy source coding theorem:}
+%\bit
+%\item Use \loud{convexity} of informational rate distortion function, see .. . 
+%\item Use basic properties of entropy: \loud{Chain rule} and \loud{data processing inequalities}. 
+%\eit 
+%\loud{Outlook: Idea of the proof of asymptotic achievability: Random coding}
+%\bit
+%\item For each $N$ and $R'$, consider the set of all $\mathcal{A}^N$-valued sequences of length $2^{NR'}$.
+%\item Each sequence defines a source code of rate $R'$.
+%\item Set of sequences forms itself naturally a probability space, the \loud{ensemble set $\mathcal{E}$}.   
+%\item Using \loud{theorem of large numbers}, show that for given rate $R'>R^{(I)}(D)$, expectation value of distortion on the ensemble 
+%set is not greater than $D+\epsilon$ as $N\to \infty$.   
+%\item To apply theorem of large numbers forces, one needs to consider $N\to\infty$ and not the single alphabet $\mathcal{A}$. 
+%\item Consequence: there exists at least one sequence in $\mathcal{E}$ with distortion not larger than $D+\epsilon$. 
+%\eit
+%\item Details will be given in next lecture.
+%\loud{Comments on the proof of asymptotic achievability: }
+%\bit
+%\item \loud{Proof is not constructive: } One only concludes that such a lossy code exists, no explicit construction. Different to lossless case: Huffman codes are defined explicitly.  
+%\item Method of proof is similar to proof of \loud{Channel Coding Theorem}, although settings of source coding and channel coding are independent (Source-Channel-Separation Theorem). 
+%\eit
+%\end{frame}
+
+\begin{frame}{Fundamental theorem of lossy source coding: Comments and outlook on the proof of lower bound.}
+
+\bit
+\item Statement and proof of above theorem, in particular asymptotic achievability, are \textit{not obvious at all}. 
+\item Proof will be given in next lectures. 
+\eit
+\vspace{-2.5mm}
+\loud{Application of fundamental theorem: Can describe rate distortion function for model sources}:
+\bit
+\item Example in the discrete case: Binary source. 
+\item Continuous case: \loud{Gaussian sources}.
+\item More general sources: \loud{Shannon lower bound}. 
+\bit
+\item Can estimate rate-distortion function from below. 
+\item Estimate 
+is \loud{asymptotically tight} for high rates or small distortions.  
+\eit 
+\eit 
+
+\loud{Outlook: Idea of proof of lower bound in fundamental lossy source coding theorem:}
+\bit
+\item Use \loud{convexity} of informational rate distortion function. 
+\item Use basic properties of entropy: \loud{Chain rule} and \loud{data processing inequalities}. 
+\eit 
+\end{frame}
+
+
+\begin{frame}{Asymptotic achievabilty: Outlook on the proof. }
+\loud{Outlook: Idea of the proof of asymptotic achievability: Random coding}
+\bit
+\item Let $q$ be a conditional probability on alphabet $\widehat{\mathcal{A}}$ close to the infimum in \eqref{DefInfRDRProb}.  
+\item For each $N$ and $R'$, consider the set of all ${\widehat{\mathcal{A}}}^N$-valued sequences of length $2^{NR'}$.
+\item Each sequence defines a source code of rate $R'$; all symbols coded with equal length. 
+\item Set of sequences forms itself naturally a probability space, the \loud{ensemble set $\mathcal{E}$}.   
+\item Using \loud{theorem of large numbers}, show that for given rate $R'>R^{(I)}(D)$, expectation value of distortion on the ensemble 
+set is not greater than $D+\epsilon$ as $N\to \infty$.   
+%\item To apply theorem of large numbers forces, one needs to consider $N\to\infty$ and not the single alphabet $\mathcal{A}$. 
+\item Since expectation vaue not larger than $D+\epsilon$, there exists at least one sequence in $\mathcal{E}$ with distortion not larger than $D+\epsilon$. 
+\eit
+\loud{Comments on the proof of asymptotic achievability: }
+\bit
+\item \loud{Proof is not constructive: } One only concludes that such a lossy code exists, no explicit construction. Different to lossless case: Huffman codes are defined explicitly.  
+\item Method of proof is similar to proof of \loud{Channel Coding Theorem}, although settings of source coding and channel coding are independent (Source-Channel-Separation Theorem). 
+\eit 
+\end{frame}
+
+
+\subsection{Data processing inequalities}
+\begin{frame}{Data processing inequalities: Statement}
+%\loud{Definition:} 
+\begin{definition}
+Let $\mathbf{Z}$ be a discrete, $\mathbb{R}^n$-valued random variable. A discrete, $\mathbb{R}^m$-valued random variable \loud{$\mathbf{Y}$ determines $\mathbf{Z}$}, if $Z=\phi(\mathbf{Y})$ for 
+a function $\phi:\mathbb{R}^m\to\mathbb{R}^n$.
+\end{definition}
+%\bit
+%\item Let $\mathbf{Z}$ be a discrete, $\mathbb{R}^n$-valued random variable.
+%\item \loud{Definition:} A discrete, $\mathbb{R}^m$-valued random variable \loud{$\mathbf{Y}$ determines $\mathbf{Z}$}, if $Z=\phi(\mathbf{Y})$ for 
+%a function $\phi:\mathbb{R}^m\to\mathbb{R}^n$.
+%\eit
+\vspace{-2.5mm}
+
+\loud{Heuristically:} If $\mathbf{Y}$ determines $\mathbf{Z}$:
+\bit%\small
+\item Knowing $\mathbf{Y}$, uncertainty about $\mathbf{Z}$ should be zero.
+\item Uncertainty of $\mathbf{Z}$ should not be greater than uncertainty of $\mathbf{Y}$.
+\item Knowing $\mathbf{Z}$ does not decrease the uncertainty ofanother random-variable $\mathbf{X}$ more than knowing $\mathbf{Y}$.    
+\eit 
+\loud{\iarrow Entropy as measure for uncertainty:}
+\begin{proposition}[Data processing inequalities]
+Let $\mathbf{Y}$ be a discrete, $\mathbb{R}^m$-valued random variable. Let 
+$\phi:\mathbb{R}^m\to\mathbb{R}^n$ and let $\mathbf{Z}=\phi(\mathbf{Y})$. 
+Then one has 
+\begin{align*}
+H(\mathbf{Z}|\mathbf{Y})=0 \qquad\text{and} \qquad H(\mathbf{Z})\leq H(\mathbf{Y}).  
+\end{align*}
+If $\mathbf{X}$ is another random variable, then 
+$H(\mathbf{X}|\mathbf{Y})\leq H(\mathbf{X}|\mathbf{Z})$. 
+\end{proposition}
+\end{frame}
+
+\begin{frame}{Data processing inequalities: Proof}
+\bit 
+\item One has $p_{Z|Y}(z|y)=1$ if $z=\phi(y)$ and $p_{Z|Y}(z|y)=0$, else. Thus 
+$H(\mathbf{Z}|\mathbf{Y})=0$.
+\item With chain rule for entropy, it follows that
+\begin{align*}
+H(\mathbf{Y})=H(\mathbf{Y})+H(\mathbf{Z}|\mathbf{Y})=H(\mathbf{Y},\mathbf{Z})=H(\mathbf{Z})+H(\mathbf{Y}|\mathbf{Z}).
+\end{align*}
+Since entropy is non-negative, it follows that $H(\mathbf{Y})\geq H(\mathbf{Z})$.
+\item 
+One has $p_{X,Y,Z}(x,y,z)=p_{X,Y}(x,y)$ if $z=\phi(y)$ and $p_{X,Y,Z}(x,y,z)=0$, else. 
+\item For $z=\phi(y)$ and 
+$p_Y(y)\neq 0$, one has $p_{X|Y,Z}(x|z,y)=p_{X|Y}(x,y)$. 
+\item[\iarrow] This implies that $H(\mathbf{X}|\mathbf{Y})=H(\mathbf{X}|\mathbf{Y},\mathbf{Z})$.
+\item Last lecture: $H(\mathbf{X}|\mathbf{Y},\mathbf{Z})\leq H(\mathbf{X}|\mathbf{Z})$ .
+Thus $H(\mathbf{X}|\mathbf{Y})\leq H(\mathbf{X}|\mathbf{Z})$. \qed
+\eit 
+\end{frame}
+
+
+\subsection{Convexity of the informational rate distortion function}
+\begin{frame}{Review: Convexity and concavity}
+\loud{Recall: Convexity of a function}
+\bit
+\item A function $f:(a,b)\to\mathbb{R}$ is called \loud{convex} if for any two point $p_1,\:p_2\in (a,b)$, the straight
+line between $(p_1, f(p_1))$ and $(p_2, f(p_2))$ lies above the graph of $f$:
+\begin{align}\label{eqconv}
+f((1-\lambda)p_1+\lambda p_2)\leq (1-\lambda)f(p_1)+\lambda f(p_2), \quad \forall \lambda\in [0,1] 
+\end{align}  
+\item  $f$ is called \loud{strictly convex} if strict inequality holds in \eqref{eqconv} for all $\lambda\in (0,1)$ and 
+all $p_1\neq p_2$. 
+\item $f$ is calleld (strictly) \loud{concave}, if $-f$ is (strictly) convex. 
+\eit
+\begin{figure}
+\includegraphics[width=0.26\textwidth]{RD_Plot_Convex_Final.png}
+\captionsetup{labelformat=empty}
+\caption{Illustration of convexity.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Elementary properties of convex functions}
+\loud{Jensen's inequality}
+\bit
+\item If $f$ is convex on $(a,b)$, then for all $\lambda_1,\dots,\lambda_n\in[0,1]$ with $\lambda_1+\dots+\lambda_n=1$ and all 
+$p_1,\dots,p_n\in (a,b)$, one has
+\begin{align*}
+f(\lambda_1 p_1+\dots+\lambda_np_n)\leq \lambda_1f(p_1)+\dots+\lambda_nf(p_n). 
+\end{align*}
+\item If $f$ is strictly convex and all $p_i$ different, equality only if $\lambda_i=1$ for an $i\in\{1,\dots,n\}$. 
+\item Proof by induction.
+\eit
+\loud{Characterization for continuously differentiable functions}
+\bit
+\item If $f$ is continously differentiable, then $f$ is (strictly) convex if and only if $f'$ is (strictly) monotonically increasing. 
+\item Analogous statement for concave functions.  
+\item Proof: Application of  mean value theorem of differential calculus.
+\eit
+
+
+\end{frame}
+
+\begin{frame}{Concavity of entropy}
+\begin{proposition}[Concavity of entropy]
+Let $p_1$, $p_2$ be probability mass functions on a finite alphabet $\mathcal{A}$. 
+Then for every $\lambda\in(0,1)$ one has 
+\begin{align*}
+H((1-\lambda)p_1+\lambda p_2)\geq (1-\lambda)H(p_1)+\lambda H(p_2), \quad \text{equality if an only if $p_1=p_2$}. 
+\end{align*}
+\end{proposition}
+%\vspace{-0.1cm}
+%\small Heuristic explanation: Averaging two pmfs gives a `more equidistributed pmf' $\iarrow$ entropy increases. 
+\vspace{-2.9mm}
+%\smallskip
+\loud{Proof: } 
+%\vspace{-1.5mm}
+\bit 
+\item Let $f(t):=-t\log_2(t)$. 
+\item The derivative $f'(t)=-\frac{1}{\ln(2)}(1+\ln(t))$ is strictly decreasing $\loud\iarrow$ f is strictly concave. 
+\item[\iarrow] By definition of the entropy:
+\begin{align*}
+H((1-\lambda)p_1+\lambda p_2)=\sum_{a\in\mathcal{A}}f((1-\lambda)p_1(a)+\lambda p_2(a))
+\geq & \sum_{a\in\mathcal{A}}\left((1-\lambda)f(p_1(a))+\lambda f(p_2(a))\right)\\
+=&(1-\lambda)H(p_1)+\lambda H(p_2).
+\end{align*} 
+ \item Statement of equality follows from strict concavity of $f$.  \qed
+\eit
+Heuristic explanation: Averaging two pmfs gives a `more equidistributed pmf' $\iarrow$ entropy increases. 
+\end{frame}
+
+
+
+
+\begin{frame}{Convexity of the informational rate distortion function}
+\begin{proposition}[Convexity of $R^{(I)}$]
+The informational rate distortion function $R^{(I)}$ is convex.
+\end{proposition}
+\vspace{-2.9mm}
+\loud{Proof: } 
+%\vspace{-1.0mm}
+\bit
+\item \loud{Main idea:} Use concavity of entropy, i.e. convexity of negative entropy. 
+\item Let $\lambda\in [0,1]$ and $D_1,\:D_2\in[0,\infty)$. %One needs to show that
+%\[
+%R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq (1-\lambda)R_I(D_1)+\lambda R(D_2). 
+%\]
+%
+%
+\item Let $q_1$ and $q_2$ be any conditinonal probabilities with alphabets $\mathcal{B}_1$ and $\mathcal{B}_2$ such that
+\begin{align}\label{DistConstrIndiv}
+\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}_1}p(x)q_1(\hat{x}|x)d(x,\hat{x})<D_1; \quad \sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}_2}p(x)q_2(\hat{x}|x)d(x,\hat{x})<D_2.
+\end{align}
+
+\item Define a conditional probability $q_3$ with alphabet $\mathcal{B}=\mathcal{B}_1\cup\mathcal{B}_2$ as 
+\begin{align*}
+q_3=(1-\lambda)p_1+\lambda_2 p_2
+\end{align*}
+\item By \eqref{DistConstrIndiv}, $q_3$ satisfies the distortion constraint
+\begin{align}\label{DistConstrQ3}
+\sum_{x\in\mathcal{A}}p(x)\sum_{\hat{x}\in\mathcal{B}}q_3(\hat{x}|x)d(x,\hat{x}) \leq (1-\lambda)D_1+\lambda D_2. 
+\end{align}
+\eit
+\end{frame}
+
+
+\begin{frame}{Proof of the convexity of $R^{(I)}_X$}
+\bit
+\item By the concavity of entropy: 
+\begin{align*}
+-H(q_3|p)=-\sum_{x\in\mathcal{A}}p(x)H(q_3(\cdot|x))\leq& -\sum_{x\in\mathcal{A}}p(x)\left((1-\lambda)H(q_1(\cdot|x))+\lambda H(q_2(\cdot|x))\right)\\
+=&-(1-\lambda)H(q_1|p)-\lambda H(q_2|p)
+\end{align*}
+\item [\iarrow] Using definition of $R^{(I)}$ and \eqref{DistConstrQ3}:
+\begin{align}\label{estD}
+R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq I(p;q_3)=H(p)-H(p|q_3)\leq &(1-\lambda)H(p)+H(p|q_1)+\lambda( H(p)+H(p|q_2)) \nonumber\\ =&(1-\lambda)I(p;q_1)+\lambda I(p;q_2).
+\end{align}
+\item Now use:
+\bit
+\item $q_1$ and $q_2$ were arbitrary conditional probabilities satisfying \eqref{DistConstrIndiv}. 
+\item Infimum of linear combinations is linear combination of infima. 
+\item Infimum is largest lower bound. 
+\eit
+\item[\iarrow] It follows from \eqref{estD} that
+\begin{align*}
+R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq (1-\lambda)R^{(I)}(D_1)+\lambda R^{(I)}(D_2). 
+\end{align*}
+\qed
+\eit 
+\end{frame}
+
+
+%\begin{frame}{Estimate of rate by mutual informations}
+%\begin{proposition}[Estimate of rate by mutual informations]
+%Let a length n source code $(f_n,g_n)$ of rate $R$ be given.  Then one has 
+%\begin{align}\label{EqRate}
+%R\geq \sum_{i=1}^{n}I(X_i,Y_i) 
+%\end{align}
+%\end{proposition}
+%Proof of the converse statement:
+%\bit 
+%\item The encoder needs to transmit $f(\mathbf{X}))$. \loud{Entropy is lower bound for rate \iarrow}
+%\begin{align*}
+%R\geq H(f(\mathbf{X})).
+%\end{align*}
+%\item Since $f(\mathbf{X})$ determines $Y=g(f(\mathbf{X}))$, one has 
+%\begin{align*}
+%H(f(\mathbf{X}))\geq H(\mathbf{Y})
+%\end{align*}
+%by ... . 
+%\item Since $\mathbf{X}$ determines $\mathbf{Y}$, one has $H(\mathbf{Y}|\mathbf{X})=0$. Using the symmetry of $I$, it follows that
+%\begin{align*}
+%H(\mathbf{Y})=I(\mathbf{Y},\mathbf{X})=I(\mathbf{Y};\mathbf{Z})=H(\mathbf{X})-H(\mathbf{X}|\mathbf{Y}).
+%\end{align*}
+%
+%\eit 
+%Since $\mathbf{Y}$ determines $Y_i$ via the projection onto the $i$-th coordinate, it follows that
+%\begin{align*}
+%H(X_i|\mathbf{Y})\leq H(\mathbf{X}|Y_i). 
+%\end{align*}
+%By the chain rule, one has 
+%\begin{align*}
+%H(\mathbf{X}|Y_i)=\sum_
+%\end{align*}
+%\end{frame}
+%\begin{frame}{Estimate of rate by mutual informations}
+%\bit
+%\item Since $\mathbf{X}$ is iid, $X_i\sim X$, one has
+%\begin{align*}
+%H(\mathbf{X})=\sum_{i=1}^nH(X_i)
+%\end{align*}
+%\item By the chain-rule, one has
+%\begin{align*}
+%H(\mathbf{X}|\mathbf{Y})=\sum_{i=1}^NH(X_i|\mathbf{Y},X_1,\dots,X_i).
+%\end{align*}
+%\item Since $(\mathbf{Y},X_1,\dots,X_i)$ determines $Y_i$ (or since ``conditioniong does not increase entropy'') one has
+%\begin{align*}
+%H(X_i|\mathbf{Y},X_1,\dots,X_i)\leq H(X_i|Y_i).  
+%\end{align*}
+%\item Combining the chain of inequlities gives 
+%\begin{align*}
+%R\geq \sum_{i=1}^nH(X_i)-H(X_i|Y_i)=\sum_{i=1}^nI(X_i|Y_i). \qed
+%\end{align*}
+%\eit 
+%\end{frame}
+%
+%\begin{frame}
+%\bit 
+%\item \loud{Idea: Use convexity of $R^{(I)}$ and previous proposition}.
+%\item \loud{Property of joint distributions $p_{X_i,Y_i}$}: 
+%
+%For all $x,\hat{x}\in\mathcal{A}$ and all $i\in\{1,\dots,N\}$,  $p_{X_i,Y_i}(x,\hat{x})$ is equal to the probability $p^{\times N}$ 
+%of all $\mathbf{x}=(x_1,\dots, x_{i-1},x_i,x_{i+1},\dots,x_N)\in\mathcal{A}^N$ 
+%with $x_i=x$ and $g_i(f(\mathbf{x}))=\hat{x}$. 
+%\item Consequece: One has
+%\begin{align*}
+%D_i:=\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{A}}p_{X_i,Y_i}(x,\hat{x})d(x,\hat{x})
+%%=&\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{A}}p_{Y_i|X_i}(\hat{x}|x)d(x,\hat{x})\\
+%%\]
+%%\item It easily follows from the definition that
+%%then 
+%%\[
+%%D_i
+%=&\sum_{\mathbf{x}=(x_1,\dots,x_N)\in\mathcal{A}^N}p^{\times N}(\mathbf{x})d(x_i,g_i(f(\mathbf{x}))).
+%\end{align*}
+%\item Thus, using ..., it follows that 
+%\begin{align*}
+%D=\sum_{\mathbf{x}\in\mathcal{A}^N}p^{\times N}(\mathbf{x})d_N(\mathbf{x},\mathbf{Y}(\mathbf{x}))
+%=&\sum_{\mathbf{x}=(x_1,\dots,x_N)\in\mathcal{A}^N}p^{\times N}(\mathbf{x})(d(x_1,Y_1(\mathbf{x}))+\cdots+d(x_N,Y_N(\mathbf{x}))
+%\\=&\sum_{i=1}^N D_i.
+%\end{align*}
+%\item[\iarrow] Using \eqref{EqRate} and the convexity of $R^{(I)}$, it follows that
+%\begin{align*}
+%R\geq \sum_{i=1}^NI(X_i;Y_i)\geq \sum_{i=1}^NR^{(I)}(D_i)\geq R^{I}(D)\qed 
+%\end{align*}
+%\eit
+%\end{frame}
+
+
+
+
+
+
+\end{document}

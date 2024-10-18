@@ -1,0 +1,47 @@
+
+
+
+\begin{frame}{Comparison to Shannon Lower Bound}
+  \bit
+\item<+-> High-rate approximations for MSE distortion
+  \vspace{-1.0ex}\begin{align*}
+    \text{EC Lloyd}:&&
+    R_V(D)&\;=\;h(S)-\frac{1}{2}\log_2\big(12\,D\big)
+    &&\text{and}&
+    D_V(R)&\;=\;\frac{1}{12}\cdot2^{2h(S)}\cdot2^{-2R}\\[1ex]
+    \onslide<+->
+    \text{SLB}:&&
+    R_L(D)&\;=\;h(S)-\frac{1}{2}\log_2\big(2\pi e\,D\big)
+    &&\text{and}&
+    D_L(R)&\;=\;\frac{1}{2\pi e}\cdot2^{2h(S)}\cdot2^{-2R}
+    \onslide
+  \end{align*}
+\item<+->[\iarrow]\medskip\loud{Distortion increase} (at same rate) relative to Shannon lower bound
+  $$
+  \frac{D_V(R)}{D_L(R)}
+    \onslide<+->
+  \;=\;
+  \frac{\pi\,e}{6}
+  \;\approx\;1.42
+    \onslide<+->
+  \qquad\qquad\ALERT{\iarrow\quad
+  \text{1.53 dB loss in SNR}}
+    \onslide
+  $$
+\item<+->[\iarrow]\loud{Rate increase} (at same distortion) relative to Shannon lower bound
+  $$
+  R_V(D)-R_L(D)
+    \onslide<+->
+  \;=\;
+  \frac{1}{2}\log_2\!\left(\frac{\pi\,e}{6}\right)
+  \;\approx\;0.2546
+    \onslide<+->
+  \qquad\qquad\ALERT{\iarrow\quad
+  \text{roughly 1/4 bit per sample}}
+  $$
+  \eit\vspace{-10ex}
+\end{frame}
+
+
+
+

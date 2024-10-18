@@ -1,0 +1,26 @@
+
+
+\begin{frame}{High-Rate Approximation of MSE Distortion for Centroid Quantizers}
+  \vspace{-5.5ex}
+ \begin{align*}
+   \uncover<+->{%
+     D 
+ &\;=\;
+ \sum_{\forall k} \int_{u_k}^{u_{k+1}} (s-s'_k)^2\cdot f(s)\;\d s}\\[.5ex]
+ \uncover<+->{%
+   &\;=\;
+   \sum_{\forall k}\frac{p_k}{\Delta_k}\int_{u_k}^{u_{k+1}} (s-s'_k)^2 \,\d s}\\[.5ex]
+ \uncover<+->{%
+   &\;=\;
+   \sum_{\forall k} \frac{p_k}{\Delta_k}\int_{u_k-s'_k}^{u_{k+1}-s'_k} t^2 \,\d t}\\[.5ex]
+ \uncover<+->{%
+   &\;=\;
+   \sum_{\forall k} \frac{p_k}{\Delta_k}\int_{-\Delta_k/2}^{\Delta_k/2} t^2 \,\d t}\\[.5ex]
+ \uncover<+->{%
+   &\;=\;
+   \sum_{\forall k} \frac{p_k}{\Delta_k}\cdot\frac{1}{3}\cdot\left(\;\frac{\Delta_k^3}{8}\,+\,\frac{\Delta_k^3}{8}\;\right)}\\[.5ex]
+ \uncover<+->{%
+   \Aboxed{D&\;=\;
+   \frac{1}{12}\sum_{\forall k} p_k\;\Delta_k^2}}
+ \end{align*}\vspace{-5ex}
+\end{frame}

@@ -1,0 +1,100 @@
+
+
+\begin{frame}{Scalar Quantization: Discretization of Pdf}
+\begin{minipage}{0.55\linewidth}
+  \hfitbox{\linewidth}{%
+  \begin{tikzpicture}
+     \begin{axis}[
+        compat=newest,
+        width=10cm,height=4.5cm,
+        axis lines=none,
+        xmin=-4.5,xmax=4.5,ymin=0,ymax=0.51,
+        clip mode=individual, % ensures curves are plot one after another
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+               (axis cs: -5,0) -- (axis cs: 5,0);
+          %\node[black, anchor=north east] at (axis cs: 5,-0.01) {$s$};
+        }
+     ]
+     \addplot[name path=func,black,samples=101,domain=-4.5:4.5,line width=0.5pt,mark=none] 
+                           {0.5*exp(-abs(x))};
+     \path[name path=axis] (axis cs: -4.5,0) -- (axis cs: 4.5,0);
+     \addplot[red!20]         fill between[of=func and axis,soft clip={domain=-0.5: 0.5}];
+     \addplot[green!20]       fill between[of=func and axis,soft clip={domain=-1.5:-0.5}];
+     \addplot[green!20]       fill between[of=func and axis,soft clip={domain= 0.5: 1.5}];
+     \addplot[blue!20]        fill between[of=func and axis,soft clip={domain=-2.5:-1.5}];
+     \addplot[blue!20]        fill between[of=func and axis,soft clip={domain= 1.5: 2.5}];
+     \addplot[vividviolet!20] fill between[of=func and axis,soft clip={domain=-3.5:-2.5}];
+     \addplot[vividviolet!20] fill between[of=func and axis,soft clip={domain= 2.5: 3.5}];
+     \addplot[cyan!20]        fill between[of=func and axis,soft clip={domain=-4.5:-3.5}];
+     \addplot[cyan!20]        fill between[of=func and axis,soft clip={domain= 3.5: 4.5}];
+
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -3.5,0) {$u_{-3}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -2.5,0) {$u_{-2}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -1.5,0) {$u_{-1}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -0.5,0) {$u_{0}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  0.5,0) {$u_{1}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  1.5,0) {$u_{2}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  2.5,0) {$u_{3}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  3.5,0) {$u_{4}$};
+     \node[anchor=north west,yshift=-.5ex] at (axis cs:  4.5,0) {$s$};
+  \end{axis}
+  \end{tikzpicture}}\\[4ex]
+  \hfitbox{\linewidth}{%
+  \begin{tikzpicture}
+     \begin{axis}[
+        compat=newest,
+        width=10cm,height=4.5cm,
+        axis lines=none,
+        xmin=-4.5,xmax=4.5,ymin=0,ymax=0.4,
+        clip mode=individual, % ensures curves are plot one after another
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+               (axis cs: -5,0) -- (axis cs: 5,0);
+          %\node[black, anchor=north east] at (axis cs: 5,-0.01) {$s$};
+        }
+     ]
+     \pgfmathsetmacro{\s}{1}
+     \addplot[line width=1.0pt,red]         coordinates { ( 0.0,0) ( 0.0,{\s*0.393469}) };
+     \addplot[line width=1.0pt,officegreen] coordinates { ( 0.9,0) ( 0.9,{\s*0.191700}) };
+     \addplot[line width=1.0pt,officegreen] coordinates { (-0.9,0) (-0.9,{\s*0.191700}) };
+     \addplot[line width=1.0pt,blue]        coordinates { ( 1.9,0) ( 1.9,{\s*0.070522}) };
+     \addplot[line width=1.0pt,blue]        coordinates { (-1.9,0) (-1.9,{\s*0.070522}) };
+     \addplot[line width=1.0pt,vividviolet] coordinates { ( 2.9,0) ( 2.9,{\s*0.025944}) };
+     \addplot[line width=1.0pt,vividviolet] coordinates { (-2.9,0) (-2.9,{\s*0.025944}) };
+     \addplot[line width=1.0pt,cyan]        coordinates { ( 3.9,0) ( 3.9,{\s*0.009544}) };
+     \addplot[line width=1.0pt,cyan]        coordinates { (-3.9,0) (-3.9,{\s*0.009544}) };
+    
+     \draw[red,fill]         (axis cs:  0.0,{\s*0.393469}) circle [radius=2pt];
+     \draw[officegreen,fill] (axis cs:  0.9,{\s*0.191700}) circle [radius=2pt];
+     \draw[officegreen,fill] (axis cs: -0.9,{\s*0.191700}) circle [radius=2pt];
+     \draw[blue,fill]        (axis cs:  1.9,{\s*0.070522}) circle [radius=2pt];
+     \draw[blue,fill]        (axis cs: -1.9,{\s*0.070522}) circle [radius=2pt];
+     \draw[vividviolet,fill] (axis cs:  2.9,{\s*0.025944}) circle [radius=2pt];
+     \draw[vividviolet,fill] (axis cs: -2.9,{\s*0.025944}) circle [radius=2pt];
+     \draw[cyan,fill]        (axis cs:  3.9,{\s*0.009544}) circle [radius=2pt];
+     \draw[cyan,fill]        (axis cs: -3.9,{\s*0.009544}) circle [radius=2pt];
+
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -3.9,0) {$s'_{-4}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -2.9,0) {$s'_{-3}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -1.9,0) {$s'_{-2}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs: -0.9,0) {$s'_{-1}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  0.0,0) {$s'_{0}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  0.9,0) {$s'_{1}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  1.9,0) {$s'_{2}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  2.9,0) {$s'_{3}$};
+     \node[anchor=north,yshift=-.5ex] at (axis cs:  3.9,0) {$s'_{4}$};
+     \node[anchor=north west,yshift=-.5ex] at (axis cs:  4.5,0) {$s'$};
+  \end{axis}
+  \end{tikzpicture}}
+\end{minipage}%
+%\hspace{-0.21\linewidth}%
+\begin{minipage}{0.4\linewidth}
+ \vspace{8ex}
+ $$
+  \boxed{
+  p_k=\Pr{S'=s'_k}=\int\limits_{u_k}^{u_{k+1}}f(s)\,\d s
+  }
+ $$
+\end{minipage}
+\end{frame}

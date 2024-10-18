@@ -1,0 +1,38 @@
+
+
+\begin{frame}{Optimal Scalar Quantizer}
+  \STRUC{Optimization Criterion}
+  \bit
+\item Minimization of Lagrangian cost for some given Lagrange multiplier $\lambda$
+  \vspace{-1ex}\begin{align*}
+    J
+    &\;=\;D+\lambda\cdot R\\[.5ex]
+    \onslide<2->
+    &\;=\;
+    \sum_{\forall k}\int_{u_k}^{u_{k+1}}d(s,s'_k)\,f(s)\;\d s
+    +
+    \lambda
+    \sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+    &&\quad\text{\small(any additive distortion measure)}
+    \onslide
+  \end{align*}
+  \item<3->[\iarrow] Each Lagrange multiplier $\lambda>0$ yields solution of original constrained problem for one $R_{\text{target}}$
+  \eit
+
+  \medskip
+  \uncover<4->{\STRUC{Optimization Criterion for MSE Distortion}
+  \bit
+\item Determine quantizer parameters ($s'_k$ and $u_k$) and codeword lengths $\ell_k$ such that\\[.25ex]
+  the Lagrangian cost $J=D+\lambda R$ for MSE distortion is minimized
+  \begin{align*}
+    J
+    &\;=\;
+    \sum_{\forall k}\int_{u_k}^{u_{k+1}}(s-s'_k)^2\,f(s)\;\d s
+    +
+    \lambda
+    \sum_{\forall k}\ell_k\int_{u_k}^{u_{k+1}}f(s)\;\d s
+  \end{align*}
+  \eit}\vspace {-5ex}
+\end{frame}
+
+

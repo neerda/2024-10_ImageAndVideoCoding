@@ -1,0 +1,55 @@
+
+
+\begin{frame}{Bit Allocation for Transform Coefficients}
+\vspace{-1ex}
+\bit
+\item<+-> Given: Orthogonal transform with $\ve{A}$ and $\ve{B}=\ve{A}\trans$
+\item<+->\smallskip Operational distortion-rate function of scalar quantizers (general form)
+  $$
+    D_k(R_k)=\sigma_k^2\cdot g_k(R_k)
+  $$
+\item<+->\smallskip Overall MSE distortion $D$ and bit rate $R$ (transform size $N$)
+  $$
+    D=\frac{1}{N}\sum_{k=0}^{N-1}D_k(R_k)
+    \qquad\text{and}\qquad
+    R=\frac{1}{N}\sum_{k=0}^{N-1}R_k
+  $$
+\eit\vspace{-2ex}
+\uncover<+->{\STRUC{Bit allocation}
+\bit
+\item<.-> Overall rate-distortion performance $D(R)$ depends on bit distribution\\among transform coefficents $R\mapsto\{R_0,R_1,\cdots\}$
+\item<+->[\iarrow]\smallskip Optimal bit allocation: Solution of optimization problem
+  \beqn
+  \min\; D(R_0,R_1,\cdots)\qquad\text{subject to}\qquad \frac{1}{N}\sum_kR_k=R
+  \eeqn
+\eit}\vspace{-2ex}
+\end{frame}
+
+
+
+\begin{frame}{Bit Allocation for Transform Coefficients}
+  \vspace{-1.0ex}
+\bit
+\item<+-> Constrained optimization problem
+\beqn
+\min_{R_0,R_1,\cdots}\;\;D(R) = \frac{1}{N}\sum_{k=0}^{N-1} D_k(R_k)\qquad
+\text{subject to}\qquad\frac{1}{N}\sum_{k=0}^{N-1}R_k = R 
+\eeqn
+with $D_k(R_k)$ being the operational distortion-rate functions the scalar component quantizers
+\item<+->[\iarrow]\medskip
+  Reformulate as unconstrained minimization problem using\\the technique of Lagrange multipliers (minimize $D+\lambda R$)
+\beqn
+  \min_{R_0,R_1,\cdots}\;\;
+  \left(\frac{1}{N}\sum_{k=0}^{N-1} D_k(R_k)\right)
+   + 
+  \lambda\cdot
+  \left(\frac{1}{N}\sum_{k=0}^{N-1} R_k\right)
+\eeqn
+\item<+->[\iarrow]\medskip
+  Set derivatives with respect to $R_k$ equal to 0
+  \beqn
+    \frac{\partial}{\partial R_k}\,\big(D+\lambda R\big)\stackrel{!}{=}0
+  \eeqn
+\eit\vspace{-5ex}
+\end{frame}
+

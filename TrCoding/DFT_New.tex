@@ -1,0 +1,107 @@
+
+
+
+
+\begin{frame}{The Discrete Fourier Transform}
+  \begin{center}
+  \vspace{-2ex}
+  \hfitbox{0.95\linewidth}{\begin{tikzpicture}
+    \pgfmathsetmacro{\pi}{3.1415}
+    \begin{scope}
+      \begin{scope}[xshift=-4.5cm]
+        \begin{axis}[
+            compat=newest,
+            width=9cm,height=3.5cm,
+            axis x line=center,
+            axis y line=center,
+            axis line style={-{Latex[length=2.0mm,width=1.0mm]},line width=0.4pt},
+            xmin=-4.0,xmax=4.4,ymin=-0.1,ymax=1.4,
+            xtick=\empty,ytick=\empty,
+            x label style={at={(axis cs:4.4,0.0)},anchor=north east},
+            y label style={at={(axis cs:0.0,1.4)},anchor=north west, inner sep=0pt},
+            xlabel={\footnotesize$t\!$},
+            ylabel={\footnotesize$\:\,s_{\text{per}}(t)$},
+            scale=1.0,
+            clip marker paths=true,
+            axis on top=false,
+            enlargelimits=false
+          ]
+          \addplot[line width=0.5pt,myblue!30] table {SigPer.dat};
+          \addplot[line width=0.7pt,ycomb,scatter,myblue,mark=triangle*,visible on=<1|handout:0>,
+            scatter/@pre marker code/.code={\scope[xscale=0.7]},
+            mark options={scale=1.0}] table[y expr=\thisrowno{1}-0.07] {SigPerSampled.dat};
+          \addplot[line width=0.7pt,ycomb,scatter,gray!70,mark=triangle*,visible on=<2->,
+            scatter/@pre marker code/.code={\scope[xscale=0.7]},
+            mark options={scale=1.0}] table[y expr=\thisrowno{1}-0.07] {SigPerSampled.dat};
+          \addplot[line width=0.7pt,ycomb,scatter,myblue,mark=triangle*,visible on=<2->,
+            scatter/@pre marker code/.code={\scope[xscale=0.7]},
+            mark options={scale=1.0}] table[y expr=\thisrowno{1}-0.07] {SigDiscrete.dat};
+          \draw[draw=none,fill=white] (axis cs:-4.0,-0.01) rectangle (axis cs:4.1,-0.2);
+          \node[text=myblue,anchor=north west,inner sep=0pt] at (axis cs:-4.0,1.4) {periodic sampled signal};
+        \end{axis}
+      \end{scope}
+      \begin{scope}[xshift=4.5cm]
+        \begin{axis}[
+            compat=newest,
+            width=9cm,height=3.5cm,
+            axis x line=center,
+            axis y line=center,
+            axis line style={-{Latex[length=2.0mm,width=1.0mm]},line width=0.4pt},
+            xmin=-4.5,xmax=4.8,ymin=-0.1,ymax=1.4,
+            xtick=\empty,ytick=\empty,
+            x label style={at={(axis cs:4.8,0.0)},anchor=north east},
+            y label style={at={(axis cs:0.0,1.4)},anchor=north west, inner sep=0pt},
+            xlabel={\footnotesize$f\!$},
+            ylabel={\footnotesize$\:\,\big|S_{\text{per}}(f)\big|$},
+            scale=1.0,
+            clip marker paths=true,
+            axis on top=false,
+            enlargelimits=false
+          ]
+          \addplot[line width=0.5pt,myred!30] table {filtFT.dat};
+          \addplot[line width=0.7pt,ycomb,scatter,myred,mark=triangle*,visible on=<1|handout:0>,
+            scatter/@pre marker code/.code={\scope[xscale=0.7]},
+            mark options={scale=1.0}] table[y expr=\thisrowno{1}-0.07] {SigPerFT.dat};
+          \addplot[line width=0.7pt,ycomb,scatter,gray!70,mark=triangle*,visible on=<2->,
+            scatter/@pre marker code/.code={\scope[xscale=0.7]},
+            mark options={scale=1.0}] table[y expr=\thisrowno{1}-0.07] {SigPerFT.dat};
+          \addplot[line width=0.7pt,ycomb,scatter,myred,mark=triangle*,visible on=<2->,
+            scatter/@pre marker code/.code={\scope[xscale=0.7]},
+            mark options={scale=1.0}] table[y expr=\thisrowno{1}-0.07] {TrCoding/DFT.dat};
+          \draw[draw=none,fill=white] (axis cs:-4.0,-0.01) rectangle (axis cs:4.1,-0.2);
+          \node[text=myred,anchor=north west,inner sep=0pt] at (axis cs:-4.5,1.4) {Fourier transform};
+        \end{axis}
+      \end{scope}
+      \begin{scope}[xshift=3.7cm,yshift=0.8cm]
+        \draw [line width=.5pt]             (-0.3,0) -- (0.3,0);
+        \draw [line width=.5pt,fill=white]  (-0.3,0) circle (2pt);
+        \draw [line width=.5pt,fill]        ( 0.3,0) circle (2pt);
+      \end{scope}
+    \end{scope}
+  \end{tikzpicture}}
+  \end{center}\vspace{-4.0ex}
+  \bit
+  \item<3->[\iarrow] $N$ samples are represented by $N$ complex Fourier coefficients
+  \eit
+
+  \onslide<4->
+  \STRUC{Discrete Fourier Transform}
+  \bit
+  \item Forward and inverse transform are given by
+%  \begin{align*}
+%    \text{forward transform:}
+%    &\quad\boxed{\;u[k]\;=\;\frac{1}{\sqrt{N}}\sum_{n=0}^{N-1}s[n]\cdot e^{-\im\frac{2\pi k n}{N}}\;}\\[.5ex]
+%    \text{inverse transform:}
+%    &\quad\boxed{\;s[n]\;=\;\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}u[k]\cdot e^{\im\frac{2\pi k n}{N}}\;}
+%  \end{align*}
+  \vspace{-.5ex}\begin{align*}
+    \boxed{\;u[k]\;=\;\frac{1}{\sqrt{N}}\sum_{n=0}^{N-1}s[n]\cdot e^{-\im\frac{2\pi k n}{N}}\;}
+    \qquad\text{and}\qquad
+    \boxed{\;s[n]\;=\;\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}u[k]\cdot e^{\im\frac{2\pi k n}{N}}\;}
+  \end{align*}
+  \item<5->[\iarrow] Unitary transform that produces complex transform coefficients
+  \item<6->[\iarrow] Basis vectors are sampled complex exponentials
+  \eit
+  \onslide
+\end{frame}
+

@@ -1,0 +1,50 @@
+
+
+\begin{frame}{Quantization: Functional Mapping}
+\begin{center}
+   \hfitbox{0.4\linewidth}{%
+    \begin{tikzpicture}
+    [
+      pstep/.style={
+        draw=black,
+        fill=myvvgray,
+        line width=0.5pt,
+        minimum width=1.5cm,
+        minimum height=0.8cm,
+        inner sep=0.2cm,
+        align=center
+      },
+      nbox/.style={pstep,
+        rectangle
+      },
+      narrow/.style={
+        -{Latex[length=2.5mm,width=1.3mm]},
+        line width=0.5pt
+        },
+    ]
+    \node[] (quant) [nbox,align=center]    at (0,0) {quantizer $Q$};
+    \draw[] [narrow] (quant) -- (2.5,0)
+            node (rec) [pos=0.5,anchor=base,yshift=1.5ex,align=center] {$s'$};
+    \draw[] [narrow] (-2.5,0) -- (quant)
+            node (org) [pos=0.5,anchor=base,yshift=1.5ex,align=center] {$s$};
+    \end{tikzpicture}
+   }
+\end{center}
+\medskip
+\bit\TabPositions{5em}
+\item
+  Quantization: Functional mapping of an input sample to an output sample
+  $$
+    s'=Q(\,s\,)
+  $$
+\item\medskip Input:
+      \tab\struc{\icircle}\;\;Discrete or continuous\\[1ex]
+\item\bigskip Output:
+      \tab\struc{\icircle}\;\;Set of obtainable output points is countable\\[1ex]
+      \tab\struc{\icircle}\;\;Less obtainable output points than input points
+\item[\iarrow]\bigskip 
+  \loud{Non-reversible loss in signal fidelity}
+\item \bigskip Vector quantization: Signals of arbitrary dimension $N$. 
+\item Next: Scalar quantization. Signals of dimension $N=1$.  
+\eit
+\end{frame}

@@ -1,0 +1,413 @@
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\dimension}{dim}
+\DeclareMathOperator{\gradient}{grad}
+\begin{document}
+
+\section{Transform Coding III} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+\section{Introduction}
+\begin{frame}{Transform coding}
+\loud{Definition of transform coding for an $N$-dimensional source $X$}
+\begin{enumerate}
+\item \loud{Forward transform:} Compute $y=Ax$. The components $y_1,\dots,y_N$ of $y$ are called transform coeffients. 
+\item \loud{Scalar quantization:} Code each $y_i$ with scalar quantizer $Q_i$ to obtain the reconstructed transform coefficients $y_i'$, get  reconstructed transformed vector $y'$. 
+\item \loud{Inverse transform:} Compute the reconstructed vector $x'$ as $x'=By'$.   
+\end{enumerate}
+\loud{Idea of transform coding: }
+\bit
+\item Exploit dependencies beweteen the components $X_1,\dots,X_N$ of $X$. 
+\item Suitable transforms $A$ typically concentrate the energe of $Y:=AX$ in some components. 
+\item Karhuen Loeve transform is natural candidate due to its optitmal energy compaction property. 
+\eit
+\end{frame}
+\begin{frame}{The Karhuenen Loeve transform}
+Assume that $X$ has zero mean. 
+\bit
+\item Autocorrelation matrix of $X$: 
+\[
+R_X=\mathbb{E}(XX^t). 
+\]
+\item Matrix $R_X$ symmetric, positive semidefinite $\iarrow$ 
+\bit
+\item Diagonalizable.
+\item Non-negative real eigenvalues , ordered as $\lambda_1\geq \lambda_2\geq\cdots\geq \lambda_N\geq 0$. 
+\item There exists an orthonormal basis of eigenvectors of $R_X$.
+\eit
+\item Karhuenen Loeve Transform $T$ of $X$: Orthogonal matrix $T$ such 
+that 
+\[
+TR_XT^t = diag(\lambda_1,\dots,\lambda_N).
+\]
+\item $T$ unique upt to scaling of rows by $\pm 1$ if eigenvalues distinct. 
+\eit
+\end{frame}
+
+\begin{frame}{Optimality of the KLT}
+\loud{Last lecture: General optimality result for KLT by Goyal and Vetterli}
+\bit
+\item  Assume there exists non-increasing function $f$ such that for \textit{any} transform $T$, the $i$-th transform coefficient $Y_i=(TX)_i$ can be coded with distortion-rate function
+\begin{align}\label{DRFunctionGaussian}
+D_i(R_i)=\sigma_i^2\cdot f(R_i), \quad \text{$\sigma_i^2$ variance of $Y_i$}.
+\end{align}
+\item [\iarrow] Then: KLT is the optimal orthogonal transform for $X$.
+\item This means: For any rates $R_1,\dots,R_N$ per component, distortion is minimized among all orthogonal transform by a KLT.
+\eit
+\loud{\iarrow$ $ Optimality of KLT for Gaussian sources:} 
+\bit
+\item If $X$ is an $\mathbb{R}^N$-valued Gaussian source, for any transform $T$, each component $Y_i$ of $TX$ is an $\mathbb{R}$-valued Gaussian source.
+\item Thus, can always assume that \eqref{DRFunctionGaussian} holds for a Gausian source with $f$ distortion rate-function for Gaussian source of variance $1$. 
+\eit
+\end{frame}
+
+\section{Optimal bit allocation and transform coding gain}
+\begin{frame}{Optimal bit-allocation for transform coefficients}
+\bit
+\item Given a transform coding scheme for the source $X$ with forward transform $T$.
+\item Let $Y=TX$, with components $Y_1,\dots,Y_N$
+\item \loud{Bit allocation problem:} Assume that total rate budget $R$ is given. Assign rates $R_i$ to component $Y_i$ such that 
+\begin{align*}
+R=\frac{1}{N}\sum_{i=1}^N R_i
+\end{align*}
+and such that overall distortion $D$ is minimized.
+\item[\iarrow] \loud{Last lecture: Equal slope condition:} At minimal distortion, all derivatives
+\begin{align*}
+\frac{\partial}{\partial R_i}D_i(R_i) 
+\end{align*}
+of component distortion-rate functions are equal. Can be proved with Lagrangian multipliers.
+\item Heuristic explanation: If not equal slope, `infiniteismal rate-increase' by $\Delta$ in one component and decrease by $\Delta$ in other component can decrease  overall distortion 
+\item Can be made rigorous using linear approximation of $D_i(R_i)$ by derivative.  
+\eit
+\end{frame}
+
+\begin{frame}{Optimal bit-allocation for transform coefficients at high rates}
+\loud{Last lecture:} 
+\bit
+\item High-rate approximation of distortion-rate functions for component quantizers:
+\begin{align*}
+D_k(R_k)=\epsilon_k^2\sigma_k^2 2^{-2R_k}.
+\end{align*}
+\item Factor $\epsilon_k^2$ depends on transform-coefficient distribution. 
+\item At high rates: All components operate at the same distortion,
+\begin{align*}
+D_k(R_k) =D.
+\end{align*}
+\item Define geometric means 
+\begin{align*}
+\tilde{\epsilon}^2=\left(\prod_{i=1}^N\epsilon_i^2\right)^{\frac{1}{N}}, \quad \tilde{\sigma}^2=\left(\prod_{i=1}^N\sigma_i^2\right)^{\frac{1}{N}}.
+\end{align*}
+\item[\iarrow]\loud{Distortion-rate function for transform coding at high rates.}
+\begin{align}\label{DRHighRates}
+D(R) = \tilde{\epsilon}^2\tilde{\sigma}^22^{-2R}.
+\end{align}
+\eit
+\end{frame}
+
+
+
+\begin{frame}{Transform coding gain}
+\loud{Transfom coding gain $G_{TC}$ for transform $T$: }
+\bit
+\item[] Quotient between arithmetic and geometric means of transform coefficient variances:
+\begin{align}\label{Gain}
+G_{TC}=\frac{\frac{1}{N}\left(\sum_{i=1}^{N}\sigma_i^2\right)}{\left(\prod_{i=1}^N\sigma_i^2\right)^{\frac{1}{N}}})=\frac{\frac{1}{N}Tr(R_{TX})}{\left(\prod_{i=1}^N\sigma_i^2\right)^{\frac{1}{N}}}, \quad \text{$Tr(R_{TX})$ the trace of $R_{TX}$}.
+\end{align}
+\eit
+\bit
+\item Trace is invariant under conjugation: 
+\begin{align*}
+Tr(A)=Tr(SAS^{-1})
+\end{align*}
+ for all matrices $A$ and all invertible matrices $S$. 
+\item[\iarrow] $Tr(R_{TX})=Tr(R_X)$ for all orthogonal transforms $T$. 
+\item [\iarrow] Numerator in \eqref{Gain} independent of orthogonal transform $T$. 
+\eit
+\end{frame}
+
+
+\begin{frame}{KLT maximes transform coding gain}
+\bit
+\item \loud{Hadamard inequality: } 
+ If $A$ is any symmetric positive-semidefinite $N\times N$-matrix with diagonal entries $a_{i,i}$, then 
+\[
+\det(A)\leq \prod_{i=1}^N|a_{i,i}|. 
+\]
+\item One has $\det (R_{TX})=\det(R_X)$ for all orthogonal transforms $T$. 
+
+\item By Hadamrad inequality, for any orthogonal transform $T$ with variances $\sigma_1^2,\dots,\sigma_N^2$, one has 
+\begin{align}\label{Had}
+\left(\prod_{i=1}^N\sigma_i^2\right)^{\frac{1}{N}}\geq (\det R_{TX})^{1/N}=(\det R_X)^{1/N}.
+\end{align}
+\item Equality in \eqref{Had} if $R_{TX}$ is diagonal, i.e. if $T$ is a KLT. 
+\item[\iarrow] \loud{KLT maximes the transform coding gain among orthogonal transforms.}
+\eit  
+\end{frame}
+
+\begin{frame}{Different proof of optimality of KLT for Gaussian sources at high rates}
+\bit
+\item Assume $X$ is Gaussian.
+\item By \eqref{DRHighRates}, one has 
+\begin{align*}
+D(R)=\tilde{\epsilon}^2\tilde{\sigma}^22^{-2R}.
+\end{align*}
+\item Since for any transform $T$, each component $Y_i=(TX)_i$ is Gaussian, for any transform $T$ one has 
+\begin{align*}
+D_i(R_i)=\sigma_i^2\frac{\pi e}{6}2^{-2R}.
+\end{align*}
+\item[\iarrow] For Gaussian sources, factor $\tilde{\epsilon}$ is independent of the transform.
+\item[\iarrow] Assuming high-rate approximation, for Gaussian sources, transform is optimal if and only if it maximes the transform coding gain.
+\item[\iarrow] \loud{For Gaussian sources, KLT is optimal orthogonal transform} (simple high rate proof here).  
+\eit
+\end{frame}
+ 
+ \section{Signal independent transforms}
+\begin{frame}{Signal independent transforms}
+\loud{Goal:}
+\bit
+\item KLT depends on source statistics $X$. 
+\item Exact statistics often not known exactly. 
+\item Explicit computation impossible. 
+\item [\iarrow] Try to replace KLT by \loud{signal-independent transforms}. Get also more stabilit.
+%\item This also gives more stability, independence from small variance in source-statistics. 
+\eit
+\loud{Approach: }
+\bit 
+\item Assume some parametric model for source statistics $X$.
+\item Compute approximation of transform-coding with KLT. 
+\eit
+\loud{Discrete Fourier Transform DFT for stationary time series}
+\bit
+\item  Given stationary time-series. Treat finite-dimensional restriction $\mathbf{X}_N$ and consider limit $N\to\infty$.
+\item[\iarrow] Performance of KLT is approximated by performance of DFT.  
+\eit
+\loud{Discrete Cosine Transform for AR(1) processes}
+\bit
+\item Given AR(1) process with correlation $\rho$.
+\item KLT is approximated by DCT as $\rho\to 1$.
+\eit
+\end{frame}
+
+\section{The discrete Fourier Transform}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{DFT as approximation for KLT for large dimensions}
+\loud{Signal model: Stationary time-series}
+\bit
+\item Assume that an infinite set $X_i$, $i\in\mathbb{Z}$ of zero-mean random-variables is given. 
+\item Assume that for some function $t$ one has 
+\begin{align}\label{EqE}
+\mathbb{E}(X_iX_j)=t(|i-j|).
+\end{align}
+\item Here $t:\mathbb{N}\to\mathbb{R}$ arbitrary function.
+\item Assume that for some $m\in\mathbb{N}$ one has $t(k)=0$ for all $k\geq m$.
+\item For each $N\in\mathbb{N}$, consider random-vector
+\[
+\mathbf{X}_N=(X_0,\dots,X_{N-1}). 
+\]
+\eit
+\loud{Goal: Approximate transform-coding with KLT for $X_N$ as $N\to\infty$.}
+\bit
+\item By \eqref{EqE}, for each $N$, autocorrelation matrix $R_{\mathbf{X}_N}$ is a \loud{Toeplitz Matrix}. 
+\item Approximate $R_{\mathbf{X}_N}$ by ciruclant matrices as $N\to\infty$. 
+\item Circulant matrices are diagonalized 
+by \loud{Discrete Fourier Transform}.
+\eit
+\end{frame}
+
+
+\begin{frame}{Circulant matrices}
+\bit
+\item An $N\times N$  matrix $C$ is called \loud{circulant} if for each $1\leq i<N$, the $(i+1)$-st row of $T$ is a cyclic permutation of the $i$-th row of $C$ with an offset of one.
+\item[\iarrow] Given first row $c=(c_1,\dots,c_N)$ of $C$, matrix $C$ is given as 
+\begin{align*}
+C=\begin{pmatrix}c_1 & c_2&c_3&\cdots&c_{N-1} & c_N \\ c_N & c_1&c_2&\cdots&c_{N-2} & c_{N-1} \\ 
+&&&\cdots&& \\c_2 &c_3&c_4&\cdots&c_N&c_1\end{pmatrix}.
+\end{align*} 
+\item Let $P=P(N)$  be the $N$-th order cyclic permutation matrix, i.e.  
+\begin{align*}
+P = \begin{pmatrix}0&1&0&\cdots&0 \\ 0&0&1&\cdots&0 \\ &&&\cdots &\\  1 & 0&0&\cdots &0\end{pmatrix} .
+\end{align*}
+\item A circulant $C$ can be written as 
+\begin{align}\label{EqCirc}
+C=c_2\cdot P+c_3\cdot P^2+\cdots+c_N\cdot P^{N-1}+c_1\cdot P^N.
+\end{align}
+\eit 
+\end{frame}
+
+\begin{frame}{Asymptotic eigendecomposition of Toeplitz matrices}
+\loud{Eigendecomposition of circulant matrices:}
+\bit
+\item If $C$ circluant, by \eqref{EqCirc}, eigenvectors of $C$ are the same as eigenvectors of $P$. 
+\item Eigenvalues of $P$ are the $N$-th roots of unity $\zeta_{k,N}$, where
+\begin{align*}
+\zeta_{k,N}=\exp\left(\frac{2\pi ik}{N}\right), \quad 0\leq k\leq N-1,\quad i:=\sqrt{-1}.
+\end{align*}
+\item If for $0\leq k\leq N-1$, one puts $v_k=(\zeta_k^0,\zeta_k,\dots,\zeta_k^{N-1})^t$. Then it is easy to see that
+\begin{align*}
+Pv_k=\zeta_k\cdot v_k.
+\end{align*}
+\item[\iarrow] For \textit{any} circulant $C$, eigenvectors are the basis vectors of the Discrete Fourier transform. 
+\eit
+For $N\to\infty$, matrices $R_{\mathbb{X}_N}$ are \loud{asymptotically equivaltent} to circulant matrices $C_N$. 
+Proof: Gray, \textit{On the asymptotic eigenvalue distribution of Toeplitz matrices}, 1972.
+
+\loud{\iarrow $ $ As $N\to\infty$, performance of transform coding for $\mathbf{X}_N$ with KLT is reached by transform coding with Discrete Fourier Transform.} 
+\end{frame}
+
+\input{TrCoding/DFT_New.tex}
+
+
+
+\section{The discrete Cosine Transform}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{AR(1) processes}
+\bit
+\item An AR(1) process is an $N$-dimensional random-variable $X=(X_1,\dots,X_N)$ such that the correlations satisfy
+\begin{align*}
+\mathbb{E}(X_iX_j)=\rho^{|i-j|}.
+\end{align*}
+\item Autocorrelation matrix $R_X$ is given as 
+\begin{align*}
+R_X=\begin{pmatrix}1 & \rho &\rho^2 && \cdots &\rho^{N-1} \\ \rho & 1 & \rho &\rho^2 &\cdots &\rho^{N-2}
+\\
+&&\cdots&&&\\
+\rho^{N-1} &\rho^{N-2}&\cdots&\cdots&\cdots &1
+\end{pmatrix}
+\end{align*}
+\item Signal model of AR(1)-process with $\rho$ close to 1 is important signal modell for \loud{image processing}. 2-d extension needed.
+\item Basic signal model behind JPEG-algorithm. 
+\item Further details: \loud{Lecture in summer term}. 
+\eit
+\end{frame}
+
+\begin{frame}{KLT-Matrix of an AR(1)-process}
+\small
+\begin{proposition}[Eigendecomposition of an AR(1)-process]
+Let $X$ be an AR(1) process with correlation $\rho$. 
+\begin{enumerate}
+\item The $i$-th eigenvalue $\lambda_i$ of $R_X$ is given by
+\begin{align}\label{EqLambda}
+\lambda_i = \frac{(1-\rho^2)}{1-2\rho\cos(\omega_i)+\rho^2}.
+\end{align}
+\item The eigenvector $\phi_i=(\phi_{i,1},\dots,\phi_{i,N})^t$ of $\lambda_i$ satisfies
+\begin{align}\label{EqEVKLT}
+\phi_{i,j}=\sqrt{\frac{2}{\lambda_i+N}}\sin\left(\omega_i\left(j+1-\frac{N+1}{2}\right)+(i+1)\frac{\pi}{2}\right),
+\end{align}
+where the $\{\omega_i,i=1,\dots,N\}$ are the $N$ real roots of the equation
+\begin{align}\label{Eqomega}
+\tan(N\omega)=\frac{(1-\rho^2)\sin(\omega)}{\cos(\omega)-2\rho+\rho^2\cos(\omega)}, \quad \omega \in [0,\pi).
+\end{align}
+\end{enumerate}
+\end{proposition}
+Proof: Ray, Driver, \textit{Further decomposition of the KL series representation of a stationary random process}, 1970
+\end{frame}
+
+\begin{frame}{KLT-Matrix of an AR(1)-process as $\rho\to 1$}
+
+\bit
+\item For $\rho\to 1$, equation \eqref{Eqomega} implies $\tan(N\omega)=0$.
+\item For $i\in\{1,\dots,N\}$ let 
+\begin{align*}
+\omega_i = \frac{\pi i}{N}.
+\end{align*}
+\item If $i$ is even, the right hand side of \eqref{Eqomega} is zero, i.e. $\omega_i$ solves \eqref{Eqomega}. 
+\item If $i$ is odd, right hand side of \eqref{Eqomega} is zero by L'Hospital Rule, thus $\omega_i$ solves \eqref{Eqomega} in that case too. 
+
+\item Put 
+\begin{align*}
+c_i=\begin{cases} &\sqrt{\frac{1}{N}}, \text{if $i=0$, } \\ &\sqrt{\frac{2}{N}}, \text{else.} \end{cases}
+\end{align*}
+\eit
+\end{frame}
+
+\begin{frame}{... KLT-Matrix of an AR(1)-process as $\rho\to 1$}
+\bit
+\item For $\rho\to 1$, eigenvalues tend to $\lambda_1=N$ and $\lambda_i=0$ for $i>0$. 
+\item
+By \eqref{EqEVKLT}, one obtains
+\begin{align*}
+\phi_{i,j}=&c_i\sin\left( \frac{\pi i}{N}\left(j+1-\frac{N+1}{2}\right)+(i+1)\frac{\pi}{2}\right)\\
+=&c_i\sin\left(\frac{\pi i}{N}(j+1/2)-\frac{\pi i}{2}+(i+1)\frac{\pi}{2}\right)\\
+=&c_i\sin\left(\frac{\pi i}{N}(j+1/2)+\frac{\pi}{2}\right)\\
+=&c_i\cos\left(\frac{\pi i}{N}(j+1/2)\right).
+\end{align*}
+\item[\iarrow] \loud{As $\rho\to 1$, KLT-transform is approximated by the Discrete Cosine Transform.} 
+\eit
+\end{frame}
+
+
+
+%\input{DFTBasisFunctions_New.tex}
+%\input{DFTBasisFunctionsAnalysis_New.tex}
+%\input{DFTDisadvantage_New.tex}
+%\input{DCTMotivation_New.tex}
+%%\input{DTT_New.tex}
+\input{TrCoding/DCT_New}
+\input{TrCoding/DCTBasisFunctions}
+\input{TrCoding/DCTvsKLTbasis_New}
+\input{TrCoding/DCTvsKLTEnergyCompaction_New}
+
+
+\begin{frame} {2-dimensional DCT-II basis functions}
+\bit
+\item Can extend DCT-II to a 2-d transform by \loud{separable extensions}.  
+\eit
+\begin{figure}
+\includegraphics[width=.35\textwidth]{TrCoding/DCT8x8Basis.png}
+%\captionsetup{labelformat=empty}
+%\caption{Example of an original handwritten digit (left), and its representation by using only a subset $v_1,\dots,v_M$ of the principal components and the mean of the data.
+%It can be seen that $M\ll 748$ principal components suffice to represent the given example on the left accurately.
+%}
+\end{figure}
+\bit
+\item The 64 basis functions of the Discrete Cosine Transform (DCT)-II transform on an $8x8$-block
+\eit
+\end{frame}
+
+\begin{frame}{Energy compaction of the DCT}
+\begin{figure}
+\includegraphics[width=0.70\textwidth]{TrCoding/HHI_gray_ausschnitt.png}
+\captionsetup{labelformat=empty}
+\caption{Original image.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Energy compaction of the DCT}
+\begin{figure}
+\includegraphics[width=0.70\textwidth]{TrCoding/HHI_gray_trafozero_ausschnitt.png}
+\captionsetup{labelformat=empty}
+\caption{Image represented using only $\sim 10\%$ percent of the  64 basis functions of the $8x8$-DCT-II on each block on average. Image is divided into $8x8$-blocks to apply the $8x8$-DCT-II. }
+\end{figure}
+\end{frame}
+
+\end{document}

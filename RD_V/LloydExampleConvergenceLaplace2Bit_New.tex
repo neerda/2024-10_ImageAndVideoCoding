@@ -1,0 +1,359 @@
+
+
+\begin{frame}{Example: Convergence of Lloyd Algorithm for Laplacian Source}
+\begin{minipage}{0.47\linewidth}
+  \hfitbox{\linewidth}{\begin{tikzpicture}
+    \begin{axis}[
+        %ybar stacked,
+        xmin=-1,xmax=13,ymin=0,ymax=10,
+        compat=newest,
+        axis on top=true,
+        width=10cm,height=5cm,
+        bar width=0.5cm,
+        %axis lines=none,
+        axis y line=none,
+        axis line style=thick,
+        xtick style={draw=none},
+        %axis x line style={line width=1pt},
+        xtick={0,1,2,3,4,5,6,7,8,9,10,11,12},
+        %after end axis/.code={
+        %  \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+        %  (axis cs: -1,0) -- (axis cs: 13.5,0);
+        %  },
+      ]
+      \addplot[ybar stacked,draw=none,fill=myviolet!30] coordinates {
+        ( 0, 2.000)
+        ( 1, 2.815)
+        ( 2, 3.252)
+        ( 3, 3.500)
+        ( 4, 3.645)
+        ( 5, 3.732)
+        ( 6, 3.786)
+        ( 7, 3.819)
+        ( 8, 3.839)
+        ( 9, 3.852)
+        (10, 3.860)
+        (11, 3.865)
+        (12, 3.868)
+      };
+      \addplot[ybar stacked,draw=none,fill=green!30] coordinates {
+        ( 0, 3.000)
+        ( 1, 2.185)
+        ( 2, 1.748)
+        ( 3, 1.500)
+        ( 4, 1.355)
+        ( 5, 1.268)
+        ( 6, 1.214)
+        ( 7, 1.181)
+        ( 8, 1.161)
+        ( 9, 1.148)
+        (10, 1.140)
+        (11, 1.135)
+        (12, 1.132)
+      };
+      \addplot[ybar stacked,draw=none,fill=red!30] coordinates {
+        ( 0, 3.000)
+        ( 1, 2.185)
+        ( 2, 1.748)
+        ( 3, 1.500)
+        ( 4, 1.355)
+        ( 5, 1.268)
+        ( 6, 1.214)
+        ( 7, 1.181)
+        ( 8, 1.161)
+        ( 9, 1.148)
+        (10, 1.140)
+        (11, 1.135)
+        (12, 1.132)
+      };
+      \addplot[ybar stacked,draw=none,fill=blue!30] coordinates {
+        ( 0,2.000)
+        ( 1,2.815)
+        ( 2,3.252)
+        ( 3,3.500)
+        ( 4,3.645)
+        ( 5,3.732)
+        ( 6,3.786)
+        ( 7,3.819)
+        ( 8,3.839)
+        ( 9,3.852)
+        (10,3.860)
+        (11,3.865)
+        (12,3.868)
+      };
+      \addplot[only marks,mark size=1.5pt,myviolet!50!black] coordinates {
+        ( 0,-4.500+5)
+        ( 1,-3.707+5)
+        ( 2,-2.892+5)
+        ( 3,-2.455+5)
+        ( 4,-2.207+5)
+        ( 5,-2.062+5)
+        ( 6,-1.975+5)
+        ( 7,-1.921+5)
+        ( 8,-1.888+5)
+        ( 9,-1.868+5)
+        (10,-1.855+5)
+        (11,-1.847+5)
+        (12,-1.842+5)
+      };
+      \addplot[only marks,mark size=1.5pt,mygreen!50!black] coordinates {
+        ( 0,-1.500+5)
+        ( 1,-0.663+5)
+        ( 2,-0.603+5)
+        ( 3,-0.546+5)
+        ( 4,-0.503+5)
+        ( 5,-0.473+5)
+        ( 6,-0.454+5)
+        ( 7,-0.441+5)
+        ( 8,-0.433+5)
+        ( 9,-0.428+5)
+        (10,-0.425+5)
+        (11,-0.423+5)
+        (12,-0.422+5)
+      };
+      \addplot[only marks,mark size=1.5pt,myred!50!black] coordinates {
+        ( 0,1.500+5)
+        ( 1,0.663+5)
+        ( 2,0.603+5)
+        ( 3,0.546+5)
+        ( 4,0.503+5)
+        ( 5,0.473+5)
+        ( 6,0.454+5)
+        ( 7,0.441+5)
+        ( 8,0.433+5)
+        ( 9,0.428+5)
+        (10,0.425+5)
+        (11,0.423+5)
+        (12,0.422+5)
+      };
+      \addplot[only marks,mark size=1.5pt,myblue!50!black] coordinates {
+        ( 0,4.500+5)
+        ( 1,3.707+5)
+        ( 2,2.892+5)
+        ( 3,2.455+5)
+        ( 4,2.207+5)
+        ( 5,2.062+5)
+        ( 6,1.975+5)
+        ( 7,1.921+5)
+        ( 8,1.888+5)
+        ( 9,1.868+5)
+        (10,1.855+5)
+        (11,1.847+5)
+        (12,1.842+5)
+      };
+    \end{axis}
+  \end{tikzpicture}}\\[3ex]
+  \hfitbox{\linewidth}{\begin{tikzpicture}
+    \begin{axis}[
+        xmin=-1,xmax=13,ymin=0,ymax=10,
+        compat=newest,
+        width=10cm,height=5cm,
+        axis lines=none,
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=3.5mm,width=2.0mm]},thick}] 
+          (axis cs: -1,0) -- (axis cs: 13,0);
+          \draw[->,style={-{Latex[length=3.5mm,width=2.0mm]},thick}] 
+          (axis cs: -0.5,0) -- (axis cs: -0.5,10);
+          \node[anchor=north west,xshift=.5ex] at (axis cs:-0.5,10) {SNR};
+          },
+      ]
+      \draw[dashed,black] (axis cs:-0.5,7.541) -- (axis cs:12,7.541);
+      \node[anchor=north west] at (axis cs:-0.5,7.541) {7.54\,dB};
+      \addplot+[mark size=1.5pt] coordinates {
+        ( 0,-0.284)
+        ( 1, 5.142)
+        ( 2, 6.246)
+        ( 3, 6.936)
+        ( 4, 7.282)
+        ( 5, 7.435)
+        ( 6, 7.499)
+        ( 7, 7.524)
+        ( 8, 7.535)
+        ( 9, 7.539)
+        (10, 7.540)
+        (11, 7.541)
+        (12, 7.541)
+      };
+    \end{axis}
+  \end{tikzpicture}}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.47\linewidth}
+  \hfitbox{\linewidth}{\begin{tikzpicture}
+    \begin{axis}[
+        %ybar stacked,
+        xmin=-1,xmax=13,ymin=0,ymax=10,
+        compat=newest,
+        axis on top=true,
+        width=10cm,height=5cm,
+        bar width=0.5cm,
+        %axis lines=none,
+        axis y line=none,
+        axis line style=thick,
+        xtick style={draw=none},
+        %axis x line style={line width=1pt},
+        xtick={0,1,2,3,4,5,6,7,8,9,10,11,12},
+        %after end axis/.code={
+        %  \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+        %  (axis cs: -1,0) -- (axis cs: 13.5,0);
+        %  },
+      ]
+      \addplot[ybar stacked,draw=none,fill=myviolet!30] coordinates {
+        ( 0, 4.925)
+        ( 1, 4.591)
+        ( 2, 4.349)
+        ( 3, 4.183)
+        ( 4, 4.072)
+        ( 5, 4.000)
+        ( 6, 3.953)
+        ( 7, 3.924)
+        ( 8, 3.905)
+        ( 9, 3.893)
+        (10, 3.886)
+        (11, 3.881)
+        (12, 3.878)
+      };
+      \addplot[ybar stacked,draw=none,fill=green!30] coordinates {
+        ( 0, 0.075)
+        ( 1, 0.409)
+        ( 2, 0.651)
+        ( 3, 0.817)
+        ( 4, 0.928)
+        ( 5, 1.000)
+        ( 6, 1.047)
+        ( 7, 1.076)
+        ( 8, 1.095)
+        ( 9, 1.107)
+        (10, 1.114)
+        (11, 1.119)
+        (12, 1.122)
+      };
+      \addplot[ybar stacked,draw=none,fill=red!30] coordinates {
+        ( 0, 0.075)
+        ( 1, 0.409)
+        ( 2, 0.651)
+        ( 3, 0.817)
+        ( 4, 0.928)
+        ( 5, 1.000)
+        ( 6, 1.047)
+        ( 7, 1.076)
+        ( 8, 1.095)
+        ( 9, 1.107)
+        (10, 1.114)
+        (11, 1.119)
+        (12, 1.122)
+      };
+      \addplot[ybar stacked,draw=none,fill=blue!30] coordinates {
+        ( 0, 4.925)
+        ( 1, 4.591)
+        ( 2, 4.349)
+        ( 3, 4.183)
+        ( 4, 4.072)
+        ( 5, 4.000)
+        ( 6, 3.953)
+        ( 7, 3.924)
+        ( 8, 3.905)
+        ( 9, 3.893)
+        (10, 3.886)
+        (11, 3.881)
+        (12, 3.878)
+      };
+      \addplot[only marks,mark size=1.5pt,myviolet!50!black] coordinates {
+        ( 0,-0.113+5)
+        ( 1,-0.782+5)
+        ( 2,-1.117+5)
+        ( 3,-1.358+5)
+        ( 4,-1.524+5)
+        ( 5,-1.635+5)
+        ( 6,-1.707+5)
+        ( 7,-1.754+5)
+        ( 8,-1.783+5)
+        ( 9,-1.802+5)
+        (10,-1.814+5)
+        (11,-1.821+5)
+        (12,-1.826+5)
+      };
+      \addplot[only marks,mark size=1.5pt,mygreen!50!black] coordinates {
+        ( 0,-0.038+5)
+        ( 1,-0.037+5)
+        ( 2,-0.185+5)
+        ( 3,-0.276+5)
+        ( 4,-0.332+5)
+        ( 5,-0.365+5)
+        ( 6,-0.386+5)
+        ( 7,-0.399+5)
+        ( 8,-0.407+5)
+        ( 9,-0.412+5)
+        (10,-0.415+5)
+        (11,-0.417+5)
+        (12,-0.418+5)
+      };
+      \addplot[only marks,mark size=1.5pt,myred!50!black] coordinates {
+        ( 0,0.038+5)
+        ( 1,0.037+5)
+        ( 2,0.185+5)
+        ( 3,0.276+5)
+        ( 4,0.332+5)
+        ( 5,0.365+5)
+        ( 6,0.386+5)
+        ( 7,0.399+5)
+        ( 8,0.407+5)
+        ( 9,0.412+5)
+        (10,0.415+5)
+        (11,0.417+5)
+        (12,0.418+5)
+      };
+      \addplot[only marks,mark size=1.5pt,myblue!50!black] coordinates {
+        ( 0,0.113+5)
+        ( 1,0.782+5)
+        ( 2,1.117+5)
+        ( 3,1.358+5)
+        ( 4,1.524+5)
+        ( 5,1.635+5)
+        ( 6,1.707+5)
+        ( 7,1.754+5)
+        ( 8,1.783+5)
+        ( 9,1.802+5)
+        (10,1.814+5)
+        (11,1.821+5)
+        (12,1.826+5)
+      };
+    \end{axis}
+  \end{tikzpicture}}\\[3ex]
+  \hfitbox{\linewidth}{\begin{tikzpicture}
+    \begin{axis}[
+        xmin=-1,xmax=13,ymin=0,ymax=10,
+        compat=newest,
+        width=10cm,height=5cm,
+        axis lines=none,
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=3.5mm,width=2.0mm]},thick}] 
+          (axis cs: -1,0) -- (axis cs: 13,0);
+          \draw[->,style={-{Latex[length=3.5mm,width=2.0mm]},thick}] 
+          (axis cs: -0.5,0) -- (axis cs: -0.5,10);
+          \node[anchor=north west,xshift=.5ex] at (axis cs:-0.5,10) {SNR};
+          },
+      ]
+      \draw[dashed,black] (axis cs:-0.5,7.541) -- (axis cs:12,7.541);
+      \node[anchor=north west] at (axis cs:-0.5,7.541) {7.54\,dB};
+      \addplot+[mark size=1.5pt] coordinates {
+        ( 0, 0.691)
+        ( 1, 4.455)
+        ( 2, 6.061)
+        ( 3, 6.906)
+        ( 4, 7.284)
+        ( 5, 7.440)
+        ( 6, 7.501)
+        ( 7, 7.526)
+        ( 8, 7.535)
+        ( 9, 7.539)
+        (10, 7.541)
+        (11, 7.541)
+        (12, 7.541)
+      };
+    \end{axis}
+  \end{tikzpicture}}
+\end{minipage}%
+\end{frame}
+
+

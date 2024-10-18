@@ -1,0 +1,128 @@
+
+
+\begin{frame}{Example: EC Lloyd Algorithm for Gaussian Source}
+  \begin{minipage}{0.5\linewidth}
+    Gaussian Source
+    \bit
+  \item Zero mean $\mu=0$
+    \item Unit variance $\sigma^2=1$
+      \eit
+
+      \bigskip\bigskip
+\STRUC{EC Lloyd Quantizer for 2 bits per sample}
+\bit\TabPositions{10em}
+\item Decision thresholds:\tab\hspace{-2.0ex}%
+  {\begin{tabular}[t]{r@{\;\;}c@{\;\;}l}
+  $u_{0/1}$  &$=$& $\pm0.538$\\
+  $u_{-1/2}$ &$=$& $\pm1.623$\\
+  $u_{-2/3}$ &$=$& $\pm2.743$\\
+  $u_{-3/4}$ &$=$& $\pm3.926$
+  \end{tabular}}
+\item\smallskip Reconstruction levels:\tab
+  {\begin{tabular}[t]{r@{\;\;}c@{\;\;}l}
+  $s'_0$     &$=$& $\phantom{\pm}0.000$\\[.2ex]
+  $s'_{\pm1}$ &$=$& $\pm0.980$\\
+  $s'_{\pm2}$ &$=$& $\pm1.981$\\
+  $s'_{\pm3}$ &$=$& $\pm3.029$\\
+  $s'_{\pm4}$ &$=$& $\pm4.148$\\
+  \end{tabular}}
+  \eit
+  \end{minipage}%
+  \begin{minipage}{0.5\linewidth}
+    \begin{center}
+    \hfitbox{\linewidth}{%
+  \begin{tikzpicture}
+     \begin{axis}[
+        compat=newest,
+        width=9cm,height=7cm,
+        axis lines=none,
+        xmin=-5,xmax=5,ymin=-0.15,ymax=0.45,
+        clip mode=individual, % ensures curves are plot one after another
+        after end axis/.code={
+          \draw[->,style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.5pt}] 
+               (axis cs: -5,0) -- (axis cs: 5,0);
+          %\node[black, anchor=north east] at (axis cs: 5,-0.01) {$s$};
+        }
+     ]
+       \addplot[name path=func,black,samples=101,domain=-5:5,line width=0.5pt,mark=none]
+               {0.39894228040143267793994605993438*exp(-0.5*x*x)};
+       \path[name path=axis] (axis cs: -5,0) -- (axis cs: 5,0);
+       \node[anchor=north west,yshift=-.5ex,xshift=-1.0ex] at (axis cs: 5,0) {$s$};
+       \addplot[green!20]       fill between[of=func and axis,soft clip={domain=-5.000:-3.926}];
+       \addplot[myviolet!20]    fill between[of=func and axis,soft clip={domain=-3.926:-2.743}];
+       \addplot[blue!20]        fill between[of=func and axis,soft clip={domain=-2.743:-1.623}];
+       \addplot[red!20]         fill between[of=func and axis,soft clip={domain=-1.623:-0.538}];
+       \addplot[green!20]       fill between[of=func and axis,soft clip={domain=-0.538: 0.538}];
+       \addplot[red!20]         fill between[of=func and axis,soft clip={domain= 0.538: 1.623}];
+       \addplot[blue!20]        fill between[of=func and axis,soft clip={domain= 1.623: 2.743}];
+       \addplot[myviolet!20]    fill between[of=func and axis,soft clip={domain= 2.743: 3.926}];
+       \addplot[green!20]       fill between[of=func and axis,soft clip={domain= 3.926: 5.000}];
+
+       \pgfmathsetmacro{\su}{0.52}
+       \pgfmathsetmacro{\ou}{-0.05}
+       \begin{scope}
+         \addplot[line width=0.5pt,dashed] coordinates { (-3.926,{\ou}) (-3.926,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-2.743,{\ou}) (-2.743,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-1.623,{\ou}) (-1.623,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { (-0.538,{\ou}) (-0.538,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 0.538,{\ou}) ( 0.538,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 1.623,{\ou}) ( 1.623,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 2.743,{\ou}) ( 2.743,{\su}) };
+         \addplot[line width=0.5pt,dashed] coordinates { ( 3.926,{\ou}) ( 3.926,{\su}) };
+       \end{scope}
+     
+       \begin{scope}
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -3.926,{\ou}) {\small$u_{-3}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -2.743,{\ou}) {\small$u_{-2}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -1.623,{\ou}) {\small$u_{-1}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs: -0.538,{\ou}) {\small$u_{0}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  0.538,{\ou}) {\small$u_{1}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  1.623,{\ou}) {\small$u_{2}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  2.743,{\ou}) {\small$u_{3}$};
+         \node[anchor=north,yshift=-.3ex] at (axis cs:  3.926,{\ou}) {\small$u_{4}$};
+       \end{scope}
+
+       \pgfmathsetmacro{\ss}{0.25}
+       \pgfmathsetmacro{\os}{0.00}
+       \begin{scope}
+         \addplot[line width=1.0pt,mygreen]  coordinates { ( -4.148,{\os}) (-4.148,{\ss}) };
+         \addplot[line width=1.0pt,myviolet] coordinates { ( -3.029,{\os}) (-3.029,{\ss}) };
+         \addplot[line width=1.0pt,myblue]   coordinates { ( -1.981,{\os}) (-1.981,{\ss}) };
+         \addplot[line width=1.0pt,myred]    coordinates { ( -0.980,{\os}) (-0.980,{\ss}) };
+         \addplot[line width=1.0pt,mygreen]  coordinates { (  0.000,{\os}) ( 0.000,{\ss}) };
+         \addplot[line width=1.0pt,myred]    coordinates { (  0.980,{\os}) ( 0.980,{\ss}) };
+         \addplot[line width=1.0pt,myblue]   coordinates { (  1.981,{\os}) ( 1.981,{\ss}) };
+         \addplot[line width=1.0pt,myviolet] coordinates { (  3.029,{\os}) ( 3.029,{\ss}) };
+         \addplot[line width=1.0pt,mygreen]  coordinates { (  4.148,{\os}) ( 4.148,{\ss}) };
+
+         \draw[fill,mygreen]  (axis cs: -4.148,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myviolet] (axis cs: -3.029,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myblue]   (axis cs: -1.981,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myred]    (axis cs: -0.980,{\ss}) circle [radius=2.5pt];
+         \draw[fill,mygreen]  (axis cs:  0.000,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myred]    (axis cs:  0.980,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myblue]   (axis cs:  1.981,{\ss}) circle [radius=2.5pt];
+         \draw[fill,myviolet] (axis cs:  3.029,{\ss}) circle [radius=2.5pt];
+         \draw[fill,mygreen]  (axis cs:  4.148,{\ss}) circle [radius=2.5pt];
+         
+         \node[blue,anchor=north,yshift=-.0ex,xshift=-1.ex] at (axis cs: -4.148,{\os}) {\small$s'_{-4}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=-.5ex] at (axis cs: -3.029,{\os}) {\small$s'_{-3}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=-.5ex] at (axis cs: -1.981,{\os}) {\small$s'_{-2}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=-.5ex] at (axis cs: -0.980,{\os}) {\small$s'_{-1}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=0.0ex] at (axis cs:  0.000,{\os}) {\small$s'_{0}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=0.5ex] at (axis cs:  0.980,{\os}) {\small$s'_{1}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=0.5ex] at (axis cs:  1.981,{\os}) {\small$s'_{2}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=0.5ex] at (axis cs:  3.029,{\os}) {\small$s'_{3}$};
+         \node[blue,anchor=north,yshift=-.0ex,xshift=0.5ex] at (axis cs:  4.148,{\os}) {\small$s'_{4}$};
+       \end{scope}
+  \end{axis}
+    \end{tikzpicture}}\\[-2.5ex]
+    \begin{align*}
+      R&\;=\;2.00\qquad\qquad(\text{rate = entropy})\\[.2ex]
+      D&\;=\;0.089\\[.2ex]
+      \text{SNR} &\;=\; 10.51\;\text{dB}\qquad(\text{RD bound}=12.04\,\text{dB})
+  \end{align*}
+    \end{center}
+  \end{minipage}%
+\end{frame}
+

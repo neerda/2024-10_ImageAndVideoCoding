@@ -1,0 +1,29 @@
+
+
+\begin{frame}{Entropy-Constrained Lloyd Quantizer: Minimization of Lagrangian Cost}
+\STRUC{Necessary Conditions for Optimality (MSE distortion)}
+\ben
+\item Centroid condition
+  $$
+s'_k
+     =
+     \frac{\int_{u_k}^{u_{k+1}}s\, f(s)\;\d s}
+ 	     {\int_{u_k}^{u_{k+1}}f(s)\;\d s}
+  $$
+\item Entropy condition
+  $$
+    \ell_k=-\log_2p_k
+  $$
+\item Modified nearest neighbor condition
+  $$
+u_k = \frac{1}{2}\,\big(s'_{k-1}+s'_k)+
+        \frac{\lambda}{2}\,\left(\frac{\ell_k-\ell_{k-1}}{s'_k-s'_{k-1}}\right)
+  $$
+\een
+\uncover<2->{
+\STRUC{Design of optimal entropy-constrained scalar quantizers}
+\bit
+  \item In general: Cannot be derived in closed form 
+  \item[\iarrow] Iterative algorithm similar to Lloyd algorithm
+\eit}\vspace{-5ex}
+\end{frame}
