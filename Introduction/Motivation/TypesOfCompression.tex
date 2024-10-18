@@ -1,0 +1,26 @@
+
+
+\begin{frame}{Types of Data Compression}
+\STRUC{Lossless Compression}
+  \bit\TabPositions{4.9em}
+  \item Invertible / reversible:  Original input data can be completely recovered
+  \smallskip
+  \item<2->[\iarrow] Examples: \tab \struc{\icircle} gzip, lzip, 7szip, bzip2 for general files (most suitable for text)\\[.5ex]
+                           \tab \struc{\icircle} FLAC for audio\\[.5ex]
+                           \tab \struc{\icircle} PNG, JPEG-LS for images
+  \eit
+
+  \medskip
+\uncover<3->{\STRUC{Lossy Compression}
+  \bit\TabPositions{4.9em}
+  \item Not invertible:  Only \loud{approximation of original input data} can be recovered
+  \item<4-> Achieves \loud{much higher compression ratios}
+  \item<4-> Dominant form of data compression for media
+  \smallskip
+\item<5->[\iarrow]
+  Examples: \tab \struc{\icircle} MP3, AAC for audio\\[.5ex]
+            \tab \struc{\icircle} JPEG, JPEG-2000 for images\\[.5ex]
+            \tab \struc{\icircle} MPEG-2, H.264~|~AVC, H.265~|~HEVC for video
+  \eit
+}
+\end{frame}

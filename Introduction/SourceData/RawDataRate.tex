@@ -1,0 +1,33 @@
+
+
+\begin{frame}{Raw Data Rate}
+\vspace{-.5ex}
+\STRUC{Raw Data Rate:}  Bit rate $R$ of raw data format
+$$
+  R=(\text{samples per time unit})\cdot(\text{bit depth per sample})
+  \qquad\qquad\qquad\qquad\qquad\qquad
+$$
+
+\smallskip
+\uncover<2->{
+  \clg{\bf Example: Stereo Audio Signal (CD Quality)}
+  \bit
+  \item<3->[\clg{\isquare}] \clv{2 channels} \uncover<4->{with \clb{44\,100 samples per second}}
+  \item<5->[\clg{\isquare}] \clr{16 bits per sample}
+  \item<3->[\clg{\iarrow}] raw data rate
+    $=\clv{2}\uncover<4->{\cdot\clb{44100\,\text{Hz}}}\uncover<5->{\cdot\clr{16\,\text{bits}}}\uncover<6->{\approx\mathbf{1400}\,\text{\bf kbits/s}}$
+  \eit
+  }
+
+\bigskip
+\uncover<7->{
+  \clg{\bf Example: Ultra High Definition (UHD) Video}
+  \bit
+  \item<8->[\clg{\isquare}] \clg{50 pictures per second} (Europe)
+  \item<9->[\clg{\isquare}] \clv{3 color components} \uncover<10->{with \clb{$3840\!\times\!2160$ samples each}}
+  \item<11->[\clg{\isquare}] \clr{10 bits per sample}
+  \item<8->[\clg{\iarrow}] raw data rate
+    $=\clg{50\,\text{Hz}}\uncover<9->{\cdot\clv{3}}\uncover<10->{\cdot\clb{3840\cdot2160}}\uncover<11->{\cdot\clr{10\,\text{bits}}}\uncover<12->{\approx\mathbf{12.4}\,\text{\bf Gbits/s}}$
+  \eit}
+\end{frame}
+

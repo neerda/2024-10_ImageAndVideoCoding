@@ -1,0 +1,44 @@
+
+\begin{frame}{Measuring Coding Efficiency}
+\vspace{-1.0ex}
+\STRUC{Average Bit Rate}
+  \vspace{-1.5ex}%
+  \beqan
+  \text{images:}\qquad R&\!\!\!=\!\!\!&
+    \frac{\text{\small number of bits in bitstream for the image}}{\text{\small number of pixels in the image}}\\[1ex]
+  \uncover<2->{\text{audio/video:}\qquad R&\!\!\!=\!\!\!&
+    \frac{\text{\small number of bits in bitstream for the audio/video sequence}}{\text{\small nominal duration of the audio/video sequence}}}
+  \eeqan
+
+\uncover<3->{\STRUC{Quality / Distortion}
+  \bit
+  \item Ideally: Quality as perceived by human beings
+  \item<4-> Often used: Mean square error (MSE) and peak-signal-to-noise ratio (PSNR)
+    \begin{minipage}{0.5\linewidth}
+      \beqan
+      \mathrm{MSE}  &\!\!\!=\!\!\!& \frac{1}{N} \,\sum_{\forall k}
+      \Big(\, s[k] - s'[k] \,\Big)^2\\[1.ex]
+      \uncover<5->{\mathrm{PSNR} &\!\!\!=\!\!\!& 10\cdot\log_{10}\!
+        \left( \frac{(2^B-1)^2}{\mathrm{MSE}} \right)}
+      \eeqan
+    \end{minipage}\hspace{0.1\linewidth}%
+    \begin{minipage}{0.4\linewidth}
+      \TabPositions{2.5em}\medskip
+      $s[k]$\tab--~ original samples\\[1ex]
+      $s'[k]$\tab--~ reconstructed samples\\[1ex]
+      $N$\tab--~ number of samples\\[1ex]%
+      \uncover<5->{$B$\tab--~ sample bit depth}
+    \end{minipage}%
+%  \item<4-> For a $W\!\times\!H$ array $s[x,y]$ of original samples, 
+%        the array $s'[x,y]$ of reconstructed samples, and a sample bit depth~$B$
+%  \beqan
+%  \mathrm{MSE}  &\!\!\!=\!\!\!& \frac{1}{W\cdot H} \sum_{\forall(x,y)}
+%                                 \big( s[x,y] - s'[x,y] \big)^2\\[1.ex]
+%  \uncover<4->{\mathrm{PSNR} &\!\!\!=\!\!\!& 10\cdot\log_{10}\!
+%                                 \left( \frac{(2^B-1)^2}{\mathrm{MSE}} \right)}
+%  \eeqan
+%  \item<5-> For videos: Average PSNR over entire video sequence
+  \eit}
+\end{frame}
+
+

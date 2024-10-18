@@ -1,0 +1,34 @@
+
+\begin{frame}{Practical Source Coding Problem}
+\vspace{-1.0ex}
+\STRUC{Characteristics of Source Codecs}
+  \bit\TabPositions{5.6em}
+  \item Bit rate:   \tab Throughput of the communication channel
+  \item Quality:    \tab Fidelity of the reconstructed signal
+  \item Delay:      \tab Start-up latency, end-to-end delay
+  \item Complexity: \tab Computation, memory, memory access
+  \eit
+
+\bigskip
+\uncover<2->{\STRUC{Practical Source Coding Problem}
+  \begin{center}\begin{minipage}{0.8\linewidth}\vspace{-3.0ex}
+  \basblk{}
+  \ALERT{\begin{center}
+   Given a maximum allowed complexity and a maximum delay, 
+   achieve an optimal trade-off between bit rate and reconstruction quality
+   for the transmission problem in the targeted application
+  \end{center}}
+  \easblk
+  \end{minipage}\end{center}
+
+  \vspace{-1.5ex}
+  \bit
+  \item<3->[] In this course:
+    \bit\itemMode{arrow}\relsize{}
+    \item Will concentrate on source codec
+    \item Ignore aspects of transmission channel (e.g., transmission errors)
+    \eit
+  \eit\vspace{-2ex}
+}
+\end{frame}
+

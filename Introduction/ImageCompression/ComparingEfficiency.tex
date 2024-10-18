@@ -1,0 +1,79 @@
+
+\begin{frame}{Trade-Off between Quality and Compression Ratio}
+\STRUC{Coding Efficiency}
+\bit
+\item<1-> Ability to trade-off bit rate and reconstruction quality
+\item<2-> Want \loud{best reconstruction quality for a given bitrate} (or vice versa)
+%\item<3->[\iarrow] Given transform and entropy coding: Modify quantization step size $\Delta$
+\eit
+\begin{center}
+  \vspace{-1ex}
+\uncover<3->{\fitbox{0.8\textwidth}{0.6\textheight}{%
+      \begin{tikzpicture}
+        \begin{axis}[
+           compat=newest,
+           width=9cm,height=6cm,
+           axis x line=bottom,
+           axis y line=center,
+           axis line style={-{Latex[length=3.5mm,width=1.6mm]},line width=1.0pt},
+           %x label style={at={(axis description cs:1.02,0.04)},anchor=north east},
+           %y label style={at={(axis description cs:0.49,1.02)},anchor=north east},
+           xlabel={bit rate},
+           ylabel={~quality (e.g. PSNR)},
+           xmin=0,xmax=5500,
+           ymin=34.5,ymax=42.5,
+           axis on top,
+           xtick=\empty,ytick=\empty,
+           enlargelimits=false
+        ]
+        % discrete
+        \addplot[myblue,mark=*,line width=1.0pt,visible on=<4>]
+           coordinates { (1142.6896, 35.4448)
+           };
+        \addplot[myblue,mark=*,line width=1.0pt,visible on=<5>]
+           coordinates { (1142.6896, 35.4448)
+                         (1476.0568, 36.5197)
+           };
+        \addplot[myblue,mark=*,line width=1.0pt,visible on=<6>]
+           coordinates { (1142.6896, 35.4448)
+                         (1476.0568, 36.5197)
+                         (1942.0032, 37.6118)
+           };
+        \addplot[myblue,mark=*,line width=1.0pt,visible on=<7>]
+           coordinates { (1142.6896, 35.4448)
+                         (1476.0568, 36.5197)
+                         (1942.0032, 37.6118)
+                         (2528.9688, 38.6327)
+           };
+        \addplot[myblue,mark=*,line width=1.0pt,visible on=<8>]
+           coordinates { (1142.6896, 35.4448)
+                         (1476.0568, 36.5197)
+                         (1942.0032, 37.6118)
+                         (2528.9688, 38.6327)
+                         (3338.1432, 39.5821)
+           };
+        \addplot[myblue,mark=*,line width=1.0pt,visible on=<9->]
+           coordinates { (1142.6896, 35.4448)
+                         (1476.0568, 36.5197)
+                         (1942.0032, 37.6118)
+                         (2528.9688, 38.6327)
+                         (3338.1432, 39.5821)
+                         (4507.9232, 40.4571)
+           };
+        \node [visible on=<10->] at (4000,39) {\color{myblue}codec A};
+        \addplot[myred,mark=*,line width=1.0pt,visible on=<11->]
+           coordinates { ( 807.7840, 36.5011)
+                         (1064.1664, 37.4604)
+                         (1428.7280, 38.4301)
+                         (1883.1064, 39.3306)
+                         (2516.0256, 40.1636)
+                         (3413.8144, 40.9368)
+           };
+        \node [align=center,visible on=<11->] at (1000,40) {\color{myred}better\\\color{myred}codec B};
+        \end{axis}
+      \end{tikzpicture}%
+}}
+\end{center}\vspace{-2ex}
+\end{frame}
+
+

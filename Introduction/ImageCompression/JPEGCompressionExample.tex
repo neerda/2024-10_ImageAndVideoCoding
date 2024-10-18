@@ -1,0 +1,119 @@
+
+\begin{frame}{Image Compression: Quality versus Compression Ratio}
+    \begin{tikzpicture}%
+      [
+        pstep/.style={
+          draw=black,
+          fill=white,
+          line width=1.0pt,
+          inner sep=0,
+          align=center
+        },
+        nbox/.style={pstep,
+          rectangle
+        },
+        narrow/.style={
+          ->,
+          >={Latex[length=5mm,width=2.2mm]},
+          %>=latex,
+          line width=1.5pt
+        },
+      ]
+      % fixed
+      \node[] (original) [nbox,minimum width=3cm,minimum height=3cm,
+        anchor=south,align=center,fill=blue!20!white]
+      at (13,0)  {\relsize{2}\bold{100\,\%}};
+
+      \begin{scope}[visible on=<1|handout:1>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_org.png}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Original Image} ~($1024\!\times\!640$ image points, $1966\,$KB)};
+      \end{scope}
+      \begin{scope}[visible on=<2|handout:2>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_org.png}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossless Compressed: LZIP}};
+        \node[] (compressed) 
+             [nbox,minimum width=2.2276cm,minimum height=2.2276cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{55.14\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{1.8\,:\,1}};
+      \end{scope}
+      \begin{scope}[visible on=<3|handout:3>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_org.png}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossless Compressed: PNG}};
+        \node[] (compressed) 
+             [nbox,minimum width=2.0380cm,minimum height=2.0380cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{46.15\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{2.2\,:\,1}};
+      \end{scope}
+      \begin{scope}[visible on=<4|handout:4>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_JPEG_Q95.jpg}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossy Compressed: JPEG (Quality 95)}};
+        \node[] (compressed) 
+             [nbox,minimum width=1.0289cm,minimum height=1.0289cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{11.76\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{8.5\,:\,1}};
+      \end{scope}
+      \begin{scope}[visible on=<5|handout:5>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_JPEG_Q75.jpg}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossy Compressed: JPEG (Quality 75)}};
+        \node[] (compressed) 
+             [nbox,minimum width=0.5268cm,minimum height=0.5268cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{3.08\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{32\,:\,1}};
+      \end{scope}
+      \begin{scope}[visible on=<6|handout:6>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_JPEG_Q50.jpg}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossy Compressed: JPEG (Quality 50)}};
+        \node[] (compressed) 
+             [nbox,minimum width=0.4120cm,minimum height=0.4120cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{1.89\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{53\,:\,1}};
+      \end{scope}
+      \begin{scope}[visible on=<7|handout:7>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_JPEG_Q25.jpg}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossy Compressed: JPEG (Quality 25)}};
+        \node[] (compressed) 
+             [nbox,minimum width=0.3121cm,minimum height=0.3121cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{1.08\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{92\,:\,1}};
+      \end{scope}
+      \begin{scope}[visible on=<8|handout:8>]
+        \node[inner sep=0,anchor=south west] at (0,0) 
+             {\hfitbox{10cm}{\includegraphics{Boat_JPEG_Q1.jpg}}};
+        \node[anchor=base west] at (0,6.5) 
+             {\relsize{1}\bold{Lossy Compressed: JPEG (Quality 1)}};
+        \node[] (compressed) 
+             [nbox,minimum width=0.1475cm,minimum height=0.1475cm,blue,
+               anchor=north,align=center,fill=blue!20!white] at (13,6.25) {};
+        \node[anchor=base] at (13,6.500) {\color{blue}\relsize{2}\bold{0.24\,\%}};
+        \draw[narrow] (original) -- (compressed);
+        \node[anchor=east,xshift=-2ex] at (13,3.52) {\color{myred}\relsize{2}\bold{414\,:\,1}};
+      \end{scope}
+    \end{tikzpicture}
+\end{frame}
+

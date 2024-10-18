@@ -1,0 +1,68 @@
+
+
+\begin{frame}{Image Example: Impact of Sampling (Spatial Resolution)}
+\vspace{-2.0ex}
+\begin{center}
+  \begin{minipage}{0.17\linewidth}
+    \begin{flushright}
+      $400\!\times\!300$ samples\\[5.3ex]~
+    \end{flushright}
+  \end{minipage}\hspace{0.01\linewidth}%
+  \begin{minipage}{0.32\linewidth}
+    \begin{center}
+      \includegraphics[width=0.28\paperwidth]{Org400.png}%
+    \end{center}
+  \end{minipage}%
+  \begin{minipage}{0.32\linewidth}
+    \begin{center}
+      \uncover<2->{%
+        \only<1-4|handout:1>{\includegraphics[width=0.28\paperwidth]{Org200.png}}%
+        \only<5-|handout:2>{\includegraphics[width=0.28\paperwidth]{Org200i.png}}%
+        }%
+    \end{center}
+  \end{minipage}\hspace{0.01\linewidth}%
+  \begin{minipage}{0.17\linewidth}
+    \begin{flushleft}
+      \uncover<2->{$200\!\times\!150$ samples}\\[2ex]
+      \uncover<5-|handout:2>{$\left(\begin{array}{@{\,}c@{\,}}
+          \text{interpolated}\\\text{to}~400\!\times\!300\\
+        \end{array}\right)$}
+    \end{flushleft}
+  \end{minipage}%
+  \\[1.5ex]
+  \begin{minipage}{0.17\linewidth}
+    \begin{flushright}
+      \uncover<3->{$100\!\times\!75$ samples}\\[2ex]
+      \uncover<5-|handout:2>{$\left(\begin{array}{@{\,}c@{\,}}
+          \text{interpolated}\\\text{to}~400\!\times\!300\\
+        \end{array}\right)$}
+    \end{flushright}
+  \end{minipage}\hspace{0.01\linewidth}%
+  \begin{minipage}{0.32\linewidth}
+    \begin{center}
+      \uncover<3->{%
+        \only<1-4|handout:1>{\includegraphics[width=0.28\paperwidth]{Org100.png}}%
+        \only<5-|handout:2>{\includegraphics[width=0.28\paperwidth]{Org100i.png}}%
+        }%
+    \end{center}
+  \end{minipage}%
+  \begin{minipage}{0.32\linewidth}
+    \begin{center}
+      \uncover<4->{%
+        \only<1-4|handout:1>{\includegraphics[width=0.28\paperwidth]{Org050.png}}%
+        \only<5-|handout:2>{\includegraphics[width=0.28\paperwidth]{Org050i.png}}%
+        }%
+    \end{center}
+  \end{minipage}\hspace{0.01\linewidth}%
+  \begin{minipage}{0.17\linewidth}
+    \begin{flushleft}
+      \uncover<4->{$50\!\times\!38$ samples}\\[2ex]
+      \uncover<5-|handout:2>{$\left(\begin{array}{@{\,}c@{\,}}
+          \text{interpolated}\\\text{to}~400\!\times\!300\\
+        \end{array}\right)$}
+    \end{flushleft}
+  \end{minipage}
+\end{center}\vspace{-1ex}
+\end{frame}
+
+

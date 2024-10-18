@@ -1,0 +1,36 @@
+
+\begin{frame}{Raw Images}
+  \medskip
+\begin{minipage}{0.58\textwidth}
+\STRUC{Single-Component Image}
+\bit
+\item Matrix of integer samples \[s[x,y]\qquad\qquad\qquad\qquad\qquad\qquad\]
+\item<2-> Characterized by
+  \bit\itemMode{arrow}\relsize{1}
+\item Number of samples in horizontal direction $W$
+  \item Number of samples in vertical direction $H$
+  \item Sample bit depth $B$
+  \eit
+\eit
+\end{minipage}%
+\begin{minipage}{0.38\textwidth}
+\hfitbox{\linewidth}{%
+    \begin{tikzpicture}
+      \draw[gray,step=.25cm,very thin] (0,0) grid (6,4);
+      \draw[black,thick]               (0,0) rectangle (6,4);
+      \draw[-{Latex[length=3.5mm,width=1.5mm]},line width=.5pt] ( 0,4.25)  -- (2,4.25);
+      \draw[-{Latex[length=3.5mm,width=1.5mm]},line width=.5pt] (-0.25,4)  -- (-0.25,2);
+      \node[black, anchor=west]  at (2,4.25) {$x$};
+      \node[black, anchor=north] at (-0.25,2) {$y$};
+    \end{tikzpicture}%
+  }
+\end{minipage}
+
+\bigskip\smallskip
+\uncover<3->{\STRUC{Color Images}
+\bit
+\item Three color components (typically RGB or YCbCr)
+\item[\iarrow] Additionally characterized by color sampling format
+\eit}
+\end{frame}
+

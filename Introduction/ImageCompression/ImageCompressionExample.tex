@@ -1,0 +1,39 @@
+
+\begin{frame}{Image Compression}
+\begin{center}
+  \vspace{-1ex}%
+  \small\renewcommand{\arraystretch}{1.10}%
+  \begin{tabular}{@{}l@{}c@{}rr@{}c@{}rr@{}}
+    %\toprule
+    &&\multicolumn{2}{@{}c@{}}{RGB: $960\!\times\!720$}
+    &&\multicolumn{2}{@{}c@{}}{RGB: $1024\!\times\!640$}\\
+    &&\multicolumn{2}{@{}c@{}}{%
+      \includegraphics[height=0.22\paperheight]{Bode_preview}}
+    &&\multicolumn{2}{@{}c@{}}{%
+      \includegraphics[height=0.22\paperheight]{Boat_preview}}\\[1ex]
+    %\cmidbeg\cmidrule(){3-4}\cmidrule(){6-7}\cmidend
+    \bf compression&~~~~~~~~ & file size (bytes) & factor
+               &~~~~~~~~~~~~ & file size (bytes) & factor \\
+    \midrule
+    \clb{\it original ~(8 bit per sample)}
+               && \clb{2~073~600} & \clb{1.00} && \clb{1~966~080} & \clb{1.00} \\
+    \cmidbeg\cmidrule(){1-7}\cmidend
+  \uncover<2->{\\[-\normalbaselineskip]%
+    lzip && 1~469~323 & 1.41 && 1~084~025 & 1.81 \\
+    bzip2&& 1~489~411 & 1.39 && 1~050~415 & 1.87 \\
+    \cmidbeg\cmidrule(){1-7}\cmidend%
+    }
+  \uncover<3->{\\[-\normalbaselineskip]%
+    \clr{PNG ~(lossless image coding)} && \clr{1~280~650} & \clr{1.62} && \clr{907~330} & \clr{2.17} \\
+    \cmidbeg\cmidrule(){1-7}\cmidend%
+    }
+  \uncover<4->{\\[-\normalbaselineskip]%
+    \clg{JPEG (lossy: very good)} &&\clg{61~197}&\clg{33.88}
+                                  &&\clg{40~012}&\clg{49.14}\\
+    JPEG (lossy: acceptable)      &&     40~609 &     51.06
+                                  &&     31~058 &     63.30\\
+    \bottomrule
+    }
+  \end{tabular}
+\end{center}\vspace{-3ex}
+\end{frame}

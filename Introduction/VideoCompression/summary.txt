@@ -1,0 +1,9 @@
+summary:
+
+BasketballDrill_832x480_50.yuv	599040000	479232.00 kbit/s
+BasketballDrill_good.mp4	 3377094	2701.68 kbit/s	  0.56%	177.38
+BasketballDrill_poor.mp4	  519256	415.40 kbit/s	  0.09%	1153.65
+
+PartyScene_832x480_50.yuv	599040000	479232.00 kbit/s
+PartyScene_good.mp4	 5616579	4493.26 kbit/s	  0.94%	106.66
+PartyScene_poor.mp4	  517252	413.80 kbit/s	  0.09%	1158.12

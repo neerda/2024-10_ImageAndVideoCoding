@@ -1,0 +1,66 @@
+
+\begin{frame}{Analog-to-Digital Conversion}
+  \vspace{-.5ex}
+\STRUC{Sampling}
+  \bit
+  \item Maps continuous-time/space signal into discrete-time/space signal
+  \eit
+  \smallskip
+  \centerline{\fitbox{0.8\linewidth}{0.13\linewidth}{%
+    \begin{tikzpicture}[visible on=<2->]
+      \begin{axis}[
+         width=12cm,height=3.5cm,
+         axis x line=center,
+         axis y line=center,
+         axis line style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.7pt},
+         xmin=0,xmax=12,ymin=-1.1,ymax=1.1,
+         axis on top,
+         xtick=\empty,ytick=\empty,
+         enlargelimits=false
+      ]
+      \addplot [magenta,line width=0.7pt,domain=0:11.5,samples=100] {cos(65+x*50)};
+      \begin{scope}[visible on=<3->]
+        \foreach \x in {0,...,11} {
+            \addplot[blue,line width=1pt]      coordinates { (\x,0) (\x,{cos(65+x*50)}) };
+            \addplot[only marks,blue,mark options={scale=0.7}] coordinates {        (\x,{cos(65+x*50)}) };
+        }
+      \end{scope}
+    \end{axis}
+    \end{tikzpicture}%
+  }}
+
+  \bigskip
+\uncover<4->{\STRUC{Quantization}
+  \bit
+  \item Maps continuous-amplitude signal into discrete-amplitude signal (e.g., by rounding)
+  \eit
+  \smallskip
+  \centerline{\fitbox{0.8\linewidth}{0.13\linewidth}{%
+    \begin{tikzpicture}[visible on=<5->]
+      \begin{axis}[
+         width=12cm,height=3.5cm,
+         axis x line=center,
+         axis y line=center,
+         axis line style={-{Latex[length=2.5mm,width=1.2mm]},line width=0.7pt},
+         xmin=0,xmax=12,ymin=-1.1,ymax=1.1,
+         axis on top,
+         xtick=\empty,ytick=\empty,
+         enlargelimits=false
+      ]
+        \foreach \x in {0,...,11} {
+            \addplot[blue,line width=0.9pt]      coordinates { (\x,0) (\x,{cos(65+x*50)}) };
+            \addplot[only marks,blue,mark=-,mark options={scale=1.5}] coordinates {        (\x,{cos(65+x*50)}) };
+        }
+      \begin{scope}[visible on=<6->]
+        \foreach \x in {0,...,11} {
+            \addplot[red,line width=1pt]      coordinates { (\x,0) (\x,{round(2.0*cos(65+x*50))/2.0}) };
+            \addplot[only marks,mark=-,red,mark options={scale=1.5}] coordinates {(\x,{round(2.0*cos(65+x*50))/2.0}) };
+        }
+      \end{scope}
+    \end{axis}
+    \end{tikzpicture}%
+  }}
+}
+\end{frame}
+
+

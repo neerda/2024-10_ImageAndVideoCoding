@@ -1,0 +1,150 @@
+
+
+\begin{frame}{Video Compression: Quality versus Compression Ratio}
+  \vspace{2ex}
+  \begin{center}
+    \begin{minipage}{0.49\linewidth}
+      \begin{center}
+        \only<1|handout:0>{
+          {\bf H.264\,|\,AVC @ 4493 kbit/s} ~(\clg{107\,:\,1})\\[0.5ex]
+          \includemedia[%
+            width=0.4333\paperwidth,
+            addresource=slides/Introduction/VideoCompression/PartyScene_good.mp4,
+            activate=pageopen,
+            deactivate=onclick,
+            transparent,
+            passcontext,
+            flashvars={source=slides/Introduction/VideoCompression/PartyScene_good.mp4&autoPlay=false}
+          ]{\includegraphics[width=0.4333\paperwidth]{PartyScene_good}}{VPlayer.swf}}%
+        \only<0|handout:1>{%
+          {\bf H.264\,|\,AVC @ 4493 kbit/s} ~(\clg{107\,:\,1})\\[0.5ex]
+          \includegraphics[width=0.4333\paperwidth]{PartyScene_good}%
+        }%
+        \only<2|handout:0>{
+          {\bf H.264\,|\,AVC @ 2702 kbit/s} ~(\clg{178\,:\,1})\\[0.5ex]
+          \includemedia[%
+            width=0.4333\paperwidth,
+            addresource=slides/Introduction/VideoCompression/BasketballDrill_good.mp4,
+            activate=pageopen,
+            deactivate=onclick,
+            transparent,
+            passcontext,
+            flashvars={source=slides/Introduction/VideoCompression/BasketballDrill_good.mp4&autoPlay=false}
+          ]{\includegraphics[width=0.4333\paperwidth]{BasketballDrill_good}}{VPlayer.swf}}%
+        \only<0|handout:2>{%
+          {\bf H.264\,|\,AVC @ 2702 kbit/s} ~(\clg{178\,:\,1})\\[0.5ex]
+          \includegraphics[width=0.4333\paperwidth]{BasketballDrill_good}%
+        }%
+%        \only<3|handout:0>{
+%          {\bf H.264\,|\,AVC @ 3718 kbit/s} ~(\clg{77\,:\,1})\\[0.5ex]
+%          \includemedia[%
+%            width=0.4333\paperwidth,
+%            addresource=slides/Introduction/VideoCompression/RaceHorses_good.mp4,
+%            activate=pageopen,
+%            deactivate=onclick,
+%            transparent,
+%            passcontext,
+%            flashvars={source=slides/Introduction/VideoCompression/RaceHorses_good.mp4&autoPlay=false}
+%          ]{\includegraphics[width=0.4333\paperwidth]{RaceHorses_good}}{VPlayer.swf}}%
+%        \only<0|handout:3>{%
+%          {\bf H.264\,|\,AVC @ 3718 kbit/s} ~(\clg{77\,:\,1})\\[0.5ex]
+%          \includegraphics[width=0.4333\paperwidth]{RaceHorses_good}%
+%        }%
+%        \only<4|handout:0>{
+%          {\bf H.264\,|\,AVC @ 2442 kbit/s} ~(\clg{236\,:\,1})\\[0.5ex]
+%          \includemedia[%
+%            width=0.4333\paperwidth,
+%            addresource=slides/Introduction/VideoCompression/BQMall_good.mp4,
+%            activate=pageopen,
+%            deactivate=onclick,
+%            transparent,
+%            passcontext,
+%            flashvars={source=slides/Introduction/VideoCompression/BQMall_good.mp4&autoPlay=false}
+%          ]{\includegraphics[width=0.4333\paperwidth]{BQMall_good}}{VPlayer.swf}}%
+%        \only<0|handout:4>{%
+%          {\bf H.264\,|\,AVC @ 2442 kbit/s} ~(\clg{236\,:\,1})\\[0.5ex]
+%          \includegraphics[width=0.4333\paperwidth]{BQMall_good}%
+%        }%
+      \end{center}
+    \end{minipage}%
+    \begin{minipage}{0.49\linewidth}
+      \begin{center}
+        \only<1|handout:0>{
+          {\bf H.264\,|\,AVC @ 414 kbit/s} ~(\clr{1160\,:\,1})\\[0.5ex]
+          \includemedia[%
+            width=0.4333\paperwidth,
+            addresource=slides/Introduction/VideoCompression/PartyScene_poor.mp4,
+            activate=pageopen,
+            deactivate=onclick,
+            transparent,
+            passcontext,
+            flashvars={source=slides/Introduction/VideoCompression/PartyScene_poor.mp4&autoPlay=false}
+          ]{\includegraphics[width=0.4333\paperwidth]{PartyScene_poor}}{VPlayer.swf}}%
+        \only<0|handout:1>{%
+          {\bf H.264\,|\,AVC @ 414 kbit/s} ~(\clr{1160\,:\,1})\\[0.5ex]
+          \includegraphics[width=0.4333\paperwidth]{PartyScene_poor}%
+        }%
+        \only<2|handout:0>{
+          {\bf H.264\,|\,AVC @ 415 kbit/s} ~(\clr{1156\,:\,1})\\[0.5ex]
+          \includemedia[%
+            width=0.4333\paperwidth,
+            addresource=slides/Introduction/VideoCompression/BasketballDrill_poor.mp4,
+            activate=pageopen,
+            deactivate=onclick,
+            transparent,
+            passcontext,
+            flashvars={source=slides/Introduction/VideoCompression/BasketballDrill_poor.mp4&autoPlay=false}
+          ]{\includegraphics[width=0.4333\paperwidth]{BasketballDrill_poor}}{VPlayer.swf}}%
+        \only<0|handout:2>{%
+          {\bf H.264\,|\,AVC @ 415 kbit/s} ~(\clr{1156\,:\,1})\\[0.5ex]
+          \includegraphics[width=0.4333\paperwidth]{BasketballDrill_poor}%
+        }%
+%        \only<3|handout:0>{
+%          {\bf H.264\,|\,AVC @ 439 kbit/s} ~(\clr{654\,:\,1})\\[0.5ex]
+%          \includemedia[%
+%            width=0.4333\paperwidth,
+%            addresource=slides/Introduction/VideoCompression/RaceHorses_poor.mp4,
+%            activate=pageopen,
+%            deactivate=onclick,
+%            transparent,
+%            passcontext,
+%            flashvars={source=slides/Introduction/VideoCompression/RaceHorses_poor.mp4&autoPlay=false}
+%          ]{\includegraphics[width=0.4333\paperwidth]{RaceHorses_poor}}{VPlayer.swf}}%
+%        \only<0|handout:3>{%
+%          {\bf H.264\,|\,AVC @ 439 kbit/s} ~(\clr{654\,:\,1})\\[0.5ex]
+%          \includegraphics[width=0.4333\paperwidth]{RaceHorses_poor}%
+%        }%
+%        \only<4|handout:0>{
+%          {\bf H.264\,|\,AVC @ 388 kbit/s} ~(\clr{1484\,:\,1})\\[0.5ex]
+%          \includemedia[%
+%            width=0.4333\paperwidth,
+%            addresource=slides/Introduction/VideoCompression/BQMall_poor.mp4,
+%            activate=pageopen,
+%            deactivate=onclick,
+%            transparent,
+%            passcontext,
+%            flashvars={source=slides/Introduction/VideoCompression/BQMall_poor.mp4&autoPlay=false}
+%          ]{\includegraphics[width=0.4333\paperwidth]{BQMall_poor}}{VPlayer.swf}}%
+%        \only<0|handout:4>{%
+%          {\bf H.264\,|\,AVC @ 388 kbit/s} ~(\clr{1484\,:\,1})\\[0.5ex]
+%          \includegraphics[width=0.4333\paperwidth]{BQMall_poor}%
+%        }%
+      \end{center}
+    \end{minipage}
+
+    \vspace{4ex}
+    \only<1|handout:1>{
+      {\bf Original: 479\,232~kbit/s} ~($832\!\times\!480$, 50Hz, RGB)
+      }%
+    \only<2|handout:2>{
+      {\bf Original: 479\,232~kbit/s} ~($832\!\times\!480$, 50Hz, RGB)
+      }%
+%    \only<3|handout:3>{
+%      {\bf Original: 287\,539~kbit/s} ~($832\!\times\!480$, 30Hz, RGB)
+%      }%
+%    \only<4|handout:4>{
+%      {\bf Original: 576\,037~kbit/s} ~($832\!\times\!480$, 60Hz, RGB)
+%      }%
+  \end{center}
+\end{frame}
+
