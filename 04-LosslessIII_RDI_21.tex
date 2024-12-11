@@ -80,7 +80,7 @@ uniquely to a symbol $x\in\mathcal{A}$.
 \vspace{-0.1cm}
 \loud{Choice of the intervals for Elias coding}
 \bit
-\item Fix an orderding of the symbols, $\mathcal{A}=\{x_0,\dots,x_K\}$.
+\item Fix an ordering of the symbols, $\mathcal{A}=\{x_0,\dots,x_K\}$.
 \item For the probability masses, write $p_i=p(x_i)$. Assume that all $p_i>0$.   
 \item Associate the interval
 \[
@@ -95,21 +95,21 @@ to the $i$-th symbol.
 First: Require Elias code only to be \loud{non singular}: 
 \bit %\small
 \item Different symbols $a\in\mathcal{A}$ are to be mapped to different codewords. 
-\item Application: Only coding of single smybols, e.g. joint alphabets of sequence of random variables.
+\item Application: Only coding of single symbols, e.g. joint alphabets of sequence of random variables.
 \eit
 \vspace{-0.1cm}
 \loud{Construction of the codewords } 
 \bit
 \item Intervals $[L_i,R_i)$ are pairwise disjoint and have length $p_i$. .
-\item Thus: If  ${l}_i:=\lceil-\log_2(p_i)\rceil$,
+\item Thus: If  ${\ell}_i:=\lceil-\log_2(p_i)\rceil$,
 there exists $m_i\in [L_i,R_i)$ such that 
 \begin{align}\label{Propm}
-m_i=N_i\cdot 2^{-l_i},\: \text{for an $N_i\in\mathbb{N}$}.
+m_i=N_i\cdot 2^{-\ell_i},\: \text{for an $N_i\in\mathbb{N}$}.
 \end{align}  
-\item In 2-adic representation, $m_i$ can be represented using ${l}_i$ many bits.
+\item In 2-adic representation, $m_i$ can be represented using ${\ell}_i$ many bits.
 \item[\iarrow]\loud{ Choose 2-adic representation of $m_i$ as codeword for the i-th symbol. }
 \item Since intervals $[L_i,R_i)$ are disjoint: Code is non-singular.
-\item By construction: Lenght of codeword for $i$-th symbol is $l_i$. 
+\item By construction: Length of codeword for $i$-th symbol is $\ell_i$.
 \item[\iarrow] \loud{Average codeword-length of non-singular Elias code is not larger than $H(p)+1$}. 
 \eit 
 
@@ -119,7 +119,7 @@ m_i=N_i\cdot 2^{-l_i},\: \text{for an $N_i\in\mathbb{N}$}.
 Illustration of the codeword construction for Elias coding with three probabilites $p_0=1/9$, $p_1=1/9$, $p_2=1/9$, $p_3=1/9$, $p_4=5/9$.  
 \begin{center}
 \begin{figure}
-\includegraphics[width=1.0\textwidth]{Elias_Coding.png}
+\includegraphics[width=1.0\textwidth]{LosslessIII/Elias_Coding.png}
 \end{figure}
 \end{center}
 \end{frame}
@@ -132,8 +132,8 @@ Illustration of the codeword construction for Elias coding with three probabilit
 \item Code defined on last slides is \loud{not} always a prefix code.
 \item For construction prefix code: 
 \bit
-\item Choose $l_i:=\lceil-\log_2(p_i)\rceil\mathbf{+1}$.
-\item Choose $m_i$ as in \eqref{Propm},  but additionally require $m_i$ to be close to the midpoint of interval,  $|m_i-(L_i+(R_i-L_i)/2)|<2^{-l_i}$. 
+\item Choose $\ell_i:=\lceil-\log_2(p_i)\rceil\mathbf{+1}$.
+\item Choose $m_i$ as in \eqref{Propm},  but additionally require $m_i$ to be close to the midpoint of interval,  $|m_i-(L_i+(R_i-L_i)/2)|<2^{-\ell_i}$.
 \item Define uniquely decodable code as before.
 \eit
 \item Can be shown: Resulting code is a prefix code.
@@ -144,7 +144,7 @@ Illustration of the codeword construction for Elias coding with three probabilit
 \begin{frame}{Elias coding: Incremental encoding and decoding}
 \loud{Main advantage of idea of Elias coding:}
 \bit
-\item Idea of Elias coding very useful if combined alphabet of a source $(X_1,\dots,X_N)$ is 
+\item Idea of Elias coding is very useful if combined alphabet of a source $(X_1,\dots,X_N)$ is
 to be coded.
 \item  Elias coding can enable \ALERT{incremental coding}: Need only \loud{conditional 
 probabilites} $p_{X_i|X_{i-1},\dots,X_1}$.
@@ -206,7 +206,12 @@ models.
 \end{frame}
 
 
- \input{../../..//SS2020/slides/CoeffCoding/CABAC/BasicDesign/BasicDesign.tex}                  
+\begin{frame}{CABAC: Context-Based Adaptive Binary Arithmetic Coding}
+ \includegraphics[width=\textwidth]{LosslessIII/CabacBasicDesign.png}
+\end{frame}
+
+
+ %\input{../../..//SS2020/slides/CoeffCoding/CABAC/BasicDesign/BasicDesign.tex}
 
 
 \begin{frame}{Binary probabilities by exponentially moving averages}
@@ -236,7 +241,7 @@ Second summand approaches $0$ as $t\to\infty$.
 \begin{frame}{Representation of exponentially moving averages by state machine}
 Represent probability $P(t)$ in terms of 
 \bit
-\item $P_{LPS}(t)\in (0,0.5]$, probability of \loud{least probable sympbol} at time $t+1$.
+\item $P_{LPS}(t)\in (0,0.5]$, probability of \loud{least probable symbol} at time $t+1$.
 \item $\nu_{MPS}(t)\in\{0,1\}$, value of \loud{most probable symbol} at time $t$. 
 \eit
 Equation \eqref{SlideWindowProb} can then be rewritten as
@@ -259,7 +264,7 @@ $S(t)$ integral, $0\leq S(t)\leq 62$.
 
 \begin{frame}{State transition rules for binary probability used in video codecs}
 \begin{figure}
-\includegraphics[width=.49\textwidth]{CabacStateTransition.png}
+\includegraphics[width=.49\textwidth]{LosslessIII/CabacStateTransition.png}
 \captionsetup{labelformat=empty}
 \caption{State transition rules that implement \eqref{SlideWindowProbLPS} and \eqref{Logquant}, taken from Marpe et al., 2003.}
 \end{figure}
@@ -293,7 +298,7 @@ Notation: Let $X$ be a discrete random variable with alphabet $\mathcal{A}:=\mat
 \loud{Now: Lossy source coding} 
 \bit 
 \item  To decrease the rate, allow that transmitted $x\in\mathcal{A}$ may not 
-be exactly recoverd by a decoder. 
+be exactly recovered by a decoder.
 \item Allow \loud{distortion} between encoded and decoded $x$. 
 %\item Dviation is described by a \loud{distortion} function, i.g.  squared Euclidean or Hamming distance. 
 \item Only lossless transmission of quantization indices by a uniquely decodable code yielding a \loud{rate}. 
@@ -322,7 +327,7 @@ Mapping $\alpha$ is also called quantization and $\mathcal{I}_K$ is called set o
 \gamma: \mathcal{I}_K\to \mathcal{B}^{<\infty}, 
 \end{align*}
 where $\mathcal{B}^{<\infty}$ is the 
-set of finite bit-sequecens. 
+set of finite bit-sequences.
 \item A \loud{decoder mapping}
 \[
 \beta: \mathcal{I}_K\to\widehat{\mathcal{A}},
@@ -400,7 +405,7 @@ by $\gamma$:
 \begin{align*}
 r(Q)=\sum_{x\in\mathcal{A}}p(x)\ell(\gamma(\alpha(x))),
 \end{align*}
-where $\ell(\gamma(x))$ denotes the lenght of the codeword $\gamma(x)$. 
+where $\ell(\gamma(x))$ denotes the length of the codeword $\gamma(x)$.
 \item Distortion $\delta(Q)$: Expected distortion between reconstructed and original symbols:
 \[
 \delta(Q)=\sum_{x\in\mathcal{A}}p(x)d(x,\beta(\alpha(x))). 
@@ -457,7 +462,7 @@ set than $R(D_2)$.
 
 \begin{center}
 \begin{figure}
-\includegraphics[width=0.25\textwidth]{RD_Plot_Final.png}
+\includegraphics[width=0.25\textwidth]{LosslessIII/RD_Plot_Final.png}
 \captionsetup{labelformat=empty}
 \caption{Example of a rate distortion function.}
 \end{figure}
@@ -498,7 +503,7 @@ set than $R(D_2)$.
 X^N:=(X,\dots,X); \quad p^{\times N}:=p_{X^N},\quad  p^{\times N}(x_1,\dots,x_N)=p_X(x_1)\cdots p_X(x_N)
 \end{align*}
 \item $X^N$ is an $\mathbb{R}^N$-valued random-variable.  
-\item Definition of source code $Q_N=(\alpha_N,\gamma,\beta_N)$  for $X^N$ is as before.
+\item Definition of source code $Q_N=(\alpha_N,\gamma_N,\beta_N)$  for $X^N$ is as before.
 \bit
 \item Encoder mapping $\alpha_N:\mathcal{A}^N\to \mathcal{I}_{K'}$.
 \item Uniquely decodable code $\gamma_N$ on $\mathcal{I}_{K'}'$.
@@ -528,7 +533,7 @@ source codes for the indiviudal $X_i$, i.e. $N$ source codes of $X$, \loud{altho
 $\overline{\ell}(\gamma)=H(X)+\epsilon$ with an $\epsilon>0$.
 \item Thus: Coding $X^N$ by coding each $X_i$ with $\gamma$  gives average codeword length $H(X)+\epsilon$ per symbol..    
 \item On the other hand: Average codeword length per symbol of a joint  Huffman code for $X^N$
-can be bounded by $1/N(H(X^N)+1)=H(X)+1/N$. 
+can be bound by $1/N(H(X^N)+1)=H(X)+1/N$.
 \item[\iarrow] Thus: Joint coding is better than marginal coding even for iid sources. 
 \eit
 \vspace{-2.5mm}
@@ -569,7 +574,7 @@ I(X;Y)=I(Y;X).
 \item For some finite alphabet $\mathcal{B}$, let a conditional probabibility mass function $q(\cdot|x)$ on $\mathcal{A}$ be given. 
 \item This means: $q(\cdot|x)$ is a probability mass function on $\mathcal{B}$ for 
 each $x\in\mathcal{A}$. 
-\item The pmf $p$ and the conditonal pmf $q$ define the probability masses $p(x)q(\hat{x}|x)$ of a joint distribution on $\mathcal{A}\times\mathcal{B}$.
+\item The pmf $p$ and the conditional pmf $q$ define the probability masses $p(x)q(\hat{x}|x)$ of a joint distribution on $\mathcal{A}\times\mathcal{B}$.
 \item[\iarrow] Thus: According to \eqref{DefMutInf}, one defines
 \begin{align*}
 I(p;q)=H(p)-H(q|p)=\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}p(x)q(\hat{x}|x)\log_2\left(\frac{q(\hat{x}|x)}{p(x)}\right).
@@ -630,7 +635,7 @@ Main theorem of lossy source coding due to Shannon:
 Let $X$ be a discrete random variable. Fix an additive distortion measure. 
 \begin{enumerate}
 \item The informational rate distortion function $R^{I}$ is always a \loud{lower bound} for the rate distortion function: 
-For every $N\in\mathbb{N}$ and every sorce code $Q_N$ for $X^N$ one has  
+For every $N\in\mathbb{N}$ and every source code $Q_N$ for $X^N$ one has
 \begin{align}\label{BoundRate}
 r(Q_N)\geq R^{(I)}(\delta(Q_N)). 
 \end{align}
@@ -736,7 +741,7 @@ a function $\phi:\mathbb{R}^m\to\mathbb{R}^n$.
 \bit%\small
 \item Knowing $\mathbf{Y}$, uncertainty about $\mathbf{Z}$ should be zero.
 \item Uncertainty of $\mathbf{Z}$ should not be greater than uncertainty of $\mathbf{Y}$.
-\item Knowing $\mathbf{Z}$ does not decrease the uncertainty ofanother random-variable $\mathbf{X}$ more than knowing $\mathbf{Y}$.    
+\item Knowing $\mathbf{Z}$ does not decrease the uncertainty of another random-variable $\mathbf{X}$ more than knowing $\mathbf{Y}$.
 \eit 
 \loud{\iarrow Entropy as measure for uncertainty:}
 \begin{proposition}[Data processing inequalities]
@@ -753,7 +758,7 @@ $H(\mathbf{X}|\mathbf{Y})\leq H(\mathbf{X}|\mathbf{Z})$.
 
 \begin{frame}{Data processing inequalities: Proof}
 \bit 
-\item One has $p_{Z|Y}(z|y)=1$ if $z=\phi(y)$ and $p_{Z|Y}(z|y)=0$, else. Thus 
+\item One has $p_{Z|Y}(z|y)=1$ if $z=\phi(y)$ and $p_{Z|Y}(z|y)=0$, else. Thus
 $H(\mathbf{Z}|\mathbf{Y})=0$.
 \item With chain rule for entropy, it follows that
 \begin{align*}
@@ -763,7 +768,7 @@ Since entropy is non-negative, it follows that $H(\mathbf{Y})\geq H(\mathbf{Z})$
 \item 
 One has $p_{X,Y,Z}(x,y,z)=p_{X,Y}(x,y)$ if $z=\phi(y)$ and $p_{X,Y,Z}(x,y,z)=0$, else. 
 \item For $z=\phi(y)$ and 
-$p_Y(y)\neq 0$, one has $p_{X|Y,Z}(x|z,y)=p_{X|Y}(x,y)$. 
+$p_Y(y)\neq 0$, one has $p_{X|Y,Z}(x|y,z)=p_{X|Y}(x|y)$.
 \item[\iarrow] This implies that $H(\mathbf{X}|\mathbf{Y})=H(\mathbf{X}|\mathbf{Y},\mathbf{Z})$.
 \item Last lecture: $H(\mathbf{X}|\mathbf{Y},\mathbf{Z})\leq H(\mathbf{X}|\mathbf{Z})$ .
 Thus $H(\mathbf{X}|\mathbf{Y})\leq H(\mathbf{X}|\mathbf{Z})$. \qed
@@ -782,10 +787,10 @@ f((1-\lambda)p_1+\lambda p_2)\leq (1-\lambda)f(p_1)+\lambda f(p_2), \quad \foral
 \end{align}  
 \item  $f$ is called \loud{strictly convex} if strict inequality holds in \eqref{eqconv} for all $\lambda\in (0,1)$ and 
 all $p_1\neq p_2$. 
-\item $f$ is calleld (strictly) \loud{concave}, if $-f$ is (strictly) convex. 
+\item $f$ is called (strictly) \loud{concave}, if $-f$ is (strictly) convex.
 \eit
 \begin{figure}
-\includegraphics[width=0.26\textwidth]{RD_Plot_Convex_Final.png}
+\includegraphics[width=0.26\textwidth]{LosslessIII/RD_Plot_Convex_Final.png}
 \captionsetup{labelformat=empty}
 \caption{Illustration of convexity.}
 \end{figure}
@@ -858,14 +863,14 @@ The informational rate distortion function $R^{(I)}$ is convex.
 %\]
 %
 %
-\item Let $q_1$ and $q_2$ be any conditinonal probabilities with alphabets $\mathcal{B}_1$ and $\mathcal{B}_2$ such that
+\item Let $q_1$ and $q_2$ be any conditional probabilities with alphabets $\mathcal{B}_1$ and $\mathcal{B}_2$ such that
 \begin{align}\label{DistConstrIndiv}
 \sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}_1}p(x)q_1(\hat{x}|x)d(x,\hat{x})<D_1; \quad \sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}_2}p(x)q_2(\hat{x}|x)d(x,\hat{x})<D_2.
 \end{align}
 
 \item Define a conditional probability $q_3$ with alphabet $\mathcal{B}=\mathcal{B}_1\cup\mathcal{B}_2$ as 
 \begin{align*}
-q_3=(1-\lambda)p_1+\lambda_2 p_2
+q_3=(1-\lambda)q_1+\lambda q_2
 \end{align*}
 \item By \eqref{DistConstrIndiv}, $q_3$ satisfies the distortion constraint
 \begin{align}\label{DistConstrQ3}

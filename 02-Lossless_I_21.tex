@@ -168,7 +168,7 @@ and continuous probability distributions.
 \begin{align*}
 \overline{\ell}(\gamma):=\sum_{k=1}^Np_k\cdot \ell_k(\gamma).
 \end{align*} 
-\item[\iarrow]\ALERT{Goal: Find uniquely decodable codes of minial average codeword length.}
+\item[\iarrow]\ALERT{Goal: Find uniquely decodable codes of minimal average codeword length.}
 \eit
 %\ALERT{Goal: Find uniquely decodable codes of minial average codeword length.}
 \end{frame}
@@ -251,7 +251,7 @@ Prefix code not only uniquely decodable, but \loud{instantaneously decodable:}
 
 \end{frame}
 
-\begin{frame}{Proper binary tress}
+\begin{frame}{Proper binary trees}
 \loud{Proper binary trees:} 
 \bit
 \item A binary tree is called \loud{proper} if each node is either a leaf node or has two children.
@@ -342,7 +342,7 @@ node of $\mathcal{T}_2$ to obtain $\mathcal{T}_1$.
 \item Let $\mathcal{T}$ be a proper binary tree with leave node $\mathsf{n}$. 
 \bit
 \item Let $\mathsf{l}$ denote the length of the path from the root node of $\mathcal{T}$ to $\mathsf{n}$.
-\item Create new binary tree $\mathcal{T}^{new}$ by appending two childre $\mathsf{n}_1$ and $\mathsf{n}_2$ to 
+\item Create new binary tree $\mathcal{T}^{new}$ by appending two children $\mathsf{n}_1$ and $\mathsf{n}_2$ to
 $\mathsf{n}$. 
 \item Let $\mathsf{l}_1$ and $\mathsf{l}_2$ denote the lengths of paths to $\mathsf{n}_1$ and $\mathsf{n}_2$. Then:
 \begin{align*}
@@ -358,7 +358,7 @@ for the lengths $\mathsf{l}_1,\dots,\mathsf{l}_M$ of paths to the nodes $n_1,\do
 \begin{align*}
 \sum_{k=1}^M2^{-\ell_k}\leq 1
 \end{align*}
-hods for any binary tree. 
+holds for any binary tree.
 \eit 
 \end{frame}
 
@@ -377,9 +377,9 @@ with equality if and only if $\gamma$ has no structural redundancy.
 \end{theorem} 
 \loud{Proof of Kraft inequality:}
 \bit
-\item Follows immediately from above statments about path lengths of (proper) binary trees.
+\item Follows immediately from above statements about path lengths of (proper) binary trees.
 \eit
-\loud{Proof of converse statemnt:}
+\loud{Proof of converse statement:}
 \bit
 \item Explicit construction of prefix code starting from perfect binary tree.
 \eit
@@ -413,7 +413,7 @@ with equality if and only if $\gamma$ has no structural redundancy.
 \end{align*}
 and thus each set $S_j$ is well defined.
 \item Traverse each $S_k$ backward up to common root node $n_k$. If $S_k$ consist of one node, no backward traversion, $S_k=n_k$. 
-\item Each root node $n_k$ is located at hight $\ell_k$ within $\mathcal{T}$. 
+\item Each root node $n_k$ is located at height $\ell_k$ within $\mathcal{T}$.
 \item [\iarrow] The $n_k$ define code-words of length $\ell_k$.  
 \item  Illustration of proof below.  
 
@@ -877,7 +877,7 @@ $p_k=2^{-\ell_k}$. $\qed$
 \sum_k2^{-\ell_k}=&\sum_k2^{-\lceil-\log_2({p_k})\rceil}
 \leq\sum_k2^{\log_2(p_k)}=1.
 \end{align*}
-\item Thus, by Kraft-inequality, there exists a prefix-code with codeword-lengths $\ell_k$ given by \eqref{ShannonCode}. 
+\item Thus, by (converse) Kraft-inequality, there exists a prefix-code with codeword-lengths $\ell_k$ given by \eqref{ShannonCode}.
 \item Such a code is called \loud{Shannon Code}.
 \item Used to prove that entropy plus one is upper bound for optimal average codeword length. 
 \eit

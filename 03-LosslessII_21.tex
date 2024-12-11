@@ -203,15 +203,15 @@ $p_a$ is the smallest symbol probability.
 \loud{Proof:} 
 \bit
 \item Let $\mathcal{A}_{max}$ be the set of all symbols whose codewords have length $\ell_{max}(\gamma)$.
-\item Let $a\in\mathcal{A}_{max}$ have smallest probability $p_a$ among all symbols of $\mathcal{A}_{max}$. 
-\item If there exists  
+\only<2->{\item Let $a\in\mathcal{A}_{max}$ have smallest probability $p_a$ among all symbols of $\mathcal{A}_{max}$. }
+\only<3->{\item If there exists
 symbol $c\notin\mathcal{A}_{max}$  with $p_c<p_a$, exchanging codewords of $a$ and $c$ would 
-give code with strictly smaller average codeword length than $\gamma$. 
-\item [\iarrow] $p_a$ has to be smallest probability among all 
-symbols of $\mathcal{A}$. 
-\item[\iarrow]Last lecture: Since $\gamma$ is optimal, tree representing $\gamma$ has to be proper.
-Thus, parent node of $a$ has a child $b$ different from $a$. Then $b$ satisfies required properties.
-\eit 
+give code with strictly smaller average codeword length than $\gamma$. }
+\only<4->{\item [\iarrow] $p_a$ has to be smallest probability among all
+symbols of $\mathcal{A}$. }
+\only<5->{\item[\iarrow]Last lecture: Since $\gamma$ is optimal, tree representing $\gamma$ has to be proper.
+Thus, parent node of $a$ has a child $b$ different from $a$. Then $b$ satisfies required properties.}
+\eit
 \end{frame}
 
 \begin{frame}{Optimality of Huffman codes: Second lemma}
@@ -223,31 +223,31 @@ $p_a$ and $p_b$ are the two smallest symbol probabilities
 \loud{Proof:} 
 \bit
 \item Let $\gamma$ be an optimal prefix code.
-\item  Let $a$ and $b$ be as in previous lemma.
-\item Let $c$  be symbol such that $p_a$ and $p_c$ are the smallest probabilities. Then $p_c\leq p_b$ and $\ell(\gamma(c))\geq \ell(\gamma(b))$. 
-\item If $p_c=p_b$, Lemma is proved.
-\item Assume that $p_c<p_b$. Since $b$ has maximal codeword length, exchanging codwords of $b$ and $c$ gives code $\gamma'$ with $\overline{\ell}(\gamma')\leq \overline{\ell}(\gamma)$.  
-\item[\iarrow] Since $\gamma$ is optimal:  Exchanging $b$ and $c$ gives code with same average codeword length and desired property. 
+\only<2->{\item  Let $a$ and $b$ be as in previous lemma.}
+\only<3->{\item Let $c$  be symbol such that $p_a$ and $p_c$ are the smallest probabilities. Then $p_c\leq p_b$ and $\ell(\gamma(c))\geq \ell(\gamma(b))$. }
+\only<4->{\item If $p_c=p_b$, Lemma is proved.}
+\only<5->{\item Assume that $p_c<p_b$. Since $b$ has maximal codeword length, exchanging codewords of $b$ and $c$ gives code $\gamma'$ with $\overline{\ell}(\gamma')\leq \overline{\ell}(\gamma)$.}
+\only<6->{\item[\iarrow] Since $\gamma$ is optimal:  Exchanging $b$ and $c$ gives code with same average codeword length and desired property. }
 \eit 
 \end{frame}
 
 \begin{frame}{Optimality of Huffman codes}
 \begin{theorem}
-The Huffman algorithmy yields a prefix code that minimizes the average codeword length among 
+The Huffman algorithm yields a prefix code that minimizes the average codeword length among
 all uniquely decodable codes. 
 \end{theorem}
 \loud{Proof:}
 \bit
 \item Proof by induction on alphabet-size $N$. For $N=2$, statement obviously true. 
-\item Let $\gamma$ be an optimal prefix code  as in second lemma, symbols $a, b$ as in second lemma. 
-\item Represent $\gamma$ by tree. Merge $a$ and $b$ to their single parent node, get tree $\mathcal{T}^{\#}$.
-\item Let $\mathcal{A}^{\#}$ be alphabet arising from $\mathcal{A}$ by merging $a$ and $b$ to a single symbol 
-with probability $p_a+p_b$. Keep other symbol probabilities. 
-\item Let $\gamma_1$ be prefix code for $\mathcal{A}^{\#}$ represented by $\mathcal{T}^{\#}$ and let $\gamma_{2}$ be Huffman code for $\mathcal{A}^{\#}$.
+\only<2->{\item Let $\gamma$ be an optimal prefix code  as in second lemma, symbols $a, b$ as in second lemma.}
+\only<3->{\item Represent $\gamma$ by tree. Merge $a$ and $b$ to their single parent node, get tree $\mathcal{T}^{\#}$.}
+\only<4->{\item Let $\mathcal{A}^{\#}$ be alphabet arising from $\mathcal{A}$ by merging $a$ and $b$ to a single symbol
+with probability $p_a+p_b$. Keep other symbol probabilities. }
+\only<5->{\item Let $\gamma_1$ be prefix code for $\mathcal{A}^{\#}$ represented by $\mathcal{T}^{\#}$ and let $\gamma_{2}$ be Huffman code for $\mathcal{A}^{\#}$.}
 %\item One has $\overline{\ell}(\gamma)=\overline{\ell}(\gamma_1)+p_a+p_b$ by construction. 
-\item Induction hypothesis: $\ell(\gamma_1)\geq \ell(\gamma_2)$. 
-\item Thus $\overline{\ell}(\gamma)=\overline{\ell}(\gamma_1)+p_a+p_b\geq \overline{\ell}(\gamma_2)+p_a+p_b$
-\item Right hand side is average codeword-length of a Huffman code for $\mathcal{A}$.
+\only<6->{\item Induction hypothesis: $\overline{\ell}(\gamma_1)\geq \overline{\ell}(\gamma_2)$.}
+\only<7->{\item Thus $\overline{\ell}(\gamma)=\overline{\ell}(\gamma_1)+ p_a \ell_a+ p_b \ell_b \geq \overline{\ell}(\gamma_2)+p_a \ell_a+ p_b \ell_b = \overline{\ell}(\gamma_2)+\ell_{a} (p_a + p_b)$}
+\only<8->{\item Right hand side is average codeword-length of a Huffman code for $\mathcal{A}$.}
 \qed 
 \eit
 \end{frame}
@@ -297,7 +297,7 @@ on previous letters.
 \item Probability of letter $h$ is very large if previous letter was a $c$ but very small if previous letter was e.g. a $k$. 
 \item The more previous letters are considered, the better the probability for a given letter can be estimated. If previous
 two letters are $sc$, probability of $h$ is even larger.  
-\item Probabilty should never be one for any letter: Text may always contain typos. Process not deterministic.  
+\item Probability should never be one for any letter: Text may always contain typos. Process not deterministic.
 \eit
  \ALERT{\iarrow $\:$ Considering conditional probabilities between letters should be very useful for compression}. 
 \end{minipage}
@@ -454,7 +454,7 @@ p_{Y|X}(y|x)=\frac{p_{X,Y}(x,y)}{p_X(x)}.
 \begin{frame}{Discrete random process} 
 \loud{Joint, marginal and conditional probabilities of $N$ random variables:}
 \bit
-\item Above defintions for two random variables $X$ and $Y$ extend directly to the case of $N$ random variables $X_1,\dots,X_N$. 
+\item Above definitions for two random variables $X$ and $Y$ extend directly to the case of $N$ random variables $X_1,\dots,X_N$.
 \item Joint probability mass functions and distributions $p_{X_1,\dots,X_N}$ are defined as above.
 \item Conditional distribution $p_{X_N|X_1,\dots,X_{N-1}}(x_N|x_1,\dots,x_{N-1})$ defined as above. 
 \eit
@@ -505,7 +505,7 @@ for all $T\in\mathbb{N}$ and all $N\in\mathbb{N}$.
 \loud{Marginal coding}
 \bit
 \item Let $\gamma_X$ prefix code for $\mathcal{A}_X$ and $\gamma_Y$ prefix code for $\mathcal{A}_Y$. 
-\item Define a uniquely decodable code (\textbf{exercies!}) on symbols $xy$, with $x\in\mathcal{A}_X, \:y\in\mathcal{A}_Y$ by :
+\item Define a uniquely decodable code (\textbf{exercise!}) on symbols $xy$, with $x\in\mathcal{A}_X, \:y\in\mathcal{A}_Y$ by :
 \bit
 \item Code $x$ using $\gamma_X$.
 \item Code $y$ using $\gamma_Y$. 
@@ -533,11 +533,11 @@ for all $T\in\mathbb{N}$ and all $N\in\mathbb{N}$.
 \begin{align}\label{CWMarg}
 \overline{\ell}_m= \overline{\ell}(\gamma_X)+\overline{\ell}(\gamma_Y) 
 \end{align}
-\item Average codword length $\overline{\ell}_c$ of conditional code:
+\item Average codeword length $\overline{\ell}_c$ of conditional code:
 \begin{align}
 \overline{\ell}_c=&\sum_{x_i\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p(x_i,y)(\ell(\gamma_X(x_i))+\ell(\gamma_Y^i(y)))\nonumber\\
 =&\sum_{x_i\in\mathcal{A}_X}p(x_i)\ell(\gamma_X(x_i))+\sum_{x_i\in\mathcal{A}_X}p(x_i)\sum_{y\in\mathcal{A}_Y}p(y|x_i)\ell(\gamma_Y^i(y))\label{EqCondL}\\
-=&\overline{\ell}_{\gamma_X}+\sum_{x_i\in\mathcal{A}_X}p(x_i)\overline\ell(\gamma_Y^i)\nonumber,
+=&\overline{\ell}(\gamma_X)+\sum_{x_i\in\mathcal{A}_X}p(x_i)\overline\ell(\gamma_Y^i)\nonumber,
 \end{align}
 where $\overline\ell(\gamma_Y^i)$ taken with respect to $p(\cdot|x_i)$.
 \item Choose optimal codes $\gamma_Y^{i}$. Then by optimality
@@ -659,7 +659,7 @@ average codeword length $3/2$.
 \loud{\iarrow $\:$ Conditional code  has better average codeword length than marginal code. }
 \end{frame}
 
-\begin{frame}{Conditional coding not always benficial}
+\begin{frame}{Conditional coding not always beneficial}
 \loud{Given distribution: }
 \bit
 \item Consider sources $X$ and $Y$ with alphabets $\mathcal{A}_X=\{0,1\}$ and $\mathcal{A}_Y=\{0,1,2\}$. 
@@ -700,7 +700,7 @@ average codeword length $3/2$.
 
 %\begin{frame}
 %\begin{Lemma}{Conditioning reduces entropy for more than one condition}
-%Let $X, Y, Z$ be random variables on a discrete probabilty space $\Omega$. 
+%Let $X, Y, Z$ be random variables on a discrete probability space $\Omega$.
 %Then one has 
 %\begin{align*}
 %H(Z|X,Y)\leq H(Z|Y). 
@@ -774,7 +774,7 @@ entropy of joint distribution $p_{X,Y}$.
 
 \begin{frame}{Chain rule of entropies}
 \begin{proposition}[Chain rule for entropies]
-For any two random variabls $X,Y$ on a discrete probabiltiy space $(\Omega,P)$, one has 
+For any two random variables $X,Y$ on a discrete probability space $(\Omega,P)$, one has
 \begin{align*}
 H(X,Y)=H(Y|X)+H(X).
 \end{align*}
@@ -800,7 +800,7 @@ H(X,Y)=&-\sum_{x\in \mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\lef
 
 \begin{frame}{Conditioning does not increase entropy}
 \begin{proposition}
-For any two random variabls $X,Y$ on a discrete probabiltiy space $(\Omega,P)$, one has 
+For any two random variables $X,Y$ on a discrete probability space $(\Omega,P)$, one has
 \[
 H(Y)\geq H(Y|X)
 \]
@@ -820,7 +820,7 @@ H(Y|X)=&-\sum_{x\in\mathcal{A}_X}\sum_{y\in\mathcal{A}_Y}p_{X,Y}(x,y)\log_2\left
 
 
 \begin{frame}{Conditional entropy for $N$ random variables}
-Let $X_1,\dots,X_N$ be random variables on discrete probabilty space $\Omega$.  
+Let $X_1,\dots,X_N$ be random variables on discrete probability space $\Omega$.
 \bit
 \item \loud{Conditional entropy} $H(X_N|X_{N-1},\dots,X_1)$ of $X_N$ given  $X_1,\dots,X_{N-1}$:  
 
@@ -880,7 +880,7 @@ H(X_{n+1}|X_1,\dots,X_n)\leq &H(X_{n+1}|X_2,\dots,X_{n}).\\
 \end{align*}
 \item Process is stationary: 
 \begin{align*}
-H(X_{n+1}|X_2,\dots,X_{n-1})=H(X_{n}|X_1,\dots,X_{n-1}).
+H(X_{n+1}|X_2,\dots,X_{n})=H(X_{n}|X_1,\dots,X_{n-1}).
 \end{align*}
 \item [\iarrow] Sequence \eqref{LimCondEntrRate} is monotonically decreasing. Since it is non-negative: Conditional entropy rate exists. 
 \eit
@@ -894,7 +894,7 @@ H(X_{n+1}|X_2,\dots,X_{n-1})=H(X_{n}|X_1,\dots,X_{n-1}).
 \begin{align*}
 \frac{1}{N}H(X_1,\dots,X_N)=\frac{1}{N}\sum_{i=1}^NH(X_i|X_{1},\dots,X_{i-1}).
 \end{align*}
-\item \loud{Already proved:} Sequence $H(X_i|X_{i-1},\dots,X_1)$ converges to $H'(\mathsf{X})$.  
+\item \loud{Already proved:} Sequence $H(X_i|X_1,\dots,X_{i-1})$ converges to $H'(\mathsf{X})$.
 \item \loud{Cauchy limit theorem}: If a sequence of complex number converges to a value, the sequence of averages converges to the same value. See next slide.
 \item [\iarrow] Sequence of averaged joint entropies converges to conditional entropy rate. 
 \qed
@@ -914,7 +914,7 @@ converges to a.
 \loud{Proof:} Let $\epsilon>0$. There exists an $n_0\in\mathbb{N}$ such that $|a_n-a|<\epsilon/2$ for all $n\geq n_0$.
 \bit
 %\item Let $\epsilon>0$. There exists an $n_0\in\mathbb{N}$ such that $|a_n-a|<\epsilon/2$ for all $n\geq n_0$.
-\item Let $c:=\max\{|a_n-a|\colon n\in\mathbb{N}\}$. There exists and $n_1\in\mathbb{N}$ such that $cn_0/n<\epsilon/2$ for all $n\geq n_1$.
+\item Let $c:=\max\{|a_n-a|\colon n\in\mathbb{N}\}$. There exists an $n_1\in\mathbb{N}$ such that $cn_0/n<\epsilon/2$ for all $n\geq n_1$.
  \item[\iarrow] For all $n\geq \max\{n_0,n_1\}$, one has 
 \begin{align*}
 |b_n-a|=\left|\sum_{i=1}^n\frac{a_i-a}{n}\right|&\leq \sum_{i=1}^n\frac{|a_i-a|}{n}=
@@ -961,7 +961,7 @@ H_N(\mathcal{X})\leq\overline{\ell}_N\leq H_N(\mathcal{X})+1
 \begin{align*}
 \overline{\ell}:=\lim_{N\to\infty}\frac{\overline{\ell}_N}{N},
 \end{align*} 
-defining the optimal average codeword length per smybol exists. 
+defining the optimal average codeword length per symbol exists.
 \item Optimal average codeword length $\overline{\ell}$ per symbol asymptotically achieves entropy rate:
 \begin{align*}
 \lim_{N\to\infty}\frac{\overline{\ell}_N}{N}=H(\mathcal{X}).
