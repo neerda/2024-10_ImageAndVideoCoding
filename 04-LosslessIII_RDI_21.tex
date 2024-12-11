@@ -576,8 +576,8 @@ I(X;Y)=I(Y;X).
 each $x\in\mathcal{A}$. 
 \item The pmf $p$ and the conditional pmf $q$ define the probability masses $p(x)q(\hat{x}|x)$ of a joint distribution on $\mathcal{A}\times\mathcal{B}$.
 \item[\iarrow] Thus: According to \eqref{DefMutInf}, one defines
-\begin{align*}
-I(p;q)=H(p)-H(q|p)=\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}p(x)q(\hat{x}|x)\log_2\left(\frac{q(\hat{x}|x)}{p(x)}\right).
+\begin{align*}%modification:Vertauschung p und q am 11.12.24 von Jennifer!
+I(p;q)=H(p)-H(p|q)=\sum_{x\in\mathcal{A}}\sum_{\hat{x}\in\mathcal{B}}p(x)q(\hat{x}|x)\log_2\left(\frac{q(\hat{x}|x)}{p(x)}\right).
 \end{align*}
 \item Definitions are consistent: For two random variables $X$ and $Y$, one has
 \begin{align*}
@@ -884,8 +884,8 @@ q_3=(1-\lambda)q_1+\lambda q_2
 \bit
 \item By the concavity of entropy: 
 \begin{align*}
--H(q_3|p)=-\sum_{x\in\mathcal{A}}p(x)H(q_3(\cdot|x))\leq& -\sum_{x\in\mathcal{A}}p(x)\left((1-\lambda)H(q_1(\cdot|x))+\lambda H(q_2(\cdot|x))\right)\\
-=&-(1-\lambda)H(q_1|p)-\lambda H(q_2|p)
+-H(p|q_3)=-\sum_{x\in\mathcal{A}}p(x)H(q_3(\cdot|x))\leq& -\sum_{x\in\mathcal{A}}p(x)\left((1-\lambda)H(q_1(\cdot|x))+\lambda H(q_2(\cdot|x))\right)\\
+=&-(1-\lambda)H(p|q_1)-\lambda H(p|q_2)
 \end{align*}
 \item [\iarrow] Using definition of $R^{(I)}$ and \eqref{DistConstrQ3}:
 \begin{align}\label{estD}
