@@ -884,12 +884,12 @@ q_3=(1-\lambda)q_1+\lambda q_2
 \bit
 \item By the concavity of entropy: 
 \begin{align*}
-H(p|q_3)=-\sum_{x\in\mathcal{A}}p(x)H(q_3(\cdot|x))\leq& -\sum_{x\in\mathcal{A}}p(x)\left((1-\lambda)H(q_1(\cdot|x))+\lambda H(q_2(\cdot|x))\right)\\
+-H(p|q_3)=-\sum_{x\in\mathcal{A}}p(x)H(q_3(\cdot|x))\leq& -\sum_{x\in\mathcal{A}}p(x)\left((1-\lambda)H(q_1(\cdot|x))+\lambda H(q_2(\cdot|x))\right)\\
 =&-(1-\lambda)H(p|q_1)-\lambda H(p|q_2)
 \end{align*}
 \item [\iarrow] Using definition of $R^{(I)}$ and \eqref{DistConstrQ3}:
 \begin{align}\label{estD}
-R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq I(p;q_3)=H(p)-H(p|q_3)\leq &(1-\lambda)(H(p)+H(p|q_1))+\lambda( H(p)+H(p|q_2)) \nonumber\\ =&(1-\lambda)I(p;q_1)+\lambda I(p;q_2).
+R^{(I)}((1-\lambda)D_1+\lambda D_2)\leq I(p;q_3)=H(p)-H(p|q_3)\leq &(1-\lambda)(H(p)-H(p|q_1))+\lambda( H(p)-H(p|q_2)) \nonumber\\ =&(1-\lambda)I(p;q_1)+\lambda I(p;q_2).
 \end{align}
 \item Now use:
 \bit
