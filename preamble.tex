@@ -1107,7 +1107,8 @@
       \insertshorttitle%
       \ifdefempty{\insertpart}{}{{:~~}\insertpart}%
       \hfill%
-      \ifdefempty{\insertpart}{}{\insertpartframenumber{}~/~\inserttotalpartframenumber}
+      %\ifdefempty{\insertpart}{}{\insertpartframenumber{}~/~\inserttotalpartframenumber}
+      \insertpartframenumber{}~/~\inserttotalpartframenumber
       \hspace*{1.5em}%
     \end{beamercolorbox}%
   }%
@@ -1400,7 +1401,7 @@
 %  \eit
 %  \end{frame}
 %}{}
-  \begin{frame}{Motivationd and Goal of the lecture}
+  \begin{frame}{Motivation and Goal of the lecture}
   \textbf{Data compression:}
   \begin{itemize}
   \item Data compression is a core technology for modern communication. 
