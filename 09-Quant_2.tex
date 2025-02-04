@@ -1,0 +1,266 @@
+\input{preamble.tex}
+\DeclareMathOperator{\cwd}{codeword}
+\newtheorem{proposition}{Proposition}
+\usepackage{forest}
+\usepackage{lipsum}
+\usepackage{subcaption}
+\usepackage{mathtools}
+\begin{document}
+
+
+
+
+
+
+\section{Quantization II} 
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\begin{frame}{Review of last lecture I}
+\loud{Quantization: } 
+\bit
+\item Partition set of source symbols into quantization cells $\mathcal{C}$. 
+\item Map each $\mathcal{C}$ to a single quantization index $\mathsf{i}$ and transmit only $\mathsf{i}$. 
+\item Typically, set $\mathcal{C}$ consist of more than one element. Cell or interval in continuous case, set of points in 
+the discrete case. 
+\item [\iarrow] Different source symbols are quantized to the same index $\mathsf{i}$. Impossible to recover source symbols from index $\mathsf{i}$.
+\item [\iarrow] Quantization is the building block of a lossy source code that yields \loud{distortion}.
+\eit
+\loud{Quantization: Encoder and decoder}
+\bit
+\item Encoder: Map source symbols $x$ to quantization index $\mathsf{i}=\alpha(x)$.
+\item Decoder: Map quantization index $\mathsf{i}$ to reconstruction point $\hat{x}=\beta(\mathsf{i})=\beta(\alpha(x))$.
+\item In general, $x\neq \hat{x}$.
+\item In a standard: Only decoder mapping $\beta$ specified. Mapping $\alpha$ subject to different rate-distortion optimization techniques that 
+may or may not be applied. 
+\eit
+\end{frame}
+
+\begin{frame}{Quantization: Example from H.266|VVC standard}
+\bit
+\item In H.266|VCC, dependent quantization, low complexity variant of vector quantization, is supported.
+\item Only decoder is specified: Generate reconstruction points $k\cdot\Delta$ by the following  state machine:
+\begin{figure}
+\includegraphics[width=.40\textwidth]{Quant_II/DepQuant.png}
+\end{figure}
+\item Encoder: \textit{Can} use trellis quantization, Viterbi algorithm. Not 
+part of the standard:
+\begin{figure}
+\includegraphics[width=.30\textwidth]{Quant_II/trellis.png}
+\end{figure}
+\eit
+\end{frame}
+
+\begin{frame}{Review of last lecture II}
+\loud{Scalar quantization:}
+\bit
+\item  Treat one-dimensional sources. General case of vector quantization later.  
+\item Model case: Sources $X$ with a probability density function $f_X=f$. 
+\eit
+
+\loud{Fixed rate quantization:}
+\bit
+\item Transmit all quantization indices with the same rate $R$.
+\item [\iarrow] Fix number  $K=2^R$ of \loud{reconstruction points}. Then  determine optimal reconstruction points $s_k$ and optimal \loud{decision thresholds} 
+$u_k$, $k=1,\dots,K$  by minimizing distortion.   
+\item The $s_k$ need to satisfy the \loud{centroid condition}, if $u_k$ are given. 
+\item The $u_k$ need to satisfy the \loud{nearest neighbor condition}, if $s_k$ are given 
+\item \loud{Lloyd algorithm: } Iterative algorithm to approximately realize centroid and nearest neighbor condition.
+\item Optimal quantizer often called \loud{Lloyd quantizer}.
+\eit
+\ALERT{Now: Allow entropy coding/lossless coding of quantization indices $\mathsf{i}$.} 
+\end{frame}
+
+\section{Entropy-Constrained Scalar Quantizer}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+      \input             {Quant_II/QuantPerformance_New.tex}
+  \subsection{Lagrangian Optimization}
+      \input              {Quant_II/JointOptimization_New.tex}
+      \input              {Quant_II/IlluConstrainedOpt_New.tex}
+      \input              {Quant_II/IlluLagrange_New.tex}
+
+  \subsection{Optimization Criterions}
+      \input             {Quant_II/OptScalarQuant_New.tex}
+      \input              {Quant_II/CentroidCondition_v2_New.tex}
+      \input              {Quant_II/EntropyCondition_New.tex}
+      \input              {Quant_II/OptThresholds_New.tex}
+      \input              {Quant_II/ModNNCondition_New.tex}
+      
+  \subsection{Entropy-Constrained Lloyd Algorithm}
+  \input {Quant_II/ECLloydQuant_New.tex}
+  \input {Quant_II/ECLloydPdf_New.tex}
+  \input {Quant_II/ECLloydTrainingSet_New.tex}
+
+\input{Quant_II/ECLloydExampleGauss2Bit_New.tex}
+\input{Quant_II/ECLloydExampleConvergenceGauss2Bit_New.tex}
+%\input{ECLloydExampleConvergenceGauss2BitBad_New.tex}
+%\input{ECLloydvsLloydGauss_New.tex}
+\input{Quant_II/ECLloydExampleLaplace2Bit_New.tex}
+\input{Quant_II/ECLloydExampleConvergenceLaplace2Bit_New.tex}
+\section{Performance of scalar quantizers at high rates}
+\begin{frame}
+ \vspace{12.0ex}
+\begin{center}
+\begin{beamercolorbox}[sep=12pt,center]{part title}
+\usebeamerfont{section title}\insertsection\par
+\end{beamercolorbox}
+\end{center}
+\end{frame}
+
+\begin{frame}{Overview}
+\bit
+\item At high rates, rate-distortion performance of Fixed Length and of Entropy-Constrained Lloyd quantizer can be computed \loud{explicitly}.
+\item \loud{Rate distortion theory:} At high rates, rate-distortion function of a source approaches \loud{Shannon Lower bound}.
+\item Gaussian sources: Rate distortion function explicit. Equal to Shannon lower bound. 
+\eit
+\bit
+\item[\iarrow]  \ALERT{Application of rate-distortion theory from previous lectures: } \\
+\vspace{4.0ex}
+\loud{Explicit, quantitative evaluation of scalar quantization schemes in comparison to best RD-performance possible at all. Show: The latter is not achievable by scalar quantization.} 
+\eit
+\end{frame}
+
+
+\input{Quant_II/LloydHighRates_New.tex}
+\input{Quant_II/MSEHighRates_New.tex}
+%\input{HighRatesLloydFLC_New.tex}
+
+\begin{frame}{Fixed rate Lloyd quantizer at high rates: Panter and Dite approximation.}
+\begin{proposition}[Panter and Dite approximation]
+The rate distortion function of a Lloyd scalar quantizer with fixed rate asymptotically approaches
+\begin{align*}
+R_F(D):=\frac{3}{2}\log_2\left(\int_{-\infty}^{\infty}\sqrt[3]{f(s)}ds \right)-\frac{1}{2}\log_2(12D)
+\end{align*}
+for high rates. The distortion rate function approaches
+\begin{align*}
+D_F(R):= \frac{1}{12}\,\left(\int_{-\infty}^{\infty}\sqrt[3]{f(s)}ds \right)^{\!3}
+2^{-2R}
+\end{align*}
+for high rates. 
+\end{proposition}
+\end{frame}
+
+\begin{frame}{Proof of Panter and Dite approximation}
+\loud{Proof of Panter and Dite approximation: }
+\bit
+\item \STRUC{By high-rate approximation of MSE for Lloyd quantizer: }
+\begin{align}\label{DistPantDite}
+D \approx &\frac{1}{12}\,\sum_{i=0}^{K-1} p_i\,\Delta_i^2\\ \approx &\frac{1}{12}\,\sum_{i=0}^{K-1} f(s'_i)\,\Delta_i^3.
+\end{align}
+\item By \STRUC{Hölder's inequality}, for $x_k\geq0$ and $y_k\geq0$ one has
+  \vspace{-0.5ex}
+  \begin{align}\label{Hoeld}
+  \alpha+\beta=1
+    \quad\implies\quad
+    \left(\sum\nolimits_kx_k\right)^{\!\alpha}\!\cdot
+    \left(\sum\nolimits_ky_k\right)^{\!\beta}\geq\;
+    \sum\nolimits_kx_k^{\alpha}\,y_k^{\beta}
+ \end{align}
+  with equality iff $y_k$ is proportional to $x_k$, i.e., $y_k=\text{const}\cdot x_k$.
+\eit
+\end{frame}
+
+\begin{frame}{Proof of Panter and Dite approximation}
+\bit
+\item Rewriting  \eqref{DistPantDite} using $\,\sum_{i=0}^{K-1}(1/K)=K\cdot(1/K)=1$ and applying \eqref{Hoeld} with $\alpha=1/3$, $\beta=2/3$ gives
+\begin{align*}
+    D \approx
+      \frac{1}{12}\,\left(
+         \left(
+            \sum_{i=0}^{K-1} f(s'_i)\,\Delta_i^3
+         \right)^{\!\frac{1}{3}}
+         \cdot
+         \left(
+            \sum_{i=0}^{K-1} \frac{1}{K}
+         \right)^{\!\frac{2}{3}}
+      \right)^{\!3}
+      \geq \frac{1}{12 K^2}\left(\cdot \sum_{i=0}^{K-1}f(s'_i)^{\!\frac{1}{3}}\Delta_i \right)^{\!3},
+\end{align*}
+equality iff $f(s'_i)^{\!\frac{1}{3}}\Delta_i$ constant.
+\item For high rate approximation, one obtains
+\begin{align*}
+\sum_{i=0}^{K-1}f(s'_i)^{\!\frac{1}{3}}\Delta_i\approx \int _{-\infty}^\infty f(s)^{\!\frac{1}{3}} ds. 
+\end{align*}
+\item For a fixed length quantizer with $K$ reconstruction points, one has $K=\lfloor 2^R\rfloor$. \qed
+\eit
+
+\end{frame}
+
+\begin{frame}{Entropy constrained Lloyd quantizer at high rates: Gish and Pierce approximation.}
+\begin{proposition}[Gish and Pierce approximation]
+For high rates, Lloyd quantizers with variable length coding have uniform stepsize 
+\begin{align*}
+\Delta\approx \sqrt{12 D}.
+\end{align*} 
+The rate-distortion function of entropy constrained Lloyd quantization asymptotically approaches
+
+\begin{align*}
+R_{V}(D)=h(S)-\frac{1}{2}\log_2(12 D)
+\end{align*}
+for high rates.
+The distortion-rate function asymptotically approaches  
+\begin{align*}
+D_{V}(R):=\frac{1}{12}2^{2h(S)}2^{-2R}.
+\end{align*}
+\end{proposition}
+
+\end{frame}
+
+
+\begin{frame}{Proof of Gish and Pierce approximation I}
+\loud{Proof of Gish and Pierce approximation:}
+\bit 
+\item By high-rate approximation, distortion $D$ satisfies
+\begin{align}\label{DistGishPierce}
+D\approx \frac{1}{12}\sum_{\forall k}p_k\Delta_k^2.
+\end{align}
+\item High rate approximation $p_k\approx \Delta_k f(s'_k)$ implies:
+\begin{align}\label{RateGishPierce} 
+    R =
+    -\sum_{\forall k}p_k\cdot\log_2p_k
+    &\approx
+    -\sum_{\forall k}p_k\,\Big(\log_2f(s'_k)+\log_2\Delta_k\Big)\nonumber
+    \\    
+    &\approx
+    -\sum_{\forall k}\Delta_kf(s'_k)\,\log_2f(s'_k)-\sum_{\forall k}p_k\log_2\Delta_k\nonumber\\
+    &\approx
+    -\int_{-\infty}^{\infty}f(s)\,\log_2f(s)\,\d s-\frac{1}{2}\sum_{\forall k}p_k\log_2\Delta_k^2 \nonumber
+    \\ &=\;
+      h(S)-\frac{1}{2}\sum_{\forall k}p_k\log_2\Delta_k^2.
+  \end{align}
+\eit
+\end{frame}
+\begin{frame}{Proof of Gish and Pierce approximation II}\bit
+\item Since function $\psi(x):=-\log_2(x)$ is convex, \loud{Jensen's inequality implies}
+\begin{align*}
+R\geq h(S)-\frac{1}{2}\log_2(\sum_{\forall k}p_k \Delta_k^2),
+\end{align*}
+equality if and only if all $\Delta_k$ are equal.
+\item By \eqref{DistGishPierce}, equal $\Delta_k=\Delta$ implies $\Delta=\sqrt{12D}$.
+\item Inserting into \eqref{RateGishPierce} gives
+\begin{align}\label{DeltaGishPierce}
+R=h(S)-\frac{1}{2}\log_2(12 D). \qed
+\end{align}
+\eit
+\end{frame}
+
+
+\input{Quant_II/ECSQvsSLB_New.tex}
+
+\input{Quant_II/HighRateSummary.tex}
+
+\end{document}
