@@ -19,52 +19,52 @@
 \end{center}
 \end{frame}
 \section{Introduction}
-\begin{frame}{Review of last lecture}
-\loud{Zador Formula:}
-\bit
-\item  Generalization of Panter and Dite approximation to higher 
-dimesion. 
-\item Given an $N$-dimensional source $X$ with suitable regular density $f_X$. 
-\item The distortion rate function of fixed length vector quantization for $X$  asymptotically equals 
-\begin{align}\label{PanterDiteGen}
-D_{F,N}(R)=C(N)\left(\int_{\mathbb{R}^N}f(x)^{\frac{N}{N+2}}dx\right)^{\frac{N+2}{N}}2^{-2R}, 
-\end{align}
-as the rate $R$ tends to $\infty$. 
-\item Constant $C(N)$ is \loud{independent of the source}. 
-\item Deep research work and open conjectures on the description of $C(N)$. 
-\item Asymptotic behaviour: 
-\begin{align}\label{CNasymptotic}
-\lim_{N\to\infty}C(N)=\frac{1}{2\pi e}.
-\end{align}
-\eit
-\end{frame}
+% \begin{frame}{Review of last lecture}
+% \loud{Zador Formula:}
+% \bit
+% \item  Generalization of Panter and Dite approximation to higher
+% dimesion.
+% \item Given an $N$-dimensional source $X$ with suitable regular density $f_X$.
+% \item The distortion rate function of fixed length vector quantization for $X$  asymptotically equals
+% \begin{align}\label{PanterDiteGen}
+% D_{F,N}(R)=C(N)\left(\int_{\mathbb{R}^N}f(x)^{\frac{N}{N+2}}dx\right)^{\frac{N+2}{N}}2^{-2R},
+% \end{align}
+% as the rate $R$ tends to $\infty$.
+% \item Constant $C(N)$ is \loud{independent of the source}.
+% \item Deep research work and open conjectures on the description of $C(N)$.
+% \item Asymptotic behaviour:
+% \begin{align}\label{CNasymptotic}
+% \lim_{N\to\infty}C(N)=\frac{1}{2\pi e}.
+% \end{align}
+% \eit
+% \end{frame}
 
 
-\begin{frame}{Space filling advantage of vector quantization} 
-\bit
-\item Source-independent advantage of vector quantization over scalar quantization. 
-\item Related to better packing property of more complicated vector quantizers in comparison to scalar quantizers. 
-\item Quantified by the quotient 
-\begin{align*}
-\frac{C(1)}{C(N)}. 
-\end{align*}
-\item \loud{Not} possible to design any compression system invoking scalar quantization that can exploit the space filling advantage of vector quantization. 
-\item General form of vector quantization very complex. 
-\item Very large memory requirement for reconstruction points at encoder and decoder, very complicated search algorithm at encoder. 
-\item But: Low-complexity variants like \loud{lattice quantization} or \loud{trellis coded quantization} exist. 
-\eit
-\end{frame}
-
-
- \input{TrCoding/SpaceFillingExample_New.tex}
+% \begin{frame}{Space filling advantage of vector quantization}
+% \bit
+% \item Source-independent advantage of vector quantization over scalar quantization.
+% \item Related to better packing property of more complicated vector quantizers in comparison to scalar quantizers.
+% \item Quantified by the quotient
+% \begin{align*}
+% \frac{C(1)}{C(N)}.
+% \end{align*}
+% \item \loud{Not} possible to design any compression system invoking scalar quantization that can exploit the space filling advantage of vector quantization.
+% \item General form of vector quantization very complex.
+% \item Very large memory requirement for reconstruction points at encoder and decoder, very complicated search algorithm at encoder.
+% \item But: Low-complexity variants like \loud{lattice quantization} or \loud{trellis coded quantization} exist.
+% \eit
+% \end{frame}
+%
+%
+%  \input{TrCoding/SpaceFillingExample_New.tex}
 
 \begin{frame}{Shape and memory advantage}
 \bit
 \item Given an $\mathbb{R}^N$-valued source $X=(X_1,\dots,X_N)$ with distribution $p_X$. 
 \item Let $p_{X_i}$ denote the marginal distribution of the $i$-th component $X_i$ with  density $\tilde{f}$.  
 \item Assume $X$ is stationary, in particular, marginal probabilities satisfy $p_{X_i}=p_{X_j}$ for all $i, j$. 
-\item \loud{Shape and memory advantage: } Compare source-dependent terms in Panter and Dite formula for 1-dimensional and $N$-dimensional case invoking density $f$ and 
-density $\tilde{f}$.
+%\item \loud{Shape and memory advantage: } Compare source-dependent terms in Panter and Dite formula for 1-dimensional and $N$-dimensional case invoking density $f$ and
+%density $\tilde{f}$.
 \eit 
 \vspace{-0.1em}
 Shape and memory advantage depend on source $X$. \loud{\iarrow$ $ Idea of transform coding: }
@@ -175,7 +175,7 @@ $R_{TX}=TR_{X}T^t$ is a diagonal matrix is called a KLT for $X$.
 \item The rows of the KLT comprise an orthonormal basis of eigenvectors of $R_X$. 
 \item If the eigenvalues of $R_X$ are all distinct, a KLT is unique up to permutations and multiplications by $\pm 1$ of its rows. 
 \item No general algorithm to exactly compute the eigenvalues of $R_X$ exists.
-\item Well working iterative schemes for compuation of KLT which are convergent:
+\item Well working iterative schemes for computation of KLT which are convergent:
 \bit 
 \item QR-method 
 \item Jacobi method
@@ -200,12 +200,12 @@ V_k:=\mathbb{R}v_1\oplus\cdots\oplus\mathbb{R}v_k
 solves \eqref{BestApproxMin}.
 \eit
 \end{proposition}
-\loud{\iarrow For a given source $X$, KLT computs best low-rank approximation of $X$.}
+\loud{\iarrow For a given source $X$, KLT computes best low-rank approximation of $X$.}
 \end{frame}
 
 \begin{frame}\frametitle{Proof of optimal energy compaction of KLT for $k=1$.}
 \begin{itemize}
-\item For $k=1$, one needs to finde $v_1\in\mathbb{R}^N$ which solves the constraint optimization problem 
+\item For $k=1$, one needs to find $v_1\in\mathbb{R}^N$ which solves the constraint optimization problem
 \begin{align}\label{maximization}
  & \text{maximize}\quad &\mathbb{E}(<X,v>^2) \nonumber \\ & \text{subject to}\quad &\left\|v\right\|^2=1.
 \end{align}
@@ -223,7 +223,7 @@ for some $\lambda\in\mathbb{R}$.
 \item Thus, $v_1$ needs to be an eigenvector of $R_X$ of eigenvalue $\lambda$. By \eqref{ExpValSP}, one 
 has 
 \begin{align*}
-\mathbb{E}(<X,v>^2)=\lambda^2
+\mathbb{E}(<X,v>^2)=\lambda
 \end{align*}
 and thus \eqref{maximization} is maximized if $\lambda=\lambda_1$. 
 \end{itemize}
@@ -263,7 +263,7 @@ by the property of $v_k$ one has
 \end{align*}
 \item By \eqref{normminusdist}, this implies
 \begin{align*}
-\mathbb{E}(\dist(X,W)^2)\geq \mathbb{E}(\dist(X,V_k)^2).
+\mathbb{E}(\dist(X,W)^2)\geq \mathbb{E}(\dist(X,V)^2).
 \end{align*}
 \end{itemize}
 \qed
@@ -329,7 +329,7 @@ Taken from Bishop, Pattern Recognition and Machine Learning
 \begin{itemize}
 \item Consider a dataset that consists of a large collection of handwritten digits of the number $3$, taken from MNIST dataset.
 \item Each data-sample of an handwritten digit is a grey-scale image with $28\times 28$ pixels. 
-\item Thus: Data samples correspond to vectors $x_d\in \mathbb {R}^N$ for $N=748$. 
+\item Thus: Data samples correspond to vectors $x_d\in \mathbb {R}^N$ for $N=784$.
 \end{itemize}
 \begin{figure}
 \centering
@@ -355,7 +355,7 @@ of the empirical covariance matrix, and $v_1,\dots,v_N$ be the assiocated eigenv
 \begin{figure}
 \includegraphics[width=0.75\textwidth]{TrCoding/FigurePCAEx.pdf}
 \captionsetup{labelformat=empty}
-\caption{Original handwritten digit (left), and its representation by using only a subset $v_1,\dots,v_M$ of the principal components. If $x\in\mathbb{R}^{748}$, the $M$-th picture 
+\caption{Original handwritten digit (left), and its representation by using only a subset $v_1,\dots,v_M$ of the principal components. If $x\in\mathbb{R}^{784}$, the $M$-th picture
 represents
   \begin{minipage}{\linewidth}
      \begin{equation*}
